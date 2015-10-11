@@ -50,12 +50,17 @@ public class Sprite extends Item {
      * An empty animation to represent no animation being previously set.
      */
     public static final Animation UNDEFINED_ANIMATION = new Animation(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+    /**
+     * An empty area to represent no movement area being previously set.
+     */
+    public static final Item UNDEFINED_AREA = new Item(-1, -1, -1, -1);
     private static final List<Integer> ALL_DIRECTIONS = Arrays.asList(EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST);
     //</editor-fold>
-    private int speed, lastDirection, moveDirection;
+    private int speed = 10, lastDirection, moveDirection;
     private double moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = UNDEFINED_ANIMATION;
+    private Item movementArea = UNDEFINED_AREA;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -64,7 +69,6 @@ public class Sprite extends Item {
      */
     public Sprite() {
         super();
-        this.speed = 5;
     }
     
     /**
@@ -84,7 +88,6 @@ public class Sprite extends Item {
     public Sprite(int x, int y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
         this.animation = animation;
-        this.speed = 5;
     }
     
     /**
@@ -100,10 +103,19 @@ public class Sprite extends Item {
     public Animation getAnimation() {
         return animation;
     }
+
+    /**
+     * Returns the area in which the sprite is allowed to move with the movement commands.
+     * @return The area in which the sprite is allowed to move within or the constant
+     * for an undefined area if none is currently set.
+     */
+    public Item getMovementArea() {
+        return movementArea;
+    }
     
     /**
      * Returns the direction the sprite was moved in the previous or
-     * current frame. Returns -1 (undefined direction) is the sprite was not recently
+     * current frame. Returns -1 (undefined direction) if the sprite was not recently
      * moved or was moved in a direction not defined by one of the constants.
      * @return The last direction the sprite was moved. 
      */
@@ -112,13 +124,12 @@ public class Sprite extends Item {
     }
     
     /**
-     * @return The previous animation of the sprite, or a blank animation is no
-     * previous animation was set.
+     * @return The previous animation of the sprite, or the constant for an undefined
+     * animation if no previous animation was set.
      */
     public Animation getPreviousAnimation() {
         return previous;
     }
-    
     
     /**
      * Sets the x and y position of the sprite using a point.
@@ -130,7 +141,7 @@ public class Sprite extends Item {
     }
     
     /**
-     * Sets the speed the sprite will move at when using it's move methods.
+     * Sets the speed the sprite will move at when using its move methods.
      * @param speed The amount of pixels the sprite will move each frame.
      */
     public final void setSpeed(int speed) {
@@ -145,6 +156,31 @@ public class Sprite extends Item {
         previous = this.animation;
         this.animation = animation;
     }
+    
+    
+    /**
+     * Defines the area the sprite can move inside. A sprite will not be able
+     * to go outside this area using the movement commands, however the sprite can
+     * still get outside this area using the setters for its x and y.
+     * @param x1 The x position of the top left corner.
+     * @param y1 The y position of the top left corner.
+     * @param x2 The x position of the bottom right corner.
+     * @param y2 The y position of the bottom right corner.
+     */
+    public void lockMovementArea(int x1, int y1, int x2, int y2) {
+        lockMovementArea(new Item(x1, y1, x2 - x1, y2 - y1));
+    }
+    
+    /**
+     * Defines the area the sprite can move inside. A sprite will not be able
+     * to go outside this area using the movement commands however the sprite can
+     * still get outside this area using the setters for its x and y.
+     * @param area The area inside which the sprite can move unrestrictedly.
+     */
+    public void lockMovementArea(Item area) {
+        movementArea = area;
+    }
+    
     
     /**
      * Moves the sprite at the passed in angle at the set speed.
@@ -168,8 +204,8 @@ public class Sprite extends Item {
     
     /**
      * Moves the sprite at one of the defined directions at the set speed.
-     * @param direction An integer representing the direction the sprite should move to.
-     * (Use the constants in the sprite class for this).
+     * @param direction One of the direction constants that represents where
+     * the sprite should move to.
      */
     public void moveTo(int direction) {
         if (ALL_DIRECTIONS.contains(direction)) {
@@ -180,6 +216,12 @@ public class Sprite extends Item {
         lastDirection = direction;
     }
     
+    /**
+     * Moves the sprite constantly in the specified direction until it gets
+     * removed or it goes outside its movement area.
+     * @param direction One of the direction constants that represents where
+     * the sprite should move to.
+     */
     public void moveConstantlyTo(int direction) {
         if (ALL_DIRECTIONS.contains(direction)) {
             directionalMovement = true;
@@ -188,12 +230,20 @@ public class Sprite extends Item {
         }
     }
     
+    /**
+     * Moves the sprite constantly at the specified angle until it gets
+     * removed or it goes outside its movement area.
+     * @param angle The angle the sprite should move at in radians.
+     */
     public void moveConstantlyAt(double angle) {
         anglularMovement = true;
         directionalMovement = false;
         moveAngle = angle;
     }
     
+    /**
+     * Disables the sprite from moving constantly if it was set to do so in a different method.
+     */
     public void stopConstantlyMoving() {
         directionalMovement = false;
         anglularMovement = false;
@@ -209,13 +259,15 @@ public class Sprite extends Item {
     }
     
     /**
-     * Draws the sprite and updates it's animation.
+     * Draws the sprite and updates its animation.
      */
     public void draw() {
+        Point previousLocation = getPosition();
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = UNDEFINED_DIRECTION;
         moved = false;
+        if (movementArea != UNDEFINED_AREA && !isCompletelyWithin(movementArea)) setPosition(previousLocation);
         animation.update();
         Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
     }

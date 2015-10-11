@@ -86,6 +86,13 @@ public abstract class Game {
     }
     
     /**
+     * @return The rough FPS the game is running at.
+     */
+    public static int getFPS() {
+        return fps;
+    }
+    
+    /**
      * @return The full mouse coordinates stored within a point.
      */
     public static Point getMousePosition() {
