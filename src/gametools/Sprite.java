@@ -55,8 +55,8 @@ public class Sprite extends Item {
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
-     * <b>Note</b>: This sprite will cause an error if it is attempted to be
-     * drawn without an image or animation first set.
+     * <b>Note</b>: This sprite may cause errors if it is attempted to be drawn
+     * without an image or animation first set.
      */
     public Sprite() {
         super();
@@ -68,6 +68,15 @@ public class Sprite extends Item {
      */
     public Sprite(Animation animation) {
         this(0, 0, animation);
+    }
+    
+    /**
+     * Creates a sprite at the specified coordinates with a custom animation.
+     * @param location The position of the sprite.
+     * @param animation The image for the sprite.
+     */
+    public Sprite(Point location, Animation animation) {
+        this(location.x, location.y, animation);
     }
     
     /**

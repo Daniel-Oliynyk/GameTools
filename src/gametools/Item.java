@@ -25,7 +25,7 @@ public class Item {
      */
     protected int width;
     /**
-     * The height of the object (usually the width of the object's associated
+     * The height of the object (usually the height of the object's associated
      * image if it exists).
      */
     protected int height;
@@ -35,6 +35,22 @@ public class Item {
      */
     public Item() {
         this(0, 0, 0, 0);
+    }
+    
+    /**
+     * Creates an item on the specified location with dimensions of zero.
+     * @param location The position of the item.
+     */
+    public Item(Point location) {
+        this(location.x, location.y, 0, 0);
+    }
+    
+    /**
+     * Creates an item with custom dimensions and coordinates of zero.
+     * @param size The size of the item.
+     */
+    public Item(Dimension size) {
+        this(0, 0, size.width, size.height);
     }
     
     /**

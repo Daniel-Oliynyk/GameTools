@@ -1,5 +1,6 @@
 package gametools;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
@@ -44,6 +45,19 @@ public class Tools {
      * Imports a range of images from a sprite sheet into an array. Images are loaded
      * in order from left to right and top to bottom.
      * @param path The location of the sprite sheet relative to the package of the project.
+     * @param size The size of an individual sprite.
+     * @param start The start of the range of sprite sheet images.
+     * @param end The end of the range of sprite sheet images.
+     * @return An array of buffered images that show each sprite.
+     */
+    public static BufferedImage[] loadSpriteSheet(String path, Dimension size, int start, int end) {
+        return loadSpriteSheet(path, size.width, size.height, start, end);
+    }
+    
+    /**
+     * Imports a range of images from a sprite sheet into an array. Images are loaded
+     * in order from left to right and top to bottom.
+     * @param path The location of the sprite sheet relative to the package of the project.
      * @param width The width of an individual sprite.
      * @param height The height of an individual sprite.
      * @param start The start of the range of sprite sheet images.
@@ -53,6 +67,17 @@ public class Tools {
     public static BufferedImage[] loadSpriteSheet(String path, int width, int height, int start, int end) {
         BufferedImage[] full = loadSpriteSheet(path, width, height);
         return trimSpriteSheet(full, start, end);
+    }
+    
+    /**
+     * Imports all images from a sprite sheet into an array. Images are loaded in order
+     * from left to right and top to bottom.
+     * @param path The location of the sprite sheet relative to the package of the project.
+     * @param size The size of an individual sprite.
+     * @return An array of buffered images that show each sprite.
+     */
+    public static BufferedImage[] loadSpriteSheet(String path, Dimension size) {
+        return loadSpriteSheet(path, size.width, size.height);
     }
     
     /**
