@@ -11,6 +11,10 @@ public class Animation {
      * Loop the animation non stop infinity times.
      */
     private static final int LOOP_INFINITY = -1;
+    /**
+     * An empty animation to represent a non existent or undefined object.
+     */
+    public static final Animation UNDEFINED_ANIMATION = new Animation(Tools.UNDEFINED_IMAGE);
     private final BufferedImage[] frames;
     private BufferedImage frameImage;
     private int frameNumber, speed, repeatNumber, repeatAmount;

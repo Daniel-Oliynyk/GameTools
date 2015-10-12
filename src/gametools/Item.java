@@ -7,7 +7,10 @@ import java.awt.Point;
  * A class used for basic positioning and collision.
  */
 public class Item {
-    
+    /**
+     * An empty item to represent a non existent or undefined object.
+     */
+    public static final Item UNDEFINED_ITEM = new Item(-1, -1, -1, -1);
     /**
      * The precise x position of the object.
      */
@@ -41,6 +44,15 @@ public class Item {
      */
     public Item(int width, int height) {
         this(0, 0, width, height);
+    }
+    
+    /**
+     * Creates an item at the x and y with the specified dimensions.
+     * @param location The position of the item.
+     * @param size The dimensions of the item.
+     */
+    public Item(Point location, Dimension size) {
+        this(location.x, location.y, size.width, size.height);
     }
     
     /**

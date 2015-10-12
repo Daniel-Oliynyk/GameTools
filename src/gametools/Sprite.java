@@ -1,7 +1,6 @@
 package gametools;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,21 +45,13 @@ public class Sprite extends Item {
      * No movement or movement that does not follow a pre-defined direction.
      */
     public static final int UNDEFINED_DIRECTION = -1;
-    /**
-     * An empty animation to represent no animation being previously set.
-     */
-    public static final Animation UNDEFINED_ANIMATION = new Animation(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
-    /**
-     * An empty area to represent no movement area being previously set.
-     */
-    public static final Item UNDEFINED_AREA = new Item(-1, -1, -1, -1);
     private static final List<Integer> ALL_DIRECTIONS = Arrays.asList(EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST);
     //</editor-fold>
     private int speed = 10, lastDirection, moveDirection;
     private double moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
-    private Animation animation, previous = UNDEFINED_ANIMATION;
-    private Item movementArea = UNDEFINED_AREA;
+    private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
+    private Item movementArea = Item.UNDEFINED_ITEM;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -252,7 +243,7 @@ public class Sprite extends Item {
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = UNDEFINED_DIRECTION;
         moved = false;
-        if (movementArea != UNDEFINED_AREA && !isInside(movementArea)) setPosition(previousLocation);
+        if (movementArea != Item.UNDEFINED_ITEM && !isInside(movementArea)) setPosition(previousLocation);
         animation.update();
         Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
     }
