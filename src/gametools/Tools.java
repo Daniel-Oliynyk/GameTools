@@ -86,7 +86,7 @@ public class Tools {
     }
     
     /**
-     * Converts to coordinates to an item object containing those locations.
+     * Converts two coordinates to an item object containing those locations.
      * @param x1 The x position of the top left corner.
      * @param y1 The y position of the top left corner.
      * @param x2 The x position of the bottom right corner.
