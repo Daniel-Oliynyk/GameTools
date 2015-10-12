@@ -129,46 +129,22 @@ public class Item {
     }
     
     /**
-     * Checks if the object is completely within (no points outside) a specified area.
-     * @param x1 The x position of the top left corner.
-     * @param y1 The y position of the top left corner.
-     * @param x2 The x position of the bottom right corner.
-     * @param y2 The y position of the bottom right corner.
-     * @return True if the objects are in contact.
+     * Checks if the object is completely within (no points outside) a specified object or area.
+     * @param item The object to test collision against.
+     * @return True if the item is inside the specified item.
      */
-    public boolean isCompletelyWithin(int x1, int y1, int x2, int y2) {
-        return isCompletelyWithin(new Item(x1, y1, x2 - x1, y2 - y1));
+    public boolean isInside(Item item) {
+        int ix = (int) item.x + width;
+        int iy = (int) item.y + height;
+        return isCollidingWith(new Item(ix, iy, item.width - (width * 2), item.height - (height * 2)));
     }
     
     /**
-     * Checks if the object is completely within (no points outside) a specified object.
+     * Checks if the object is colliding with another item or area using rectangular collision.
      * @param item The object to test collision against.
      * @return True if the objects are in contact.
      */
-    public boolean isCompletelyWithin(Item item) {
-        int ix = (int) item.x;
-        int iy = (int) item.y;
-        return isWithin(ix + width, iy + height, ix + item.width - width, iy + item.height - height);
-    }
-    
-    /**
-     * Checks if the object is within a specified area.
-     * @param x1 The x position of the top left corner.
-     * @param y1 The y position of the top left corner.
-     * @param x2 The x position of the bottom right corner.
-     * @param y2 The y position of the bottom right corner.
-     * @return True if the objects are in contact.
-     */
-    public boolean isWithin(int x1, int y1, int x2, int y2) {
-        return isWithin(new Item(x1, y1, x2 - x1, y2 - y1));
-    }
-    
-    /**
-     * Checks if the object is colliding with another item using rectangular collision.
-     * @param item The object to test collision against.
-     * @return True if the objects are in contact.
-     */
-    public boolean isWithin(Item item) {
+    public boolean isCollidingWith(Item item) {
         boolean horizontal = x + width > item.x && x < item.x + item.width;
         boolean vertical = y + height > item.y && y < item.y + item.height;
         return horizontal && vertical;

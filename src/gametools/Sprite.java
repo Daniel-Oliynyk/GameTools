@@ -157,20 +157,6 @@ public class Sprite extends Item {
         this.animation = animation;
     }
     
-    
-    /**
-     * Defines the area the sprite can move inside. A sprite will not be able
-     * to go outside this area using the movement commands, however the sprite can
-     * still get outside this area using the setters for its x and y.
-     * @param x1 The x position of the top left corner.
-     * @param y1 The y position of the top left corner.
-     * @param x2 The x position of the bottom right corner.
-     * @param y2 The y position of the bottom right corner.
-     */
-    public void lockMovementArea(int x1, int y1, int x2, int y2) {
-        lockMovementArea(new Item(x1, y1, x2 - x1, y2 - y1));
-    }
-    
     /**
      * Defines the area the sprite can move inside. A sprite will not be able
      * to go outside this area using the movement commands however the sprite can
@@ -180,7 +166,6 @@ public class Sprite extends Item {
     public void lockMovementArea(Item area) {
         movementArea = area;
     }
-    
     
     /**
      * Moves the sprite at the passed in angle at the set speed.
@@ -255,7 +240,7 @@ public class Sprite extends Item {
      * @return True if the mouse is within the sprite.
      */
     public boolean mouseWithin() {
-        return isWithin(new Item(Game.getMouseX(), Game.getMouseY(), 0, 0));
+        return isCollidingWith(new Item(Game.getMouseX(), Game.getMouseY(), 0, 0));
     }
     
     /**
@@ -267,7 +252,7 @@ public class Sprite extends Item {
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = UNDEFINED_DIRECTION;
         moved = false;
-        if (movementArea != UNDEFINED_AREA && !isCompletelyWithin(movementArea)) setPosition(previousLocation);
+        if (movementArea != UNDEFINED_AREA && !isInside(movementArea)) setPosition(previousLocation);
         animation.update();
         Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
     }

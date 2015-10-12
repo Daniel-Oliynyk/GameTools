@@ -84,4 +84,16 @@ public class Tools {
     public static BufferedImage[] trimSpriteSheet(BufferedImage[] full, int start, int end) {
         return Arrays.copyOfRange(full, start, end);
     }
+    
+    /**
+     * Converts to coordinates to an item object containing those locations.
+     * @param x1 The x position of the top left corner.
+     * @param y1 The y position of the top left corner.
+     * @param x2 The x position of the bottom right corner.
+     * @param y2 The y position of the bottom right corner.
+     * @return An item with the specified coordinates.
+     */
+    public static Item pointsToItem(int x1, int y1, int x2, int y2) {
+        return new Item(x1, y1, x2 - x1, y2 - y1);
+    }
 }
