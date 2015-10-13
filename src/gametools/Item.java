@@ -1,7 +1,6 @@
 package gametools;
 
 import java.awt.Dimension;
-import java.awt.Point;
 
 /**
  * A class used for basic positioning and collision.
@@ -41,7 +40,7 @@ public class Item {
      * Creates an item on the specified location with dimensions of zero.
      * @param location The position of the item.
      */
-    public Item(Point location) {
+    public Item(Location location) {
         this(location.x, location.y, 0, 0);
     }
     
@@ -67,7 +66,7 @@ public class Item {
      * @param location The position of the item.
      * @param size The dimensions of the item.
      */
-    public Item(Point location, Dimension size) {
+    public Item(Location location, Dimension size) {
         this(location.x, location.y, size.width, size.height);
     }
     
@@ -88,15 +87,15 @@ public class Item {
     /**
      * @return The x position of the object.
      */
-    public int getX() {
-        return (int) x;
+    public double getX() {
+        return x;
     }
     
     /**
      * @return The y position of the object.
      */
-    public int getY() {
-        return (int) y;
+    public double getY() {
+        return y;
     }
     
     /**
@@ -119,8 +118,8 @@ public class Item {
     /**
      * @return A point representing the current position of the object.
      */
-    public Point getPosition() {
-        return new Point((int) x, (int) y);
+    public Location getPosition() {
+        return new Location(x, y);
     }
     
     /**
@@ -134,7 +133,7 @@ public class Item {
      * Sets the x position of the object.
      * @param x The new x position.
      */
-    public final void setX(int x) {
+    public final void setX(double x) {
         this.x = x;
     }
     
@@ -142,7 +141,7 @@ public class Item {
      * Sets the y position of the object.
      * @param y The new y position.
      */
-    public final void setY(int y) {
+    public final void setY(double y) {
         this.y = y;
     }
     
@@ -151,7 +150,7 @@ public class Item {
      * @param x The new x position.
      * @param y The new y position.
      */
-    public final void setPosition(int x, int y) {
+    public final void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -162,8 +161,8 @@ public class Item {
      * @return True if the item is inside the specified item.
      */
     public boolean isInside(Item item) {
-        int ix = (int) item.x + width;
-        int iy = (int) item.y + height;
+        double ix = item.x + width;
+        double iy = item.y + height;
         return isCollidingWith(new Item(ix, iy, item.width - (width * 2), item.height - (height * 2)));
     }
     

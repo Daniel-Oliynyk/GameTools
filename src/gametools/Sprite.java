@@ -1,6 +1,5 @@
 package gametools;
 
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class Sprite extends Item {
      * @param location The position of the sprite.
      * @param animation The image for the sprite.
      */
-    public Sprite(Point location, Animation animation) {
+    public Sprite(Location location, Animation animation) {
         this(location.x, location.y, animation);
     }
     
@@ -85,7 +84,7 @@ public class Sprite extends Item {
      * @param y The x position of the sprite.
      * @param animation The image for the sprite.
      */
-    public Sprite(int x, int y, Animation animation) {
+    public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
         this.animation = animation;
     }
@@ -133,11 +132,11 @@ public class Sprite extends Item {
     
     /**
      * Sets the x and y position of the sprite using a point.
-     * @param position A point representing the new position.
+     * @param location A point representing the new position.
      */
-    public final void setPosition(Point position) {
-        x = position.x;
-        y = position.y;
+    public final void setPosition(Location location) {
+        x = location.x;
+        y = location.y;
     }
     
     /**
@@ -247,7 +246,7 @@ public class Sprite extends Item {
      * Draws the sprite and updates its animation.
      */
     public void draw() {
-        Point previousLocation = getPosition();
+        Location previousLocation = getPosition();
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = UNDEFINED_DIRECTION;
