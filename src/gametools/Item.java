@@ -1,15 +1,51 @@
 package gametools;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * A class used for basic positioning and collision.
+ * Used for basic positioning and collision.
  */
 public class Item {
+    //<editor-fold defaultstate="collapsed" desc="Constants">
     /**
      * An empty item to represent a non existent or undefined object.
      */
     public static final Item UNDEFINED_ITEM = new Item(-1, -1, -1, -1);
+    /**
+     * Collision when the first object has any point within the second.
+     */
+    public static final int CL_TOUCH = 0;
+    /**
+     * Collision when the first object has any point within the second
+     * horizontally, no matter the vertical position.
+     */
+    public static final int CL_TOUCH_X = 1;
+    /**
+     * Collision when the first object has any point within the second
+     * vertically, no matter the horizontal position.
+     */
+    public static final int CL_TOUCH_Y = 2;
+    /**
+     * Collision when the first object is completely within the second.
+     */
+    public static final int CL_INSIDE = 3;
+    /**
+     * Collision when the first object is completely within the second
+     * horizontally, no matter the vertical position.
+     */
+    public static final int CL_INSIDE_X = 4;
+    /**
+     * Collision when the first object is completely within the second
+     * vertically, no matter the horizontal position.
+     */
+    public static final int CL_INSIDE_Y = 5;
+    private static final List<Integer> CL_TOUCH_ALL = Arrays.asList(CL_TOUCH, CL_TOUCH_X, CL_TOUCH_Y);
+    private static final List<Integer> CL_INSIDE_ALL = Arrays.asList(CL_INSIDE, CL_INSIDE_X, CL_INSIDE_Y);
+    private static final List<Integer> CL_ALL = new ArrayList<Integer>(){{addAll(CL_TOUCH_ALL); addAll(CL_TOUCH_ALL);}};
+    //</editor-fold>
     /**
      * The precise x position of the object.
      */
@@ -88,14 +124,14 @@ public class Item {
      * @return The x position of the object.
      */
     public double getX() {
-        return x;
+        return getLocation().x;
     }
     
     /**
      * @return The y position of the object.
      */
     public double getY() {
-        return y;
+        return getLocation().y;
     }
     
     /**
@@ -104,7 +140,7 @@ public class Item {
      * @return The width of the object.
      */
     public int getWidth() {
-        return width;
+        return getDimensions().width;
     }
     
     /**
@@ -113,12 +149,13 @@ public class Item {
      * @return The height of the object.
      */
     public int getHeight() {
-        return height;
+        return getDimensions().height;
     }
+    
     /**
      * @return A point representing the current position of the object.
      */
-    public Location getPosition() {
+    public Location getLocation() {
         return new Location(x, y);
     }
     
@@ -130,11 +167,18 @@ public class Item {
     }
     
     /**
+     * @return A point representing the center of the object.
+     */
+    public Location getCenter() {
+        return new Location(x + (width / 2), y + (height / 2));
+    }
+    
+    /**
      * Sets the x position of the object.
      * @param x The new x position.
      */
     public final void setX(double x) {
-        this.x = x;
+        setLocation(x, y);
     }
     
     /**
@@ -142,7 +186,15 @@ public class Item {
      * @param y The new y position.
      */
     public final void setY(double y) {
-        this.y = y;
+        setLocation(x, y);
+    }
+    
+    /**
+     * Sets the x and y position of the object using a location.
+     * @param location The new location for the item.
+     */
+    public final void setLocation(Location location) {
+        setLocation(location.x, location.y);
     }
     
     /**
@@ -150,30 +202,41 @@ public class Item {
      * @param x The new x position.
      * @param y The new y position.
      */
-    public final void setPosition(double x, double y) {
+    public final void setLocation(double x, double y) {
         this.x = x;
         this.y = y;
     }
     
     /**
-     * Checks if the object is completely within (no points outside) a specified object or area.
-     * @param item The object to test collision against.
-     * @return True if the item is inside the specified item.
-     */
-    public boolean isInside(Item item) {
-        double ix = item.x + width;
-        double iy = item.y + height;
-        return isCollidingWith(new Item(ix, iy, item.width - (width * 2), item.height - (height * 2)));
-    }
-    
-    /**
-     * Checks if the object is colliding with another item or area using rectangular collision.
+     * Checks if the object is colliding with another item or area using rectangular collision
+     * and touch collision as the collision testing method.
      * @param item The object to test collision against.
      * @return True if the objects are in contact.
      */
-    public boolean isCollidingWith(Item item) {
-        boolean horizontal = x + width > item.x && x < item.x + item.width;
-        boolean vertical = y + height > item.y && y < item.y + item.height;
-        return horizontal && vertical;
+    public boolean isWithin(Item item) {
+        return isWithin(item, CL_TOUCH);
+    }
+    
+    /**
+     * Checks if the object is colliding with another item or area using rectangular
+     * collision and a custom collision flag.
+     * @param item The object to test collision against.
+     * @param method The collision testing method to use.
+     * @return True if the objects are in contact.
+     */
+    public boolean isWithin(Item item, int method) {
+        boolean horizontal, vertical;
+        if (CL_INSIDE_ALL.contains(method)) {
+            horizontal = x > item.x && x < item.x + item.width && x + width <= item.x + width;
+            vertical = y > item.y && y < item.y + item.height && y + height <= item.y + height;
+        }
+        else {
+            horizontal = x + width > item.x && x < item.x + item.width;
+            vertical = y + height > item.y && y < item.y + item.height;
+        }
+        if (method == CL_TOUCH || method == CL_INSIDE) return horizontal && vertical;
+        else if (method == CL_TOUCH_X || method == CL_INSIDE_X) return horizontal;
+        else if (method == CL_TOUCH_Y || method == CL_INSIDE_Y) return vertical;
+        else return horizontal && vertical;
     }
 }

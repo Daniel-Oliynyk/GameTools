@@ -9,42 +9,43 @@ import java.util.List;
 public class Sprite extends Item {
     //<editor-fold defaultstate="collapsed" desc="Constants">
     /**
+     * No movement or movement that does not follow a pre-defined direction.
+     */
+    public static final int DR_UNDEFINED = -1;
+    /**
      * Movement in the east (right) direction.
      */
-    public static final int EAST = 0;
+    public static final int DR_EAST = 0;
     /**
      * Diagonal movement in the south east (downward and rightward) direction.
      */
-    public static final int SOUTHEAST = 1;
+    public static final int DR_SOUTHEAST = 1;
     /**
      * Movement in the south (downward) direction.
      */
-    public static final int SOUTH = 2;
+    public static final int DR_SOUTH = 2;
     /**
      * Diagonal movement in the south west (downward and leftward) direction.
      */
-    public static final int SOUTHWEST = 3;
+    public static final int DR_SOUTHWEST = 3;
     /**
      * Movement in the west (left) direction.
      */
-    public static final int WEST = 4;
+    public static final int DR_WEST = 4;
     /**
      * Diagonal movement in the north west (upward and leftward) direction.
      */
-    public static final int NORTHWEST = 5;
+    public static final int DR_NORTHWEST = 5;
     /**
      * Movement in the north (upward) direction.
      */
-    public static final int NORTH = 6;
+    public static final int DR_NORTH = 6;
     /**
      * Diagonal movement in the north east (upward and rightward) direction.
      */
-    public static final int NORTHEAST = 7;
-    /**
-     * No movement or movement that does not follow a pre-defined direction.
-     */
-    public static final int UNDEFINED_DIRECTION = -1;
-    private static final List<Integer> ALL_DIRECTIONS = Arrays.asList(EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST, NORTH, NORTHEAST);
+    public static final int DR_NORTHEAST = 7;
+    private static final List<Integer> DR_ALL = Arrays.asList(DR_EAST, DR_SOUTHEAST, DR_SOUTH,
+            DR_SOUTHWEST, DR_WEST, DR_NORTHWEST, DR_NORTH, DR_NORTHEAST);
     //</editor-fold>
     private int speed = 10, lastDirection, moveDirection;
     private double moveAngle;
@@ -131,15 +132,6 @@ public class Sprite extends Item {
     }
     
     /**
-     * Sets the x and y position of the sprite using a point.
-     * @param location A point representing the new position.
-     */
-    public final void setPosition(Location location) {
-        x = location.x;
-        y = location.y;
-    }
-    
-    /**
      * Sets the speed the sprite will move at when using its move methods.
      * @param speed The amount of pixels the sprite will move each frame.
      */
@@ -173,7 +165,7 @@ public class Sprite extends Item {
     public void moveAt(double angle) {
         this.x += Math.cos(angle) * speed;
         this.y += Math.sin(angle) * speed;
-        lastDirection = UNDEFINED_DIRECTION;
+        lastDirection = DR_UNDEFINED;
     }
     
     /**
@@ -192,7 +184,7 @@ public class Sprite extends Item {
      * the sprite should move to.
      */
     public void moveTo(int direction) {
-        if (ALL_DIRECTIONS.contains(direction)) {
+        if (DR_ALL.contains(direction)) {
             moved = true;
             double angle = (Math.PI / 4) * direction;
             moveAt(angle);
@@ -207,7 +199,7 @@ public class Sprite extends Item {
      * the sprite should move to.
      */
     public void moveConstantlyTo(int direction) {
-        if (ALL_DIRECTIONS.contains(direction)) {
+        if (DR_ALL.contains(direction)) {
             directionalMovement = true;
             anglularMovement = false;
             moveDirection = direction;
@@ -231,7 +223,7 @@ public class Sprite extends Item {
     public void stopConstantlyMoving() {
         directionalMovement = false;
         anglularMovement = false;
-        moveDirection = UNDEFINED_DIRECTION;
+        moveDirection = DR_UNDEFINED;
         moveAngle = 0;
     }
     
@@ -239,19 +231,22 @@ public class Sprite extends Item {
      * @return True if the mouse is within the sprite.
      */
     public boolean mouseWithin() {
-        return isCollidingWith(new Item(Game.getMouseX(), Game.getMouseY(), 0, 0));
+        return isWithin(new Item(Game.getMouseX(), Game.getMouseY(), 0, 0));
     }
     
     /**
      * Draws the sprite and updates its animation.
      */
     public void draw() {
-        Location previousLocation = getPosition();
+        double prevX = x, prevY = y;
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
-        if (!moved) lastDirection = UNDEFINED_DIRECTION;
+        if (!moved) lastDirection = DR_UNDEFINED;
         moved = false;
-        if (movementArea != Item.UNDEFINED_ITEM && !isInside(movementArea)) setPosition(previousLocation);
+        if (movementArea != Item.UNDEFINED_ITEM) {
+            if (!isWithin(movementArea, CL_INSIDE_X)) x = prevX;
+            if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
+        }
         animation.update();
         Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
     }

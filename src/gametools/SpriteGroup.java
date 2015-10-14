@@ -44,45 +44,24 @@ public class SpriteGroup {
     }
     
     /**
-     * Returns the first sprite (in the group's default order) that is completely
-     * inside the specified object.
-     * @param item The object to check collision against.
-     * @return The first sprite that is completely within the specified object. 
-     */
-    public Sprite getFirstInside(Item item) {
-        return getAllInside(item).get(0);
-    }
-    
-    /**
-     * Returns all sprites from the group that are completely inside the specified
-     * object as a new sprite group.
-     * @param item The object to check collision against.
-     * @return A sprite group containing all sprites that are inside the object.
-     */
-    public SpriteGroup getGroupInside(Item item) {
-        return new SpriteGroup(getAllInside(item));
-    }
-    
-    /**
-     * Returns all sprites from the group that are completely inside the specified
-     * object as a new array list.
-     * @param item The object to check collision against.
-     * @return An array list containing all sprites that are inside the object.
-     */
-    public List<Sprite> getAllInside(Item item) {
-        List<Sprite> colliding = new ArrayList<>();
-        for (Sprite sprite : elements) if (sprite.isInside(item)) colliding.add(sprite);
-        return colliding;
-    }
-    
-    /**
      * Returns the first sprite (in the group's default order) that is colliding
      * with the specified object.
      * @param item The object to check collision against.
      * @return The first sprite that is colliding with the specified object. 
      */
-    public Sprite getFirstCollidingWith(Item item) {
-        return getAllCollidingWith(item).get(0);
+    public Sprite getFirstWithin(Item item) {
+        return getFirstWithin(item, Item.CL_TOUCH);
+    }
+    
+    /**
+     * Returns the first sprite (in the group's default order) that is colliding
+     * with the object using the specified collision method.
+     * @param item The object to check collision against.
+     * @param method The collision testing method to use.
+     * @return The first sprite that is colliding with the specified object. 
+     */
+    public Sprite getFirstWithin(Item item, int method) {
+        return getAllWithin(item, method).get(0);
     }
     
     /**
@@ -91,8 +70,19 @@ public class SpriteGroup {
      * @param item The object to check collision against.
      * @return A sprite group containing all sprites that are touching the object.
      */
-    public SpriteGroup getGroupCollidingWith(Item item) {
-        return new SpriteGroup(getAllCollidingWith(item));
+    public SpriteGroup getGroupWithin(Item item) {
+        return getGroupWithin(item, Item.CL_TOUCH);
+    }
+    
+    /**
+     * Returns all sprites from the group that are colliding with the specified
+     * object as a new sprite group.
+     * @param item The object to check collision against.
+     * @param method The collision testing method to use.
+     * @return A sprite group containing all sprites that are touching the object.
+     */
+    public SpriteGroup getGroupWithin(Item item, int method) {
+        return new SpriteGroup(getAllWithin(item, method));
     }
     
     /**
@@ -101,9 +91,20 @@ public class SpriteGroup {
      * @param item The object to check collision against.
      * @return An array list containing all sprites that are touching the object.
      */
-    public List<Sprite> getAllCollidingWith(Item item) {
+    public List<Sprite> getAllWithin(Item item) {
+        return getAllWithin(item, Item.CL_TOUCH);
+    }
+    
+    /**
+     * Returns all sprites from the group that are colliding with the object
+     * (using the specified collision method) as a new array list.
+     * @param item The object to check collision against.
+     * @param method The collision testing method to use.
+     * @return An array list containing all sprites that are touching the object.
+     */
+    public List<Sprite> getAllWithin(Item item, int method) {
         List<Sprite> colliding = new ArrayList<>();
-        for (Sprite sprite : elements) if (sprite.isCollidingWith(item)) colliding.add(sprite);
+        for (Sprite sprite : elements) if (sprite.isWithin(item, method)) colliding.add(sprite);
         return colliding;
     }
     
@@ -161,19 +162,21 @@ public class SpriteGroup {
     }
     
     /**
-     * Removes all sprites that are completely inside the specified item.
-     * @param item The item to check collision against.
-     */
-    public void removeAllInside(Item item) {
-        removeAll(getAllInside(item));
-    }
-    
-    /**
      * Removes all sprites that are colliding with the specified item.
      * @param item The item to check collision against.
      */
-    public void removeAllCollidingWith(Item item) {
-        removeAll(getAllCollidingWith(item));
+    public void removeAllWithin(Item item) {
+        removeAllWithin(item, Item.CL_TOUCH);
+    }
+    
+    /**
+     * Removes all sprites that are colliding with the specified item using a
+     * custom collision testing method.
+     * @param item The item to check collision against.
+     * @param method The collision testing method to use.
+     */
+    public void removeAllWithin(Item item, int method) {
+        removeAll(getAllWithin(item, method));
     }
     
     /**
@@ -217,7 +220,7 @@ public class SpriteGroup {
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) {
             Sprite sprite = it.next();
             sprite.draw();
-            if (removeSprites && !sprite.isCollidingWith(moveableArea)) it.remove();
+            if (removeSprites && !sprite.isWithin(moveableArea)) it.remove();
         }
     }
 }

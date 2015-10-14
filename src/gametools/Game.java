@@ -75,14 +75,14 @@ public abstract class Game {
      * @return The x position of the mouse within the game window.
      */
     public static int getMouseX() {
-        return getMousePosition().x;
+        return getMouseLocation().x;
     }
     
     /**
      * @return The y position of the mouse within the game window.
      */
     public static int getMouseY() {
-        return getMousePosition().y;
+        return getMouseLocation().y;
     }
     
     /**
@@ -95,7 +95,7 @@ public abstract class Game {
     /**
      * @return The full mouse coordinates stored within a point.
      */
-    public static Point getMousePosition() {
+    public static Point getMouseLocation() {
         return new Point(mouseX, mouseY);
     }
     
