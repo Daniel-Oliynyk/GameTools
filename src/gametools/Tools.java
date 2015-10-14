@@ -1,6 +1,7 @@
 package gametools;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.imageio.ImageIO;

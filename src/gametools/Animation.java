@@ -55,6 +55,7 @@ public class Animation {
      * @param repeatAmount The amount of times the animation should repeat before completing.
      */
     public Animation(BufferedImage[] frames, int speed, int repeatAmount) {
+        frameImage = frames[0];
         this.frames = frames;
         this.speed = speed;
         this.repeatAmount = repeatAmount;

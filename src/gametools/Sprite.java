@@ -1,5 +1,6 @@
 package gametools;
 
+import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,14 +45,31 @@ public class Sprite extends Item {
      * Diagonal movement in the north east (upward and rightward) direction.
      */
     public static final int DR_NORTHEAST = 7;
+    /**
+     * Top left corner.
+     */
+    public static final int CR_TOPLEFT = 0;
+    /**
+     * Top right corner.
+     */
+    public static final int CR_TOPRIGHT = 1;
+    /**
+     * Bottom left corner.
+     */
+    public static final int CR_BOTTOMLEFT = 2;
+    /**
+     * Bottom right corner.
+     */
+    public static final int CR_BOTTOMRIGHT = 3;
     private static final List<Integer> DR_ALL = Arrays.asList(DR_EAST, DR_SOUTHEAST, DR_SOUTH,
             DR_SOUTHWEST, DR_WEST, DR_NORTHWEST, DR_NORTH, DR_NORTHEAST);
     //</editor-fold>
     private int speed = 10, lastDirection, moveDirection;
-    private double moveAngle;
+    private double rotation, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Item movementArea = Item.UNDEFINED_ITEM;
+    private Location[] corners;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -60,6 +78,8 @@ public class Sprite extends Item {
      */
     public Sprite() {
         super();
+        Location none = new Location();
+        corners = new Location[]{none, none, none, none};
     }
     
     /**
@@ -87,6 +107,11 @@ public class Sprite extends Item {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
+        corners = new Location[4];
+        corners[0] = new Location(x, y);
+        corners[1] = new Location(x + animation.getWidth(), y);
+        corners[2] = new Location(x, y + animation.getHeight());
+        corners[3] = new Location(x + animation.getWidth(), y + animation.getHeight());
         this.animation = animation;
     }
     
@@ -137,6 +162,22 @@ public class Sprite extends Item {
      */
     public final void setSpeed(int speed) {
         this.speed = speed;
+    }
+    
+    public void setAngle(double angle) {
+        rotation = angle;
+        double outerX = 0, outerY = 0;
+        boolean flag = true;
+        for (Location corner : corners) {
+            corner.rotate(getCenter(), angle);
+            if (corner.x < x) x = corner.x;
+            if (corner.y < y) y = corner.y;
+            if (corner.x > outerX || flag) outerX = corner.x;
+            if (corner.y < outerY || flag) outerY = corner.y;
+            flag = false;
+        }
+        width = (int) (outerX - x);
+        height = (int) (outerY - y);
     }
     
     /**
@@ -248,6 +289,10 @@ public class Sprite extends Item {
             if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
         }
         animation.update();
-        Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
+        AffineTransform at = new AffineTransform();
+        at.translate(getCenter().x, getCenter().y);
+        at.rotate(rotation);
+        at.translate(-getCenter().x, -getCenter().y);
+        Game.painter().drawImage(animation.getFrame(), at, null);
     }
 }

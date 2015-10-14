@@ -1,5 +1,7 @@
 package gametools;
 
+import java.awt.Point;
+
 /**
  * Used for positioning and basic math.
  */
@@ -48,5 +50,13 @@ public class Location {
         double current = Math.atan2(center.y - y, center.x - center.x);
         x = Math.cos(current + angle) * dist(center);
         y = Math.sin(current + angle) * dist(center);
+    }
+    
+    /**
+     * Converts the location to a point.
+     * @return A point with the rounded off coordinates.
+     */
+    public Point toPoint() {
+        return new Point((int) x, (int) y);
     }
 }

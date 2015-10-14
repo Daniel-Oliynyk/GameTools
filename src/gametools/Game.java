@@ -3,7 +3,6 @@ package gametools;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -75,14 +74,14 @@ public abstract class Game {
      * @return The x position of the mouse within the game window.
      */
     public static int getMouseX() {
-        return getMouseLocation().x;
+        return (int) getMouseLocation().x;
     }
     
     /**
      * @return The y position of the mouse within the game window.
      */
     public static int getMouseY() {
-        return getMouseLocation().y;
+        return (int) getMouseLocation().y;
     }
     
     /**
@@ -95,8 +94,8 @@ public abstract class Game {
     /**
      * @return The full mouse coordinates stored within a point.
      */
-    public static Point getMouseLocation() {
-        return new Point(mouseX, mouseY);
+    public static Location getMouseLocation() {
+        return new Location(mouseX, mouseY);
     }
     
     /**
