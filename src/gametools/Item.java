@@ -239,4 +239,8 @@ public class Item {
         else if (method == CL_TOUCH_Y || method == CL_INSIDE_Y) return vertical;
         else return horizontal && vertical;
     }
+    
+    public void draw() {
+        Game.painter().fillRect((int) x, (int) y, width, height);
+    }
 }
