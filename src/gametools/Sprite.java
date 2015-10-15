@@ -1,13 +1,12 @@
 package gametools;
 
-import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Used to represent game objects or characters. Contains methods for movement, animation and collision.
  */
-public class Sprite extends Item {
+public class Sprite extends Area {
     //<editor-fold defaultstate="collapsed" desc="Constants">
     /**
      * No movement or movement that does not follow a pre-defined direction.
@@ -65,11 +64,10 @@ public class Sprite extends Item {
             DR_SOUTHWEST, DR_WEST, DR_NORTHWEST, DR_NORTH, DR_NORTHEAST);
     //</editor-fold>
     private int speed = 10, lastDirection, moveDirection;
-    private double rotation, moveAngle;
+    private double moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
-    private Item movementArea = Item.UNDEFINED_ITEM;
-    private Location[] corners;
+    private Area movementArea = Area.UNDEFINED_AREA;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -78,8 +76,6 @@ public class Sprite extends Item {
      */
     public Sprite() {
         super();
-        Location none = new Location();
-        corners = new Location[]{none, none, none, none};
     }
     
     /**
@@ -92,11 +88,11 @@ public class Sprite extends Item {
     
     /**
      * Creates a sprite at the specified coordinates with a custom animation.
-     * @param location The position of the sprite.
+     * @param pos The position of the sprite.
      * @param animation The image for the sprite.
      */
-    public Sprite(Location location, Animation animation) {
-        this(location.x, location.y, animation);
+    public Sprite(Position pos, Animation animation) {
+        this(pos.x, pos.y, animation);
     }
     
     /**
@@ -107,11 +103,6 @@ public class Sprite extends Item {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
-        corners = new Location[4];
-        corners[0] = new Location(x, y);
-        corners[1] = new Location(x + animation.getWidth(), y);
-        corners[2] = new Location(x, y + animation.getHeight());
-        corners[3] = new Location(x + animation.getWidth(), y + animation.getHeight());
         this.animation = animation;
     }
     
@@ -134,7 +125,7 @@ public class Sprite extends Item {
      * @return The area in which the sprite is allowed to move within or the constant
      * for an undefined area if none is currently set.
      */
-    public Item getMovementArea() {
+    public Area getMovementArea() {
         return movementArea;
     }
     
@@ -164,22 +155,6 @@ public class Sprite extends Item {
         this.speed = speed;
     }
     
-    public void setAngle(double angle) {
-        rotation = angle;
-        double outerX = 0, outerY = 0;
-        boolean flag = true;
-        for (Location corner : corners) {
-            corner.rotate(getCenter(), angle);
-            if (corner.x < x) x = corner.x;
-            if (corner.y < y) y = corner.y;
-            if (corner.x > outerX || flag) outerX = corner.x;
-            if (corner.y < outerY || flag) outerY = corner.y;
-            flag = false;
-        }
-        width = (int) (outerX - x);
-        height = (int) (outerY - y);
-    }
-    
     /**
      * Assigns a new animation to the sprite.
      * @param animation A new animation for the sprite.
@@ -195,7 +170,7 @@ public class Sprite extends Item {
      * still get outside this area using the setters for its x and y.
      * @param area The area inside which the sprite can move unrestrictedly.
      */
-    public void lockMovementArea(Item area) {
+    public void lockMovementArea(Area area) {
         movementArea = area;
     }
     
@@ -272,27 +247,32 @@ public class Sprite extends Item {
      * @return True if the mouse is within the sprite.
      */
     public boolean mouseWithin() {
-        return isWithin(new Item(Game.getMouseX(), Game.getMouseY(), 0, 0));
+        return isWithin(new Area(Game.getMouseX(), Game.getMouseY(), 0, 0));
+    }
+    
+    /**
+     * An empty method that runs before the draw method and should be overridden for custom code.
+     */
+    protected void update() {
+        //Do nothing
     }
     
     /**
      * Draws the sprite and updates its animation.
      */
+    @Override
     public void draw() {
+        update();
         double prevX = x, prevY = y;
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = DR_UNDEFINED;
         moved = false;
-        if (movementArea != Item.UNDEFINED_ITEM) {
+        if (movementArea != Area.UNDEFINED_AREA) {
             if (!isWithin(movementArea, CL_INSIDE_X)) x = prevX;
             if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
         }
         animation.update();
-        AffineTransform at = new AffineTransform();
-        at.translate(getCenter().x, getCenter().y);
-        at.rotate(rotation);
-        at.translate(-getCenter().x, -getCenter().y);
-        Game.painter().drawImage(animation.getFrame(), at, null);
+        Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
     }
 }

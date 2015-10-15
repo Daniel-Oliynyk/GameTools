@@ -1,5 +1,5 @@
 cd dist/
-git add javadoc/.
-git add GameTools.jar
+git add --all javadoc/.
+git add --all GameTools.jar
 git commit -m "Updated javadoc and jar"
 git push origin gh-pages
