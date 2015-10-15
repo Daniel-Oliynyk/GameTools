@@ -1,5 +1,7 @@
 package gametools;
 
+import java.awt.Point;
+
 /**
  * Used for positioning and basic math.
  */
@@ -29,11 +31,6 @@ public class Location {
         this.x = x;
         this.y = y;
     }
-
-    public void set(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
     
     /**
      * Calculates the distance between two points using pythagorean theorem.
@@ -50,13 +47,16 @@ public class Location {
      * @param angle The amount of rotation to do (in radians).
      */
     public void rotate(Location center, double angle) {
-        double current = Math.atan2(center.y - y, center.x - x);
-        double dist = dist(center);
-        x = center.x + (Math.cos(current + angle) * dist);
-        y = center.y + (Math.sin(current + angle) * dist);
+        double current = Math.atan2(center.y - y, center.x - center.x);
+        x = Math.cos(current + angle) * dist(center);
+        y = Math.sin(current + angle) * dist(center);
     }
     
-    public void draw(int radius) {
-        Game.painter().fillOval((int) x - radius, (int) y - radius, radius, radius);
+    /**
+     * Converts the location to a point.
+     * @return A point with the rounded off coordinates.
+     */
+    public Point toPoint() {
+        return new Point((int) x, (int) y);
     }
 }

@@ -129,7 +129,7 @@ public class Tools {
      * @param y2 The y position of the bottom right corner.
      * @return An item with the specified coordinates.
      */
-    public static Item pti(double x1, double y1, double x2, double y2) {
-        return new Item(x1, y1, (int) (x2 - x1), (int) (y2 - y1));
+    public static Item pti(int x1, int y1, int x2, int y2) {
+        return new Item(x1, y1, x2 - x1, y2 - y1);
     }
 }

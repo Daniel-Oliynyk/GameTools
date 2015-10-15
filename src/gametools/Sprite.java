@@ -166,27 +166,18 @@ public class Sprite extends Item {
     
     public void setAngle(double angle) {
         rotation = angle;
-        double nx = 0, ny = 0, outerX = 0, outerY = 0;
-        int i = 0;
+        double outerX = 0, outerY = 0;
         boolean flag = true;
         for (Location corner : corners) {
-            if (i == 0) corner.set(x, y);
-            else if (i == 1) corner.set(x + width, y);
-            else if (i == 2) corner.set(x, y + height);
-            else if (i == 3) corner.set(x + width, y + height);
-            i++;
             corner.rotate(getCenter(), angle);
-            if (corner.x < nx || flag) nx = corner.x;
-            if (corner.y < ny || flag) ny = corner.y;
+            if (corner.x < x) x = corner.x;
+            if (corner.y < y) y = corner.y;
             if (corner.x > outerX || flag) outerX = corner.x;
-            if (corner.y > outerY || flag) outerY = corner.y;
+            if (corner.y < outerY || flag) outerY = corner.y;
             flag = false;
         }
-        Tools.pti(nx, ny, outerX, outerY).draw();
-//        x = nx;
-//        y = ny;
-//        width = (int) (outerX - x);
-//        height = (int) (outerY - y);
+        width = (int) (outerX - x);
+        height = (int) (outerY - y);
     }
     
     /**
@@ -287,7 +278,6 @@ public class Sprite extends Item {
     /**
      * Draws the sprite and updates its animation.
      */
-    @Override
     public void draw() {
         double prevX = x, prevY = y;
         if (directionalMovement) moveTo(moveDirection);
@@ -300,10 +290,9 @@ public class Sprite extends Item {
         }
         animation.update();
         AffineTransform at = new AffineTransform();
-        at.rotate(rotation, getCenter().x, getCenter().y);
-        at.translate(x, y);
+        at.translate(getCenter().x, getCenter().y);
+        at.rotate(rotation);
+        at.translate(-getCenter().x, -getCenter().y);
         Game.painter().drawImage(animation.getFrame(), at, null);
-        getCenter().draw(5);
-        for (Location corner : corners) corner.draw(10);
     }
 }
