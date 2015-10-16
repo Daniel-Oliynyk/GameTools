@@ -39,16 +39,20 @@ public class Position {
         return Math.sqrt(Math.pow(pos.x - x, 2) + Math.pow(pos.y - y, 2));
     }
     
+    public double angleTo(Position pos) {
+        return Math.atan2(pos.y - y, pos.x - pos.x);
+    }
+    
     /**
      * Rotates the point around the specified position.
      * @param center The center point to rotate around.
      * @param angle The amount of rotation to do (in radians).
      */
     public void rotate(Position center, double angle) {
-        double current = Math.atan2(center.y - y, center.x - center.x);
+        double current = angleTo(center);
         double dist = dist(center);
-        x = Math.cos(current + angle) * dist;
-        y = Math.sin(current + angle) * dist;
+        x = center.x + Math.cos(current + angle) * dist;
+        y = center.y + Math.sin(current + angle) * dist;
     }
     
     /**

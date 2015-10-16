@@ -208,6 +208,24 @@ public class Area {
     }
     
     /**
+     * Centers the object around the specified coordinates.
+     * @param pos The position of the center.
+     */
+    public final void centerOn(Position pos) {
+        centerOn(pos.x, pos.y);
+    }
+    
+    /**
+     * Centers the object around the specified coordinates.
+     * @param x The x position of the center.
+     * @param y The y position of the center.
+     */
+    public final void centerOn(double x, double y) {
+        this.x = x - width / 2;
+        this.y = y - height / 2;
+    }
+    
+    /**
      * Checks if the object is colliding with another object or area using rectangular
      * collision and touch collision as the collision testing method.
      * @param obj The object to test collision against.

@@ -1,5 +1,6 @@
 package gametools;
 
+import java.awt.geom.AffineTransform;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,10 +65,13 @@ public class Sprite extends Area {
             DR_SOUTHWEST, DR_WEST, DR_NORTHWEST, DR_NORTH, DR_NORTHEAST);
     //</editor-fold>
     private int speed = 10, lastDirection, moveDirection;
-    private double moveAngle;
+    private double rotation, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Area movementArea = Area.UNDEFINED_AREA;
+    private Position[] corners;
+    private Position[] backup;
+    private double[] angles;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -76,6 +80,10 @@ public class Sprite extends Area {
      */
     public Sprite() {
         super();
+        Position none = new Position();
+        corners = new Position[]{none, none, none, none};
+        backup = corners.clone();
+        angles = new double[]{0, 0, 0, 0};
     }
     
     /**
@@ -103,6 +111,14 @@ public class Sprite extends Area {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
+        corners = new Position[4];
+        angles = new double[4];
+        corners[0] = new Position(x, y);
+        corners[1] = new Position(x + animation.getWidth(), y);
+        corners[2] = new Position(x, y + animation.getHeight());
+        corners[3] = new Position(x + animation.getWidth(), y + animation.getHeight());
+        backup = corners.clone();
+        for (int i = 0; i < 4; i++) angles[i] = getCenter().angleTo(corners[i]);
         this.animation = animation;
     }
     
@@ -243,6 +259,23 @@ public class Sprite extends Area {
         moveAngle = 0;
     }
     
+    public void setAngle(double angle) {
+        corners = backup.clone();
+        for (int i = 0; i < 4; i++) corners[i].rotate(getCenter(), angles[i]);
+        double newX = corners[0].x, newY = corners[0].y, farX = corners[0].x, farY = corners[0].y;
+        for (int i = 0; i < 4; i++) {
+            /*corners[i].rotate(getCenter(), angle);
+            if (corners[i].x < newX) newX = corners[i].x;
+            if (corners[i].y < newY) newY = corners[i].y;
+            if (corners[i].x > farX) farX = corners[i].x;
+            if (corners[i].y > farY) farY = corners[i].y;*/
+        }
+        /*x = newX;
+        y = newY;
+        width = (int) (farX - x);
+        height = (int) (farY - y);*/
+    }
+    
     /**
      * @return True if the mouse is within the sprite.
      */
@@ -273,6 +306,11 @@ public class Sprite extends Area {
             if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
         }
         animation.update();
-        Game.painter().drawImage(animation.getFrame(), (int) x, (int) y, null);
+        AffineTransform at = new AffineTransform();
+        at.translate(x, y);
+        at.rotate(rotation, getCenter().x, getCenter().y);
+        Game.painter().drawImage(animation.getFrame(), at, null);
+//        Game.painter().setColor(Color.RED);
+//        for (Position corner : corners) corner.draw(5);
     }
 }
