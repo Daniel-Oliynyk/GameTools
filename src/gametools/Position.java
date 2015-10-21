@@ -40,7 +40,7 @@ public class Position {
     }
     
     public double angleTo(Position pos) {
-        return Math.atan2(pos.y - y, pos.x - pos.x);
+        return Math.atan2(pos.y - y, pos.x - x);
     }
     
     /**

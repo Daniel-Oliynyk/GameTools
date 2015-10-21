@@ -68,10 +68,7 @@ public class Sprite extends Area {
     private double rotation, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
-    private Area movementArea = Area.UNDEFINED_AREA;
-    private Position[] corners;
-    private Position[] backup;
-    private double[] angles;
+    private Area movementArea = Area.UNDEFINED_AREA, hitbox;
     
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
@@ -80,10 +77,7 @@ public class Sprite extends Area {
      */
     public Sprite() {
         super();
-        Position none = new Position();
-        corners = new Position[]{none, none, none, none};
-        backup = corners.clone();
-        angles = new double[]{0, 0, 0, 0};
+        hitbox = new Area(x, y, width, height);
     }
     
     /**
@@ -111,14 +105,7 @@ public class Sprite extends Area {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
-        corners = new Position[4];
-        angles = new double[4];
-        corners[0] = new Position(x, y);
-        corners[1] = new Position(x + animation.getWidth(), y);
-        corners[2] = new Position(x, y + animation.getHeight());
-        corners[3] = new Position(x + animation.getWidth(), y + animation.getHeight());
-        backup = corners.clone();
-        for (int i = 0; i < 4; i++) angles[i] = getCenter().angleTo(corners[i]);
+        hitbox = new Area(x, y, width, height);
         this.animation = animation;
     }
     
@@ -143,6 +130,10 @@ public class Sprite extends Area {
      */
     public Area getMovementArea() {
         return movementArea;
+    }
+
+    public Area getRotatedHitbox() {
+        return hitbox;
     }
     
     /**
@@ -260,20 +251,29 @@ public class Sprite extends Area {
     }
     
     public void setAngle(double angle) {
-        corners = backup.clone();
-        for (int i = 0; i < 4; i++) corners[i].rotate(getCenter(), angles[i]);
-        double newX = corners[0].x, newY = corners[0].y, farX = corners[0].x, farY = corners[0].y;
-        for (int i = 0; i < 4; i++) {
-            /*corners[i].rotate(getCenter(), angle);
-            if (corners[i].x < newX) newX = corners[i].x;
-            if (corners[i].y < newY) newY = corners[i].y;
-            if (corners[i].x > farX) farX = corners[i].x;
-            if (corners[i].y > farY) farY = corners[i].y;*/
+        rotation = angle;
+        adjustHitbox();
+    }
+    
+    private void adjustHitbox() {
+        hitbox = new Area(x, y, width, height);
+        Position[] corners = new Position[4];
+        corners[0] = new Position(x, y);
+        corners[1] = new Position(x + width, y);
+        corners[2] = new Position(x, y + height);
+        corners[3] = new Position(x + width, y + height);
+        Position farPos = new Position();
+        boolean flag = true;
+        for (Position corner : corners) {
+            corner.rotate(getCenter(), rotation);
+            if (corner.x < hitbox.x || flag) hitbox.x = corner.x;
+            if (corner.y < hitbox.y || flag) hitbox.y = corner.y;
+            if (corner.x > farPos.x || flag) farPos.x = corner.x;
+            if (corner.y > farPos.y || flag) farPos.y = corner.y;
+            flag = false;
         }
-        /*x = newX;
-        y = newY;
-        width = (int) (farX - x);
-        height = (int) (farY - y);*/
+        hitbox.width = (int) (farPos.x - hitbox.x);
+        hitbox.height = (int) (farPos.y - hitbox.y);
     }
     
     /**
@@ -306,11 +306,10 @@ public class Sprite extends Area {
             if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
         }
         animation.update();
+        adjustHitbox();
         AffineTransform at = new AffineTransform();
-        at.translate(x, y);
         at.rotate(rotation, getCenter().x, getCenter().y);
+        at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
-//        Game.painter().setColor(Color.RED);
-//        for (Position corner : corners) corner.draw(5);
     }
 }
