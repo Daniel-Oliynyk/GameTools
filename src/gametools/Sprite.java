@@ -94,7 +94,7 @@ public class Sprite extends Area {
      * @param animation The image for the sprite.
      */
     public Sprite(Position pos, Animation animation) {
-        this(pos.x, pos.y, animation);
+        this(pos.x(), pos.y(), animation);
     }
     
     /**
@@ -132,7 +132,11 @@ public class Sprite extends Area {
         return movementArea;
     }
 
-    public Area getRotatedHitbox() {
+    /**
+     * Returns the full area of the rotated sprite.
+     * @return An area that completely covers the rotated sprite.
+     */
+    public Area getRotatedArea() {
         return hitbox;
     }
     
@@ -183,11 +187,11 @@ public class Sprite extends Area {
     
     /**
      * Moves the sprite at the passed in angle at the set speed.
-     * @param angle A double of the angle in radians.
+     * @param ang A double of the angle in radians.
      */
-    public void moveAt(double angle) {
-        this.x += Math.cos(angle) * speed;
-        this.y += Math.sin(angle) * speed;
+    public void moveAt(double ang) {
+        this.x += Math.cos(ang) * speed;
+        this.y += Math.sin(ang) * speed;
         lastDirection = DR_UNDEFINED;
     }
     
@@ -197,8 +201,8 @@ public class Sprite extends Area {
      * @param y The y position where the sprite should move to.
      */
     public void moveTo(int x, int y) {
-        double angle = Math.atan2(y - this.y, x - this.x);
-        moveAt(angle);
+        double ang = Math.atan2(y - this.y, x - this.x);
+        moveAt(ang);
     }
     
     /**
@@ -209,8 +213,8 @@ public class Sprite extends Area {
     public void moveTo(int direction) {
         if (DR_ALL.contains(direction)) {
             moved = true;
-            double angle = (Math.PI / 4) * direction;
-            moveAt(angle);
+            double ang = (Math.PI / 4) * direction;
+            moveAt(ang);
         }
         lastDirection = direction;
     }
@@ -232,12 +236,12 @@ public class Sprite extends Area {
     /**
      * Moves the sprite constantly at the specified angle until it gets
      * removed or it goes outside its movement area.
-     * @param angle The angle the sprite should move at in radians.
+     * @param ang The angle the sprite should move at in radians.
      */
-    public void moveConstantlyAt(double angle) {
+    public void moveConstantlyAt(double ang) {
         anglularMovement = true;
         directionalMovement = false;
-        moveAngle = angle;
+        moveAngle = ang;
     }
     
     /**
@@ -250,8 +254,12 @@ public class Sprite extends Area {
         moveAngle = 0;
     }
     
-    public void setAngle(double angle) {
-        rotation = angle;
+    /**
+     * Rotates the sprite around its center.
+     * @param ang The new angle of the sprite 
+     */
+    public void setAngle(double ang) {
+        rotation = ang;
         adjustHitbox();
     }
     
@@ -266,14 +274,14 @@ public class Sprite extends Area {
         boolean flag = true;
         for (Position corner : corners) {
             corner.rotate(getCenter(), rotation);
-            if (corner.x < hitbox.x || flag) hitbox.x = corner.x;
-            if (corner.y < hitbox.y || flag) hitbox.y = corner.y;
-            if (corner.x > farPos.x || flag) farPos.x = corner.x;
-            if (corner.y > farPos.y || flag) farPos.y = corner.y;
+            if (corner.x() < hitbox.x || flag) hitbox.x = corner.x();
+            if (corner.y() < hitbox.y || flag) hitbox.y = corner.y();
+            if (corner.x() > farPos.x() || flag) farPos.x(corner.x());
+            if (corner.y() > farPos.y() || flag) farPos.y(corner.y());
             flag = false;
         }
-        hitbox.width = (int) (farPos.x - hitbox.x);
-        hitbox.height = (int) (farPos.y - hitbox.y);
+        hitbox.width = (int) (farPos.x() - hitbox.x);
+        hitbox.height = (int) (farPos.y() - hitbox.y);
     }
     
     /**
@@ -308,7 +316,7 @@ public class Sprite extends Area {
         animation.update();
         adjustHitbox();
         AffineTransform at = new AffineTransform();
-        at.rotate(rotation, getCenter().x, getCenter().y);
+        at.rotate(rotation, getCenter().x(), getCenter().y());
         at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
     }

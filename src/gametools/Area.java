@@ -65,6 +65,7 @@ public class Area {
      */
     protected int height;
     
+    //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates an area with the coordinates and dimensions of zero.
      */
@@ -77,7 +78,7 @@ public class Area {
      * @param pos The position of the area.
      */
     public Area(Position pos) {
-        this(pos.x, pos.y, 0, 0);
+        this(pos.x(), pos.y(), 0, 0);
     }
     
     /**
@@ -103,7 +104,7 @@ public class Area {
      * @param size The dimensions of the area.
      */
     public Area(Position pos, Dimension size) {
-        this(pos.x, pos.y, size.width, size.height);
+        this(pos.x(), pos.y(), size.width, size.height);
     }
     
     /**
@@ -114,24 +115,22 @@ public class Area {
      * @param height The height of the area.
      */
     public Area(double x, double y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        setPosition(x, y);
+        setDimensions(width, height);
     }
     
     /**
      * @return The x position of the object.
      */
-    public double getX() {
-        return getPosition().x;
+    public final double getX() {
+        return getPosition().x();
     }
     
     /**
      * @return The y position of the object.
      */
-    public double getY() {
-        return getPosition().y;
+    public final double getY() {
+        return getPosition().y();
     }
     
     /**
@@ -139,7 +138,7 @@ public class Area {
      * set to be the width of the sprite image.
      * @return The width of the object.
      */
-    public int getWidth() {
+    public final int getWidth() {
         return getDimensions().width;
     }
     
@@ -148,28 +147,28 @@ public class Area {
      * set to be the height of the sprite image.
      * @return The height of the object.
      */
-    public int getHeight() {
+    public final int getHeight() {
         return getDimensions().height;
     }
     
     /**
      * @return A point representing the current position of the object.
      */
-    public Position getPosition() {
+    public final Position getPosition() {
         return new Position(x, y);
     }
     
     /**
      * @return A dimension representing the current width and height of the object.
      */
-    public Dimension getDimensions() {
+    public final Dimension getDimensions() {
         return new Dimension(width, height);
     }
     
     /**
      * @return A point representing the center of the object.
      */
-    public Position getCenter() {
+    public final Position getCenter() {
         return new Position(x + (width / 2), y + (height / 2));
     }
     
@@ -194,7 +193,7 @@ public class Area {
      * @param pos The new position for the object.
      */
     public final void setPosition(Position pos) {
-        setPosition(pos.x, pos.y);
+        setPosition(pos.x(), pos.y());
     }
     
     /**
@@ -208,11 +207,21 @@ public class Area {
     }
     
     /**
+     * Sets the height and width of the object.
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public final void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+    
+    /**
      * Centers the object around the specified coordinates.
      * @param pos The position of the center.
      */
     public final void centerOn(Position pos) {
-        centerOn(pos.x, pos.y);
+        centerOn(pos.x(), pos.y());
     }
     
     /**
@@ -225,6 +234,7 @@ public class Area {
         this.y = y - height / 2;
     }
     
+//</editor-fold>
     /**
      * Checks if the object is colliding with another object or area using rectangular
      * collision and touch collision as the collision testing method.

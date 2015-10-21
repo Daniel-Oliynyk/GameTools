@@ -74,14 +74,14 @@ public abstract class Game {
      * @return The x position of the mouse within the game window.
      */
     public static int getMouseX() {
-        return (int) getMousePosition().x;
+        return (int) getMousePosition().x();
     }
     
     /**
      * @return The y position of the mouse within the game window.
      */
     public static int getMouseY() {
-        return (int) getMousePosition().y;
+        return (int) getMousePosition().y();
     }
     
     /**
