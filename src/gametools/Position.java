@@ -4,6 +4,7 @@ package gametools;
  * A terse class used to shorten positioning code.
  */
 public class Position {
+    public static final Position UNDEFINED_POSITION = new Position(-1, -1);
     /**
      * The precise x location of the position.
      */
@@ -123,12 +124,28 @@ public class Position {
     }
     
     /**
+     * Copies over the x and and y from the specified position.
+     * @param pos The position to copy coordinates from.
+     */
+    public final void set(Position pos) {
+        set(pos.x, pos.y);
+    }
+    
+    /**
      * Sets both the x and y at once.
      * @param x The new x value.
      * @param y The new y value.
      */
     public final void set(double x, double y) {
         setPosition(x, y);
+    }
+    
+    /**
+     * Copies over the x and and y from the specified position.
+     * @param pos The position to copy coordinates from.
+     */
+    public final void setPosition(Position pos) {
+        setPosition(pos.x, pos.y);
     }
     
     /**
@@ -158,6 +175,15 @@ public class Position {
     public final void translate(double tx, double ty) {
         x = x + tx;
         y = y + ty;
+    }
+    
+    /**
+     * Returns a textual representation of the object.
+     * @return A string representing the object.
+     */
+    @Override
+    public String toString() {
+        return getClass().getName() + "[x=" + x + ", y=" + y + "]";
     }
     //</editor-fold>
     

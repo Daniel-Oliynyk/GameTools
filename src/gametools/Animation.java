@@ -10,7 +10,7 @@ public class Animation {
     /**
      * Loop the animation non stop infinity times.
      */
-    private static final int LOOP_INFINITY = -1;
+    public static final int LP_INFINITY = -1;
     /**
      * An empty animation to represent a non existent or undefined object.
      */
@@ -25,7 +25,7 @@ public class Animation {
      * @param image A buffered image for the animation.
      */
     public Animation(BufferedImage image) {
-        this(new BufferedImage[]{image}, 2, LOOP_INFINITY);
+        this(new BufferedImage[]{image}, 2, LP_INFINITY);
     }
     
     /**
@@ -33,7 +33,7 @@ public class Animation {
      * @param frames An array of images that represent each frame of the animation.
      */
     public Animation(BufferedImage[] frames) {
-        this(frames, 2, LOOP_INFINITY);
+        this(frames, 8, LP_INFINITY);
     }
     
     /**
@@ -44,7 +44,7 @@ public class Animation {
      * to move to the next frame.
      */
     public Animation(BufferedImage[] frames, int speed) {
-        this(frames, speed, LOOP_INFINITY);
+        this(frames, speed, LP_INFINITY);
     }
     
     /**
@@ -173,10 +173,10 @@ public class Animation {
             if (frameNumber + 1 >= frames.length * speed) {
                 frameNumber = 0;
                 repeatNumber++;
-                if (repeatAmount != LOOP_INFINITY && repeatNumber >= repeatAmount) {
+                if (repeatAmount != LP_INFINITY && repeatNumber >= repeatAmount) {
                     complete = true;
                     repeatNumber = 0;
-                    repeatAmount = LOOP_INFINITY;
+                    repeatAmount = LP_INFINITY;
                 }
             }
             int frame = (int) Math.floor(frameNumber / speed);

@@ -42,9 +42,26 @@ public class Area {
      * vertically, no matter the horizontal position.
      */
     public static final int CL_INSIDE_Y = 5;
+    /**
+     * Top left corner of the object.
+     */
+    public static final int CR_TOP_LEFT = 0;
+    /**
+     * Top right corner of the object.
+     */
+    public static final int CR_TOP_RIGHT = 1;
+    /**
+     * Bottom left corner of the object.
+     */
+    public static final int CR_BOTTOM_LEFT = 2;
+    /**
+     * Bottom right corner of the object.
+     */
+    public static final int CR_BOTTOM_RIGHT = 3;
     private static final List<Integer> CL_TOUCH_ALL = Arrays.asList(CL_TOUCH, CL_TOUCH_X, CL_TOUCH_Y);
     private static final List<Integer> CL_INSIDE_ALL = Arrays.asList(CL_INSIDE, CL_INSIDE_X, CL_INSIDE_Y);
     private static final List<Integer> CL_ALL = new ArrayList<Integer>(){{addAll(CL_TOUCH_ALL); addAll(CL_TOUCH_ALL);}};
+    private static final List<Integer> CR_ALL = Arrays.asList(CR_TOP_LEFT, CR_TOP_RIGHT, CR_BOTTOM_LEFT, CR_BOTTOM_RIGHT);
     //</editor-fold>
     /**
      * The precise x position of the object.
@@ -173,6 +190,22 @@ public class Area {
     }
     
     /**
+     * Returns a position representing one of the corners of the object.
+     * @param corner A integer that matches one of the corner constants.
+     * @return A position with the x and y of the specified corner or an undefined position.
+     */
+    public final Position getCorner(int corner) {
+        if (CR_ALL.contains(corner)) {
+            if (corner == CR_TOP_LEFT) return new Position(x, y);
+            else if (corner == CR_TOP_RIGHT) return new Position(x + width, y);
+            else if (corner == CR_BOTTOM_LEFT) return new Position(x, y + height);
+            else if (corner == CR_BOTTOM_RIGHT) return new Position(x + width, y + height);
+            else return Position.UNDEFINED_POSITION;
+        }
+        else return Position.UNDEFINED_POSITION;
+    }
+    
+    /**
      * Sets the x position of the object.
      * @param x The new x position.
      */
@@ -202,16 +235,69 @@ public class Area {
      * @param y The new y position.
      */
     public final void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+        setArea(x, y, width, height);
     }
     
     /**
-     * Sets the height and width of the object.
+     * Sets the width of the object.
+     * @param width The new width.
+     */
+    public void setWidth(int width) {
+        setDimensions(width, height);
+    }
+    
+    /**
+     * Sets the height of the object.
+     * @param height The new height.
+     */
+    public void setHeight(int height) {
+        setDimensions(width, height);
+    }
+    
+    /**
+     * Sets the width and height of the object.
+     * @param size The new dimensions of the object.
+     */
+    public final void setDimensions(Dimension size) {
+        setDimensions(size.width, size.height);
+    }
+    
+    /**
+     * Sets the width and height of the object.
      * @param width The new width.
      * @param height The new height.
      */
     public final void setDimensions(int width, int height) {
+        setArea(x, y, width, height);
+    }
+    
+    /**
+     * Copies over the position and dimensions from the specified area.
+     * @param area The area whose properties should be copied over.
+     */
+    public final void setArea(Area area) {
+        setArea(area.x, area.y, area.width, area.height);
+    }
+    
+    /**
+     * Sets both the position and the dimensions of the object.
+     * @param pos The new position.
+     * @param size The new dimensions.
+     */
+    public final void setArea(Position pos, Dimension size) {
+        setArea(pos.x, pos.y, size.width, size.height);
+    }
+    
+    /**
+     * Sets both the position and the dimensions of the object.
+     * @param x The new x position.
+     * @param y The new y position.
+     * @param width The new width.
+     * @param height The new height.
+     */
+    public final void setArea(double x, double y, int width, int height) {
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
     }
@@ -234,7 +320,16 @@ public class Area {
         this.y = y - height / 2;
     }
     
-//</editor-fold>
+    /**
+     * Returns a textual representation of the object.
+     * @return A string representing the object.
+     */
+    @Override
+    public String toString() {
+        return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]";
+    }
+    //</editor-fold>
+    
     /**
      * Checks if the object is colliding with another object or area using rectangular
      * collision and touch collision as the collision testing method.
@@ -255,8 +350,8 @@ public class Area {
     public boolean isWithin(Area obj, int method) {
         boolean horizontal, vertical;
         if (CL_INSIDE_ALL.contains(method)) {
-            horizontal = x > obj.x && x < obj.x + obj.width && x + width <= obj.x + width;
-            vertical = y > obj.y && y < obj.y + obj.height && y + height <= obj.y + height;
+            horizontal = x > obj.x && x < obj.x + obj.width && x + width <= obj.x + obj.width;
+            vertical = y > obj.y && y < obj.y + obj.height && y + height <= obj.y + obj.height;
         }
         else {
             horizontal = x + width > obj.x && x < obj.x + obj.width;
@@ -269,7 +364,7 @@ public class Area {
     }
     
     /**
-     * Fills a rectangle at the current area using whatever color is currently set.
+     * Fills a rectangle on the current area using whatever color is currently set.
      */
     public void draw() {
         Game.painter().fillRect((int) x, (int) y, width, height);

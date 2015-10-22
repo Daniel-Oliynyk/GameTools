@@ -20,7 +20,7 @@ public class Sprite extends Area {
     /**
      * Diagonal movement in the south east (downward and rightward) direction.
      */
-    public static final int DR_SOUTHEAST = 1;
+    public static final int DR_SOUTH_EAST = 1;
     /**
      * Movement in the south (downward) direction.
      */
@@ -28,7 +28,7 @@ public class Sprite extends Area {
     /**
      * Diagonal movement in the south west (downward and leftward) direction.
      */
-    public static final int DR_SOUTHWEST = 3;
+    public static final int DR_SOUTH_WEST = 3;
     /**
      * Movement in the west (left) direction.
      */
@@ -36,7 +36,7 @@ public class Sprite extends Area {
     /**
      * Diagonal movement in the north west (upward and leftward) direction.
      */
-    public static final int DR_NORTHWEST = 5;
+    public static final int DR_NORTH_WEST = 5;
     /**
      * Movement in the north (upward) direction.
      */
@@ -44,32 +44,25 @@ public class Sprite extends Area {
     /**
      * Diagonal movement in the north east (upward and rightward) direction.
      */
-    public static final int DR_NORTHEAST = 7;
+    public static final int DR_NORTH_EAST = 7;
     /**
-     * Top left corner.
+     * Clockwise sprite rotation.
      */
-    public static final int CR_TOPLEFT = 0;
+    public static final int RT_CLOCK_WISE = 0;
     /**
-     * Top right corner.
+     * Counter-clockwise sprite rotation.
      */
-    public static final int CR_TOPRIGHT = 1;
-    /**
-     * Bottom left corner.
-     */
-    public static final int CR_BOTTOMLEFT = 2;
-    /**
-     * Bottom right corner.
-     */
-    public static final int CR_BOTTOMRIGHT = 3;
-    private static final List<Integer> DR_ALL = Arrays.asList(DR_EAST, DR_SOUTHEAST, DR_SOUTH,
-            DR_SOUTHWEST, DR_WEST, DR_NORTHWEST, DR_NORTH, DR_NORTHEAST);
+    public static final int RT_COUNTER_CLOCK_WISE = 0;
+    private static final List<Integer> DR_ALL = Arrays.asList(DR_EAST, DR_SOUTH_EAST, DR_SOUTH,
+            DR_SOUTH_WEST, DR_WEST, DR_NORTH_WEST, DR_NORTH, DR_NORTH_EAST);
     //</editor-fold>
-    private int speed = 10, lastDirection, moveDirection;
-    private double rotation, moveAngle;
+    private int speed = 5, lastDirection, moveDirection;
+    private double prevX, prevY, angle, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
-    private Area movementArea = Area.UNDEFINED_AREA, hitbox;
+    private Area movementArea = Area.UNDEFINED_AREA, spriteArea = new Area();
     
+    //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates a blank placeholder sprite without an image or animation.<br>
      * <b>Note</b>: This sprite may cause errors if it is attempted to be drawn
@@ -77,7 +70,6 @@ public class Sprite extends Area {
      */
     public Sprite() {
         super();
-        hitbox = new Area(x, y, width, height);
     }
     
     /**
@@ -105,7 +97,9 @@ public class Sprite extends Area {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
-        hitbox = new Area(x, y, width, height);
+        spriteArea = new Area(x, y, width, height);
+        prevX = x;
+        prevY = y;
         this.animation = animation;
     }
     
@@ -122,7 +116,7 @@ public class Sprite extends Area {
     public Animation getAnimation() {
         return animation;
     }
-
+    
     /**
      * Returns the area in which the sprite is allowed to move with the movement commands.
      * @return The area in which the sprite is allowed to move within or the constant
@@ -131,20 +125,35 @@ public class Sprite extends Area {
     public Area getMovementArea() {
         return movementArea;
     }
-
+    
+    /**
+     * @return The current angle of the sprite.
+     */
+    public double getAngle() {
+        return angle;
+    }
+    
+    /**
+     * Returns the sprite converted to an area object.
+     * @return An area that represents the sprite.
+     */
+    public Area getArea() {
+        return new Area(getPosition(), getDimensions());
+    }
+    
     /**
      * Returns the full area of the rotated sprite.
      * @return An area that completely covers the rotated sprite.
      */
     public Area getRotatedArea() {
-        return hitbox;
+        return spriteArea;
     }
     
     /**
      * Returns the direction the sprite was moved in the previous or
      * current frame. Returns -1 (undefined direction) if the sprite was not recently
      * moved or was moved in a direction not defined by one of the constants.
-     * @return The last direction the sprite was moved. 
+     * @return The last direction the sprite was moved.
      */
     public int getLastDirection() {
         return lastDirection;
@@ -162,7 +171,7 @@ public class Sprite extends Area {
      * Sets the speed the sprite will move at when using its move methods.
      * @param speed The amount of pixels the sprite will move each frame.
      */
-    public final void setSpeed(int speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
     
@@ -184,6 +193,7 @@ public class Sprite extends Area {
     public void lockMovementArea(Area area) {
         movementArea = area;
     }
+    //</editor-fold>
     
     /**
      * Moves the sprite at the passed in angle at the set speed.
@@ -197,12 +207,24 @@ public class Sprite extends Area {
     
     /**
      * Moves the sprite to the coordinates at the set speed.
-     * @param x The x position where the sprite should move to.
-     * @param y The y position where the sprite should move to.
+     * @param pos The position where the sprite should move to.
      */
-    public void moveTo(int x, int y) {
-        double ang = Math.atan2(y - this.y, x - this.x);
+    public void moveTo(Position pos) {
+        double ang = Math.atan2(pos.y - y, pos.x - x);
         moveAt(ang);
+    }
+    
+    /**
+     * Moves the sprite at one of the defined directions at a custom speed.
+     * @param direction One of the direction constants that represents where
+     * the sprite should move to.
+     * @param speed The speed at which to move at.
+     */
+    public void moveTo(int direction, int speed) {
+        int prev = this.speed;
+        this.speed = speed;
+        moveTo(direction);
+        this.speed = prev;
     }
     
     /**
@@ -256,15 +278,15 @@ public class Sprite extends Area {
     
     /**
      * Rotates the sprite around its center.
-     * @param ang The new angle of the sprite 
+     * @param ang The new angle of the sprite.
      */
     public void setAngle(double ang) {
-        rotation = ang;
+        angle = ang;
         adjustHitbox();
     }
     
     private void adjustHitbox() {
-        hitbox = new Area(x, y, width, height);
+        spriteArea = new Area(x, y, width, height);
         Position[] corners = new Position[4];
         corners[0] = new Position(x, y);
         corners[1] = new Position(x + width, y);
@@ -273,15 +295,15 @@ public class Sprite extends Area {
         Position farPos = new Position();
         boolean flag = true;
         for (Position corner : corners) {
-            corner.rotate(getCenter(), rotation);
-            if (corner.x() < hitbox.x || flag) hitbox.x = corner.x();
-            if (corner.y() < hitbox.y || flag) hitbox.y = corner.y();
+            corner.rotate(getCenter(), angle);
+            if (corner.x() < spriteArea.x || flag) spriteArea.x = corner.x();
+            if (corner.y() < spriteArea.y || flag) spriteArea.y = corner.y();
             if (corner.x() > farPos.x() || flag) farPos.x(corner.x());
             if (corner.y() > farPos.y() || flag) farPos.y(corner.y());
             flag = false;
         }
-        hitbox.width = (int) (farPos.x() - hitbox.x);
-        hitbox.height = (int) (farPos.y() - hitbox.y);
+        spriteArea.width = (int) (farPos.x() - spriteArea.x);
+        spriteArea.height = (int) (farPos.y() - spriteArea.y);
     }
     
     /**
@@ -302,9 +324,8 @@ public class Sprite extends Area {
      * Draws the sprite and updates its animation.
      */
     @Override
-    public void draw() {
+    public final void draw() {
         update();
-        double prevX = x, prevY = y;
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = DR_UNDEFINED;
@@ -316,8 +337,10 @@ public class Sprite extends Area {
         animation.update();
         adjustHitbox();
         AffineTransform at = new AffineTransform();
-        at.rotate(rotation, getCenter().x(), getCenter().y());
+        at.rotate(angle, getCenter().x(), getCenter().y());
         at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
+        prevX = x;
+        prevY = y;
     }
 }

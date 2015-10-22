@@ -54,10 +54,17 @@ public abstract class Game {
     }
     
     /**
-     * @return The height of the screen.
+     * @return A dimension of the screen size.
      */
     public static Dimension getDimensions() {
         return new Dimension(width, height);
+    }
+    
+    /**
+     * @return An area of the screen size.
+     */
+    public static Area getArea() {
+        return new Area(width, height);
     }
     
     /**
