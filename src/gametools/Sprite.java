@@ -89,6 +89,11 @@ public class Sprite extends Area {
         this(pos.x(), pos.y(), animation);
     }
     
+    public Sprite(Sprite sprite) {
+        this(sprite.x, sprite.y, sprite.animation);
+        angle = sprite.angle;
+    }
+    
     /**
      * Creates a sprite at the specified coordinates with a custom animation.
      * @param x The x position of the sprite.
@@ -145,7 +150,8 @@ public class Sprite extends Area {
      * Returns the full area of the rotated sprite.
      * @return An area that completely covers the rotated sprite.
      */
-    public Area getRotatedArea() {
+    public Area getImageArea() {
+        adjustImageArea();
         return spriteArea;
     }
     
@@ -182,6 +188,14 @@ public class Sprite extends Area {
     public void setAnimation(Animation animation) {
         previous = this.animation;
         this.animation = animation;
+    }
+    
+    /**
+     * Rotates the sprite around its center.
+     * @param ang The new angle of the sprite.
+     */
+    public void setAngle(double ang) {
+        angle = ang;
     }
     
     /**
@@ -276,16 +290,7 @@ public class Sprite extends Area {
         moveAngle = 0;
     }
     
-    /**
-     * Rotates the sprite around its center.
-     * @param ang The new angle of the sprite.
-     */
-    public void setAngle(double ang) {
-        angle = ang;
-        adjustHitbox();
-    }
-    
-    private void adjustHitbox() {
+    private void adjustImageArea() {
         spriteArea = new Area(x, y, width, height);
         Position[] corners = new Position[4];
         corners[0] = new Position(x, y);
@@ -335,7 +340,6 @@ public class Sprite extends Area {
             if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
         }
         animation.update();
-        adjustHitbox();
         AffineTransform at = new AffineTransform();
         at.rotate(angle, getCenter().x(), getCenter().y());
         at.translate(x, y);

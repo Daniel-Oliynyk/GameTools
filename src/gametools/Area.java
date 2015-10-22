@@ -125,6 +125,14 @@ public class Area {
     }
     
     /**
+     * Creates an area and copies over the properties from the specified object.
+     * @param area The area to copy the properties from.
+     */
+    public Area(Area area) {
+        this(area.x, area.y, area.width, area.height);
+    }
+    
+    /**
      * Creates an area at the x and y with the specified dimensions.
      * @param x The x position of the area.
      * @param y The y position of the area.
@@ -132,8 +140,7 @@ public class Area {
      * @param height The height of the area.
      */
     public Area(double x, double y, int width, int height) {
-        setPosition(x, y);
-        setDimensions(width, height);
+        setArea(x, y, width, height);
     }
     
     /**

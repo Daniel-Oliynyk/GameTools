@@ -4,6 +4,9 @@ package gametools;
  * A terse class used to shorten positioning code.
  */
 public class Position {
+    /**
+     * An empty position to represent a non existent or undefined point.
+     */
     public static final Position UNDEFINED_POSITION = new Position(-1, -1);
     /**
      * The precise x location of the position.
@@ -20,6 +23,10 @@ public class Position {
      */
     public Position() {
         this(0, 0);
+    }
+    
+    public Position(Position pos) {
+        this(pos.x, pos.y);
     }
     
     /**
