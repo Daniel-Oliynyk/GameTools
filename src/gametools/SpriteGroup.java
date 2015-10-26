@@ -16,7 +16,15 @@ public class SpriteGroup {
      * Creates a blank sprite group.
      */
     public SpriteGroup() {
-        elements = new ArrayList<>();
+        this(new ArrayList<>());
+    }
+    
+    /**
+     * Creates a sprite group and copies over the passed in sprites.
+     * @param copy The sprite group to copy sprites in from.
+     */
+    public SpriteGroup(SpriteGroup copy) {
+        this(copy.getAll());
     }
     
     /**
@@ -177,6 +185,14 @@ public class SpriteGroup {
      */
     public void removeAllWithin(Area obj, int method) {
         removeAll(getAllWithin(obj, method));
+    }
+    
+    /**
+     * Removes all the sprites from the group that match the ones passed in.
+     * @param sprites An group of sprites to remove.
+     */
+    public void removeAll(SpriteGroup sprites) {
+        elements.removeAll(sprites.getAll());
     }
     
     /**

@@ -60,7 +60,7 @@ public class Sprite extends Area {
     private double prevX, prevY, angle, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
-    private Area movementArea = Area.UNDEFINED_AREA, spriteArea = new Area();
+    private Area movementArea = Area.UNDEFINED_AREA;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
@@ -102,7 +102,6 @@ public class Sprite extends Area {
      */
     public Sprite(double x, double y, Animation animation) {
         super(x, y, animation.getWidth(), animation.getHeight());
-        spriteArea = new Area(x, y, width, height);
         prevX = x;
         prevY = y;
         this.animation = animation;
@@ -147,12 +146,29 @@ public class Sprite extends Area {
     }
     
     /**
-     * Returns the full area of the rotated sprite.
-     * @return An area that completely covers the rotated sprite.
+     * Returns the full area of the rotated image.
+     * @return An area that completely covers the rotated image.
      */
     public Area getImageArea() {
-        adjustImageArea();
-        return spriteArea;
+        Area image = new Area(x, y, width, height);
+        Position[] corners = new Position[4];
+        corners[0] = new Position(x, y);
+        corners[1] = new Position(x + width, y);
+        corners[2] = new Position(x, y + height);
+        corners[3] = new Position(x + width, y + height);
+        Position farPos = new Position();
+        boolean flag = true;
+        for (Position corner : corners) {
+            corner.rotate(getCenter(), angle);
+            if (corner.x() < image.x || flag) image.x = corner.x();
+            if (corner.y() < image.y || flag) image.y = corner.y();
+            if (corner.x() > farPos.x() || flag) farPos.x(corner.x());
+            if (corner.y() > farPos.y() || flag) farPos.y(corner.y());
+            flag = false;
+        }
+        image.width = (int) (farPos.x() - image.x);
+        image.height = (int) (farPos.y() - image.y);
+        return image;
     }
     
     /**
@@ -288,27 +304,6 @@ public class Sprite extends Area {
         anglularMovement = false;
         moveDirection = DR_UNDEFINED;
         moveAngle = 0;
-    }
-    
-    private void adjustImageArea() {
-        spriteArea = new Area(x, y, width, height);
-        Position[] corners = new Position[4];
-        corners[0] = new Position(x, y);
-        corners[1] = new Position(x + width, y);
-        corners[2] = new Position(x, y + height);
-        corners[3] = new Position(x + width, y + height);
-        Position farPos = new Position();
-        boolean flag = true;
-        for (Position corner : corners) {
-            corner.rotate(getCenter(), angle);
-            if (corner.x() < spriteArea.x || flag) spriteArea.x = corner.x();
-            if (corner.y() < spriteArea.y || flag) spriteArea.y = corner.y();
-            if (corner.x() > farPos.x() || flag) farPos.x(corner.x());
-            if (corner.y() > farPos.y() || flag) farPos.y(corner.y());
-            flag = false;
-        }
-        spriteArea.width = (int) (farPos.x() - spriteArea.x);
-        spriteArea.height = (int) (farPos.y() - spriteArea.y);
     }
     
     /**
