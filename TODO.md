@@ -5,7 +5,7 @@
   - [ ] Add methods for start and pause.
   - [ ] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
-- Check over constructors in sprite class and see if more options could be added there.
+- [ ] Check over constructors in sprite class and see if more options could be added there.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
