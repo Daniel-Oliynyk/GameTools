@@ -1,0 +1,16 @@
+# To Do List
+- [x] Create short for notation for all major common classes.
+  - [ ] Remove extra constructors that duplicate this code.
+- [ ] Review animation class
+  - [ ] Add methods for start and pause.
+  - [ ] Check if clone method is needed.
+- [ ] Add sound loading and playing, and see if another class is needed for this.
+- Check over constructors in sprite class and see if more options could be added there.
+- [ ] Create small libraries on top of current code for more difficult operations.
+  - [ ] Create one with platforms and gravity for a platform game.
+  - [ ] Create one with full image set and basic methods for a card game.
+  - [ ] Check what other types need to be made.
+- [ ] Finish online segment.
+  - [ ] Add code samples to website.
+  - [ ] Create a few sample projects and link to them.
+  - [ ] Figure out why javadoc is not showing up by default.

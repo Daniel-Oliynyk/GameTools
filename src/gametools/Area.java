@@ -338,10 +338,12 @@ public class Area {
     //</editor-fold>
     
     /**
-     * @return True if the mouse is within the object.
+     * Checks if a point is within the object.
+     * @param pos The position to check collision against.
+     * @return True if the specified position is within the object.
      */
-    public boolean mouseWithin() {
-        return isWithin(new Area(Game.getMouseX(), Game.getMouseY(), 0, 0));
+    public boolean isWithin(Position pos) {
+        return isWithin(new Area(pos.x, pos.y, 0, 0));
     }
     
     /**

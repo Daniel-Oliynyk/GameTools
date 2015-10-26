@@ -23,13 +23,11 @@ import javax.swing.JPanel;
 public abstract class Game {
     private static int fps = 60, width = 800, height = 800;
     private static Graphics2D graphics;
-    
     private static HashSet<Integer> keys = new HashSet<>();
     private static int mouseButton, mouseX, mouseY;
-    
     private static Color backgroundColor = Color.BLACK;
     private static final JFrame frame = new JFrame();
-    private BufferedImage screen;
+    private static BufferedImage screen;
     
     /**
      * Initializes the game and runs the window method.

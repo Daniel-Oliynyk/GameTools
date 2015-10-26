@@ -1,7 +1,6 @@
 package gametools;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
@@ -123,13 +122,41 @@ public class Tools {
     
     /**
      * Converts two points to an area object going through those positions.
-     * @param x1 The x position of the top left corner.
-     * @param y1 The y position of the top left corner.
-     * @param x2 The x position of the bottom right corner.
-     * @param y2 The y position of the bottom right corner.
+     * @param tl The position of the top left corner.
+     * @param br The position of the bottom right corner.
      * @return An area with the specified coordinates.
      */
-    public static Area pta(int x1, int y1, int x2, int y2) {
-        return new Area(x1, y1, x2 - x1, y2 - y1);
+    public static Area ar(Position tl, Position br) {
+        return new Area(tl, new Dimension((int) (tl.x - br.x), (int) (tl.y - br.y)));
+    }
+    
+    /**
+     * The short form notation for creating an area.
+     * @param pos The position of the top left corner.
+     * @param size The width and height of the area.
+     * @return An area with the specified coordinates.
+     */
+    public static Area ar(Position pos, Dimension size) {
+        return new Area(pos, size);
+    }
+    
+    /**
+     * The short form notation for creating a point.
+     * @param x The x location of the point.
+     * @param y The y location of the point.
+     * @return A position that contains the x and y.
+     */
+    public static Position pt(double x, double y) {
+        return new Position(x, y);
+    }
+    
+    /**
+     * The short form notation for creating a dimension.
+     * @param width The width of the dimension.
+     * @param height The height of the dimension.
+     * @return A dimension with the passed in width and height.
+     */
+    public static Dimension dm(int width, int height) {
+        return new Dimension(width, height);
     }
 }
