@@ -90,6 +90,7 @@ public class Sprite extends Area {
     }
     
     public Sprite(Sprite sprite) {
+        //Finsh here
         this(sprite.x, sprite.y, sprite.animation);
         angle = sprite.angle;
     }
@@ -240,7 +241,7 @@ public class Sprite extends Area {
      * @param pos The position where the sprite should move to.
      */
     public void moveTo(Position pos) {
-        double ang = Math.atan2(pos.y - y, pos.x - x);
+        double ang = getCenter().angleTo(pos);
         moveAt(ang);
     }
     
@@ -269,6 +270,16 @@ public class Sprite extends Area {
             moveAt(ang);
         }
         lastDirection = direction;
+    }
+    
+    /**
+     * Moves the sprite constantly to the specified position until it gets
+     * removed or it goes outside its movement area.
+     * @param pos The location to move constantly to.
+     */
+    public void moveConstantlyTo(Position pos) {
+        double ang = getCenter().angleTo(pos);
+        moveConstantlyAt(ang);
     }
     
     /**
@@ -304,13 +315,6 @@ public class Sprite extends Area {
         anglularMovement = false;
         moveDirection = DR_UNDEFINED;
         moveAngle = 0;
-    }
-    
-    /**
-     * @return True if the mouse is within the sprite.
-     */
-    public boolean mouseWithin() {
-        return isWithin(new Area(Game.getMouseX(), Game.getMouseY(), 0, 0));
     }
     
     /**

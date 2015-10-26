@@ -338,6 +338,13 @@ public class Area {
     //</editor-fold>
     
     /**
+     * @return True if the mouse is within the object.
+     */
+    public boolean mouseWithin() {
+        return isWithin(new Area(Game.getMouseX(), Game.getMouseY(), 0, 0));
+    }
+    
+    /**
      * Checks if the object is colliding with another object or area using rectangular
      * collision and touch collision as the collision testing method.
      * @param obj The object to test collision against.
