@@ -77,7 +77,17 @@ public class Sprite extends Area {
      * @param animation The image for the sprite.
      */
     public Sprite(Animation animation) {
-        this(0, 0, animation);
+        this(new Position(), animation);
+    }
+     
+    /**
+     * Creates a sprite and copies over the properties from the specified sprite.
+     * @param sprite The sprite to copy the properties from.
+     */
+    public Sprite(Sprite sprite) {
+        //Finsh here
+        this(sprite.getPosition(), sprite.animation);
+        angle = sprite.angle;
     }
     
     /**
@@ -86,25 +96,9 @@ public class Sprite extends Area {
      * @param animation The image for the sprite.
      */
     public Sprite(Position pos, Animation animation) {
-        this(pos.x(), pos.y(), animation);
-    }
-    
-    public Sprite(Sprite sprite) {
-        //Finsh here
-        this(sprite.x, sprite.y, sprite.animation);
-        angle = sprite.angle;
-    }
-    
-    /**
-     * Creates a sprite at the specified coordinates with a custom animation.
-     * @param x The x position of the sprite.
-     * @param y The x position of the sprite.
-     * @param animation The image for the sprite.
-     */
-    public Sprite(double x, double y, Animation animation) {
-        super(x, y, animation.getWidth(), animation.getHeight());
-        prevX = x;
-        prevY = y;
+        super(pos, animation.getDimensions());
+        prevX = pos.x;
+        prevY = pos.y;
         this.animation = animation;
     }
     
@@ -151,7 +145,7 @@ public class Sprite extends Area {
      * @return An area that completely covers the rotated image.
      */
     public Area getImageArea() {
-        Area image = new Area(x, y, width, height);
+        Area image = new Area(getArea());
         Position[] corners = new Position[4];
         corners[0] = new Position(x, y);
         corners[1] = new Position(x + width, y);
@@ -161,14 +155,14 @@ public class Sprite extends Area {
         boolean flag = true;
         for (Position corner : corners) {
             corner.rotate(getCenter(), angle);
-            if (corner.x() < image.x || flag) image.x = corner.x();
-            if (corner.y() < image.y || flag) image.y = corner.y();
-            if (corner.x() > farPos.x() || flag) farPos.x(corner.x());
-            if (corner.y() > farPos.y() || flag) farPos.y(corner.y());
+            if (corner.x < image.x || flag) image.x = corner.x;
+            if (corner.y < image.y || flag) image.y = corner.y;
+            if (corner.x > farPos.x || flag) farPos.x(corner.x);
+            if (corner.y > farPos.y || flag) farPos.y(corner.y);
             flag = false;
         }
-        image.width = (int) (farPos.x() - image.x);
-        image.height = (int) (farPos.y() - image.y);
+        image.width = (int) (farPos.x - image.x);
+        image.height = (int) (farPos.y - image.y);
         return image;
     }
     
@@ -340,7 +334,7 @@ public class Sprite extends Area {
         }
         animation.update();
         AffineTransform at = new AffineTransform();
-        at.rotate(angle, getCenter().x(), getCenter().y());
+        at.rotate(angle, getCenter().x, getCenter().y);
         at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
         prevX = x;

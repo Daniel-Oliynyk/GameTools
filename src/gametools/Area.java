@@ -13,7 +13,7 @@ public class Area {
     /**
      * An empty area to represent a non existent or undefined object.
      */
-    public static final Area UNDEFINED_AREA = new Area(-1, -1, -1, -1);
+    public static final Area UNDEFINED_AREA = new Area(Position.UNDEFINED_POSITION, new Dimension(-1, -1));
     /**
      * Collision when the first object has any point within the second.
      */
@@ -87,7 +87,7 @@ public class Area {
      * Creates an area with the coordinates and dimensions of zero.
      */
     public Area() {
-        this(0, 0, 0, 0);
+        this(new Position(), new Dimension());
     }
     
     /**
@@ -95,7 +95,7 @@ public class Area {
      * @param pos The position of the area.
      */
     public Area(Position pos) {
-        this(pos.x(), pos.y(), 0, 0);
+        this(pos, new Dimension());
     }
     
     /**
@@ -103,16 +103,15 @@ public class Area {
      * @param size The size of the area.
      */
     public Area(Dimension size) {
-        this(0, 0, size.width, size.height);
+        this(new Position(), new Dimension(size.width, size.height));
     }
     
     /**
-     * Creates an area with custom dimensions and coordinates of zero.
-     * @param width The width of the area.
-     * @param height The height of the area.
+     * Creates an area and copies over the properties from the specified object.
+     * @param area The area to copy the properties from.
      */
-    public Area(int width, int height) {
-        this(0, 0, width, height);
+    public Area(Area area) {
+        this(area.getPosition(), area.getDimensions());
     }
     
     /**
@@ -121,40 +120,21 @@ public class Area {
      * @param size The dimensions of the area.
      */
     public Area(Position pos, Dimension size) {
-        this(pos.x(), pos.y(), size.width, size.height);
-    }
-    
-    /**
-     * Creates an area and copies over the properties from the specified object.
-     * @param area The area to copy the properties from.
-     */
-    public Area(Area area) {
-        this(area.x, area.y, area.width, area.height);
-    }
-    
-    /**
-     * Creates an area at the x and y with the specified dimensions.
-     * @param x The x position of the area.
-     * @param y The y position of the area.
-     * @param width The width of the area.
-     * @param height The height of the area.
-     */
-    public Area(double x, double y, int width, int height) {
-        setArea(x, y, width, height);
+        setArea(pos, size);
     }
     
     /**
      * @return The x position of the object.
      */
     public final double getX() {
-        return getPosition().x();
+        return getPosition().x;
     }
     
     /**
      * @return The y position of the object.
      */
     public final double getY() {
-        return getPosition().y();
+        return getPosition().y;
     }
     
     /**
@@ -217,7 +197,7 @@ public class Area {
      * @param x The new x position.
      */
     public final void setX(double x) {
-        setPosition(x, y);
+        setPosition(new Position(x, y));
     }
     
     /**
@@ -225,7 +205,7 @@ public class Area {
      * @param y The new y position.
      */
     public final void setY(double y) {
-        setPosition(x, y);
+        setPosition(new Position(x, y));
     }
     
     /**
@@ -233,16 +213,7 @@ public class Area {
      * @param pos The new position for the object.
      */
     public final void setPosition(Position pos) {
-        setPosition(pos.x(), pos.y());
-    }
-    
-    /**
-     * Sets the x and y position of the object.
-     * @param x The new x position.
-     * @param y The new y position.
-     */
-    public final void setPosition(double x, double y) {
-        setArea(x, y, width, height);
+        setArea(pos, new Dimension());
     }
     
     /**
@@ -250,7 +221,7 @@ public class Area {
      * @param width The new width.
      */
     public void setWidth(int width) {
-        setDimensions(width, height);
+        setDimensions(new Dimension(width, height));
     }
     
     /**
@@ -258,7 +229,7 @@ public class Area {
      * @param height The new height.
      */
     public void setHeight(int height) {
-        setDimensions(width, height);
+        setDimensions(new Dimension(width, height));
     }
     
     /**
@@ -266,16 +237,7 @@ public class Area {
      * @param size The new dimensions of the object.
      */
     public final void setDimensions(Dimension size) {
-        setDimensions(size.width, size.height);
-    }
-    
-    /**
-     * Sets the width and height of the object.
-     * @param width The new width.
-     * @param height The new height.
-     */
-    public final void setDimensions(int width, int height) {
-        setArea(x, y, width, height);
+        setArea(new Position(), size);
     }
     
     /**
@@ -283,7 +245,7 @@ public class Area {
      * @param area The area whose properties should be copied over.
      */
     public final void setArea(Area area) {
-        setArea(area.x, area.y, area.width, area.height);
+        setArea(area.getPosition(), area.getDimensions());
     }
     
     /**
@@ -292,21 +254,10 @@ public class Area {
      * @param size The new dimensions.
      */
     public final void setArea(Position pos, Dimension size) {
-        setArea(pos.x, pos.y, size.width, size.height);
-    }
-    
-    /**
-     * Sets both the position and the dimensions of the object.
-     * @param x The new x position.
-     * @param y The new y position.
-     * @param width The new width.
-     * @param height The new height.
-     */
-    public final void setArea(double x, double y, int width, int height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        x = pos.x;
+        y = pos.y;
+        width = size.width;
+        height = size.height;
     }
     
     /**
@@ -314,17 +265,8 @@ public class Area {
      * @param pos The position of the center.
      */
     public final void centerOn(Position pos) {
-        centerOn(pos.x(), pos.y());
-    }
-    
-    /**
-     * Centers the object around the specified coordinates.
-     * @param x The x position of the center.
-     * @param y The y position of the center.
-     */
-    public final void centerOn(double x, double y) {
-        this.x = x - width / 2;
-        this.y = y - height / 2;
+        x = pos.x - width / 2;
+        y = pos.y - height / 2;
     }
     
     /**
@@ -343,7 +285,7 @@ public class Area {
      * @return True if the specified position is within the object.
      */
     public boolean isWithin(Position pos) {
-        return isWithin(new Area(pos.x, pos.y, 0, 0));
+        return isWithin(new Area(pos, new Dimension()));
     }
     
     /**

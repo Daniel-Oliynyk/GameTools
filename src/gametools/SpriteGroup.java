@@ -226,7 +226,7 @@ public class SpriteGroup {
      */
     public void removeWhenOffScreen() {
         removeSprites = true;
-        moveableArea = new Area(0, 0, Game.getWidth(), Game.getHeight());
+        moveableArea = new Area(new Position(), Game.getDimensions());
     }
     
     /**

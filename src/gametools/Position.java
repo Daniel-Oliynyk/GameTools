@@ -25,6 +25,10 @@ public class Position {
         this(0, 0);
     }
     
+    /**
+     * Creates a position and then copies over the coordinates from the specified position.
+     * @param pos The position to copy coordinates from.
+     */
     public Position(Position pos) {
         this(pos.x, pos.y);
     }
@@ -167,21 +171,19 @@ public class Position {
     
     /**
      * Translates the position and adds the passed in values to the x and y.
-     * @param tx The amount to add to the current x value.
-     * @param ty The amount to add to the current y value.
+     * @param trans The amount to add to the current x and y value.
      */
-    public final void trans(double tx, double ty) {
-        translate(tx, ty);
+    public final void trans(Position trans) {
+        translate(trans);
     }
     
     /**
      * Translates the position and adds the passed in values to the x and y.
-     * @param tx The amount to add to the current x value.
-     * @param ty The amount to add to the current y value.
+     * @param trans The amount to add to the current x and y value.
      */
-    public final void translate(double tx, double ty) {
-        x = x + tx;
-        y = y + ty;
+    public final void translate(Position trans) {
+        x = x + trans.x;
+        y = y + trans.y;
     }
     
     /**

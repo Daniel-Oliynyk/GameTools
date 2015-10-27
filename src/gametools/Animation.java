@@ -103,7 +103,7 @@ public class Animation {
     /**
      * @return The amount of frames in the animation.
      */
-    public int getSize() {
+    public int getLength() {
         return frames.length;
     }
     

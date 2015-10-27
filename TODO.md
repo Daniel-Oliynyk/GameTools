@@ -1,11 +1,14 @@
 # To Do List
 - [x] Create short for notation for all major common classes.
-  - [ ] Remove extra constructors that duplicate this code.
+  - [x] Remove extra constructors that complicate the code.
+  - [ ] Review javadoc.
+- [ ] Review and finish clone methods.
 - [ ] Review animation class
   - [ ] Add methods for start and pause.
   - [ ] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
 - [ ] Check over constructors in sprite class and see if more options could be added there.
+- [ ] Look into 3 pixel shift glitch.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.

@@ -62,7 +62,7 @@ public abstract class Game {
      * @return An area of the screen size.
      */
     public static Area getArea() {
-        return new Area(width, height);
+        return new Area(new Dimension(width, height));
     }
     
     /**
@@ -76,21 +76,7 @@ public abstract class Game {
     }
     
     /**
-     * @return The x position of the mouse within the game window.
-     */
-    public static int getMouseX() {
-        return (int) getMousePosition().x();
-    }
-    
-    /**
-     * @return The y position of the mouse within the game window.
-     */
-    public static int getMouseY() {
-        return (int) getMousePosition().y();
-    }
-    
-    /**
-     * @return The full mouse coordinates stored within a point.
+     * @return The full mouse coordinates stored within a position.
      */
     public static Position getMousePosition() {
         return new Position(mouseX, mouseY);
@@ -147,7 +133,7 @@ public abstract class Game {
      * @param width The width of the game.
      */
     protected void setWidth(int width) {
-        setDimensions(width, height);
+        setDimensions(new Dimension(width, height));
     }
     
     /**
@@ -156,27 +142,17 @@ public abstract class Game {
      * @param height The height of the game.
      */
     protected void setHeight(int height) {
-        setDimensions(width, height);
-    }
-    
-    /**
-     * Sets both the width and height of the game.<br>
-     * <b>Note</b>: This function will not work after the create function is executed.
-     * @param width The width of the game.
-     * @param height The height of the game.
-     */
-    protected void setDimensions(int width, int height) {
         setDimensions(new Dimension(width, height));
     }
     
     /**
      * Sets both the width and height of the game.<br>
      * <b>Note</b>: This function will not work after the create function is executed.
-     * @param dimensions The dimensions of the game.
+     * @param size The dimensions of the game.
      */
-    protected void setDimensions(Dimension dimensions) {
-        width = (int) dimensions.getWidth();
-        height = (int) dimensions.getHeight();
+    protected void setDimensions(Dimension size) {
+        width = (int) size.getWidth();
+        height = (int) size.getHeight();
     }
     //</editor-fold>
     
@@ -253,18 +229,18 @@ public abstract class Game {
     /**
      * Method for creating window and adjusting game settings.
      */
-    public abstract void window();
+    protected abstract void window();
     
     /**
      * Method that runs only once for initializing objects and running setup code.
      */
-    public abstract void setup();
+    protected abstract void setup();
     
     /**
      * Method that updates at the specified FPS (the default is 60) that should
      * contain most the main game code.
      */
-    public abstract void run();
+    protected abstract void run();
     
     //<editor-fold defaultstate="collapsed" desc="Input Adapters">
     private final KeyAdapter keyControl = new KeyAdapter() {
