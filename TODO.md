@@ -3,7 +3,7 @@
   - [x] Remove extra constructors that complicate the code.
   - [ ] Review javadoc.
 - [ ] Review and finish clone methods.
-- [ ] Review animation class
+- [ ] Review animation class.
   - [ ] Add methods for start and pause.
   - [ ] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
