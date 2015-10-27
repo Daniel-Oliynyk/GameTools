@@ -35,8 +35,8 @@ public class Position {
     
     /**
      * Creates a position on the specified coordinates.
-     * @param x The new x value.
-     * @param y The new y value.
+     * @param x The x location.
+     * @param y The y location.
      */
     public Position(double x, double y) {
         set(x, y);

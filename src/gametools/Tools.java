@@ -51,21 +51,7 @@ public class Tools {
      * @return An array of buffered images that show each sprite.
      */
     public static BufferedImage[] loadSpriteSheet(String path, Dimension size, int start, int end) {
-        return loadSpriteSheet(path, size.width, size.height, start, end);
-    }
-    
-    /**
-     * Imports a range of images from a sprite sheet into an array. Images are loaded
-     * in order from left to right and top to bottom.
-     * @param path The location of the sprite sheet relative to the package of the project.
-     * @param width The width of an individual sprite.
-     * @param height The height of an individual sprite.
-     * @param start The start of the range of sprite sheet images.
-     * @param end The end of the range of sprite sheet images.
-     * @return An array of buffered images that show each sprite.
-     */
-    public static BufferedImage[] loadSpriteSheet(String path, int width, int height, int start, int end) {
-        BufferedImage[] full = loadSpriteSheet(path, width, height);
+        BufferedImage[] full = loadSpriteSheet(path, size);
         return trimSpriteSheet(full, start, end);
     }
     
@@ -77,27 +63,15 @@ public class Tools {
      * @return An array of buffered images that show each sprite.
      */
     public static BufferedImage[] loadSpriteSheet(String path, Dimension size) {
-        return loadSpriteSheet(path, size.width, size.height);
-    }
-    
-    /**
-     * Imports all images from a sprite sheet into an array. Images are loaded in order
-     * from left to right and top to bottom.
-     * @param path The location of the sprite sheet relative to the package of the project.
-     * @param width The width of an individual sprite.
-     * @param height The height of an individual sprite.
-     * @return An array of buffered images that show each sprite.
-     */
-    public static BufferedImage[] loadSpriteSheet(String path, int width, int height) {
         BufferedImage sheet = loadImage(path);
         if (sheet != UNDEFINED_IMAGE) {
-            int horizontal = (int) Math.floor(sheet.getWidth() / width);
-            int vertical = (int) Math.floor(sheet.getHeight() / height);
+            int horizontal = (int) Math.floor(sheet.getWidth() / size.width);
+            int vertical = (int) Math.floor(sheet.getHeight() / size.height);
             BufferedImage[] sprites = new BufferedImage[horizontal * vertical];
             int total = 0;
             for (int y = 0; y < vertical; y++) {
                 for (int x = 0; x < horizontal; x++) {
-                    sprites[total] = sheet.getSubimage(x * width, y * height, width, height);
+                    sprites[total] = sheet.getSubimage(x * size.width, y * size.height, size.width, size.height);
                     total++;
                 }
             }
@@ -134,14 +108,14 @@ public class Tools {
      * The short form notation for creating an area.
      * @param pos The position of the top left corner.
      * @param size The width and height of the area.
-     * @return An area with the specified coordinates.
+     * @return An area with the specified coordinates and size.
      */
     public static Area ar(Position pos, Dimension size) {
         return new Area(pos, size);
     }
     
     /**
-     * The short form notation for creating a point.
+     * The short form notation for creating a position.
      * @param x The x location of the point.
      * @param y The y location of the point.
      * @return A position that contains the x and y.

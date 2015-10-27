@@ -57,7 +57,7 @@ public class Sprite extends Area {
             DR_SOUTH_WEST, DR_WEST, DR_NORTH_WEST, DR_NORTH, DR_NORTH_EAST);
     //</editor-fold>
     private int speed = 5, lastDirection, moveDirection;
-    private double prevX, prevY, angle, moveAngle;
+    private double angle, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Area movementArea = Area.UNDEFINED_AREA;
@@ -74,12 +74,12 @@ public class Sprite extends Area {
     
     /**
      * Creates a sprite in the default location (the corner of the screen) with a custom animation.
-     * @param animation The image for the sprite.
+     * @param animation The animation for the sprite.
      */
     public Sprite(Animation animation) {
         this(new Position(), animation);
     }
-     
+    
     /**
      * Creates a sprite and copies over the properties from the specified sprite.
      * @param sprite The sprite to copy the properties from.
@@ -97,8 +97,6 @@ public class Sprite extends Area {
      */
     public Sprite(Position pos, Animation animation) {
         super(pos, animation.getDimensions());
-        prevX = pos.x;
-        prevY = pos.y;
         this.animation = animation;
     }
     
@@ -146,23 +144,19 @@ public class Sprite extends Area {
      */
     public Area getImageArea() {
         Area image = new Area(getArea());
-        Position[] corners = new Position[4];
-        corners[0] = new Position(x, y);
-        corners[1] = new Position(x + width, y);
-        corners[2] = new Position(x, y + height);
-        corners[3] = new Position(x + width, y + height);
-        Position farPos = new Position();
+        Position[] corners = getAllCorners();
+        Position far = new Position();
         boolean flag = true;
         for (Position corner : corners) {
             corner.rotate(getCenter(), angle);
             if (corner.x < image.x || flag) image.x = corner.x;
             if (corner.y < image.y || flag) image.y = corner.y;
-            if (corner.x > farPos.x || flag) farPos.x(corner.x);
-            if (corner.y > farPos.y || flag) farPos.y(corner.y);
+            if (corner.x > far.x || flag) far.x(corner.x);
+            if (corner.y > far.y || flag) far.y(corner.y);
             flag = false;
         }
-        image.width = (int) (farPos.x - image.x);
-        image.height = (int) (farPos.y - image.y);
+        image.width = (int) (far.x - image.x);
+        image.height = (int) (far.y - image.y);
         return image;
     }
     
@@ -225,8 +219,8 @@ public class Sprite extends Area {
      * @param ang A double of the angle in radians.
      */
     public void moveAt(double ang) {
-        this.x += Math.cos(ang) * speed;
-        this.y += Math.sin(ang) * speed;
+        x += Math.cos(ang) * speed;
+        y += Math.sin(ang) * speed;
         lastDirection = DR_UNDEFINED;
     }
     
@@ -329,15 +323,13 @@ public class Sprite extends Area {
         if (!moved) lastDirection = DR_UNDEFINED;
         moved = false;
         if (movementArea != Area.UNDEFINED_AREA) {
-            if (!isWithin(movementArea, CL_INSIDE_X)) x = prevX;
-            if (!isWithin(movementArea, CL_INSIDE_Y)) y = prevY;
+            if (!isWithin(movementArea, CL_INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
+            if (!isWithin(movementArea, CL_INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
         }
         animation.update();
         AffineTransform at = new AffineTransform();
         at.rotate(angle, getCenter().x, getCenter().y);
         at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
-        prevX = x;
-        prevY = y;
     }
 }

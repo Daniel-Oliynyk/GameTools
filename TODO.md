@@ -1,7 +1,7 @@
 # To Do List
 - [x] Create short for notation for all major common classes.
   - [x] Remove extra constructors that complicate the code.
-  - [ ] Review javadoc.
+  - [x] Review javadoc.
 - [ ] Review and finish clone methods.
 - [ ] Review animation class.
   - [ ] Add methods for start and pause.
@@ -12,6 +12,8 @@
   - [ ] Add turn and face methods.
   - [ ] Add relational movement.
   - [ ] Allow rotation around a point not just the center.
+- [ ] Finish translate methods.
+- [ ] Add sprite group to sprite group methods.
 - [ ] Look into 3 pixel shift glitch.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.

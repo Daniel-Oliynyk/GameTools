@@ -103,7 +103,7 @@ public class Area {
      * @param size The size of the area.
      */
     public Area(Dimension size) {
-        this(new Position(), new Dimension(size.width, size.height));
+        this(new Position(), size);
     }
     
     /**
@@ -193,6 +193,16 @@ public class Area {
     }
     
     /**
+     * Returns all four corners of the area.
+     * @return An array containing the four corners.
+     */
+    public final Position[] getAllCorners() {
+        Position[] all = new Position[4];
+        for (int i = 0; i < 4; i++) all[i] = getCorner(i);
+        return all;
+    }
+    
+    /**
      * Sets the x position of the object.
      * @param x The new x position.
      */
@@ -213,7 +223,7 @@ public class Area {
      * @param pos The new position for the object.
      */
     public final void setPosition(Position pos) {
-        setArea(pos, new Dimension());
+        setArea(pos, getDimensions());
     }
     
     /**
