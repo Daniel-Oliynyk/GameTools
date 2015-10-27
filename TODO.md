@@ -17,6 +17,7 @@
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
   - [ ] Check what other types need to be made.
+- [ ] Review tools class and see if any more helper methods can be added.
 - [ ] Finish online segment.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.
