@@ -18,7 +18,7 @@ public class Animation {
     private final BufferedImage[] frames;
     private BufferedImage frameImage;
     private int frameNumber, speed, repeatNumber, repeatAmount;
-    private boolean complete;
+    private boolean complete, paused;
     
     /**
      * Creates an animation with just one still image.
@@ -59,6 +59,7 @@ public class Animation {
         repeatAmount = animation.repeatAmount;
         repeatNumber = animation.repeatNumber;
         complete = animation.complete;
+        paused = animation.paused;
     }
     
     /**
@@ -157,6 +158,13 @@ public class Animation {
     }
     
     /**
+     * @return True if the animation is currently paused.
+     */
+    public boolean isPaused() {
+        return paused;
+    }
+    
+    /**
      * Sets how many frames it will take for the animation to move to the next image.
      * @param speed The speed of the animation.
      */
@@ -179,10 +187,18 @@ public class Animation {
     }
     
     /**
+     * Pauses or resumes the animation.
+     * @param pause Whether to pause or resume to animation.
+     */
+    public void pause(boolean pause) {
+        paused = pause;
+    }
+    
+    /**
      * Updates the animation and moves it to the next frame if necessary.
      */
     public void update() {
-        if (!complete) {
+        if (!complete && !paused) {
             frameNumber++;
             if (frameNumber + 1 >= frames.length * speed) {
                 frameNumber = 0;

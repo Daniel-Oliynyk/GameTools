@@ -12,6 +12,7 @@
   - [ ] Add turn and face methods.
   - [ ] Add relational movement.
   - [ ] Allow rotation around a point not just the center.
+- [ ] Remove or implement final methods.
 - [ ] Finish translate methods.
 - [ ] Add sprite group to sprite group methods.
 - [ ] Look into 3 pixel shift glitch.
