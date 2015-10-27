@@ -2,10 +2,10 @@
 - [x] Create short for notation for all major common classes.
   - [x] Remove extra constructors that complicate the code.
   - [x] Review javadoc.
-- [ ] Review and finish clone methods.
+- [x] Review and finish clone methods.
 - [ ] Review animation class.
-  - [ ] Add methods for start and pause.
-  - [ ] Check if clone method is needed.
+  - [ ] Add methods for start and pause and reset.
+  - [x] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
 - [ ] Add more methods to sprite class.
   - [ ] Check over constructors and see if more options could be added there.

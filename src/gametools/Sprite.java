@@ -81,13 +81,18 @@ public class Sprite extends Area {
     }
     
     /**
-     * Creates a sprite and copies over the properties from the specified sprite.
+     * Creates a sprite and copies over the properties from the passed in object.
      * @param sprite The sprite to copy the properties from.
      */
     public Sprite(Sprite sprite) {
-        //Finsh here
         this(sprite.getPosition(), sprite.animation);
+        speed = sprite.speed;
         angle = sprite.angle;
+        moveDirection = sprite.moveDirection;
+        moveAngle = sprite.moveAngle;
+        movementArea = sprite.movementArea;
+        anglularMovement = sprite.anglularMovement;
+        directionalMovement = sprite.directionalMovement;
     }
     
     /**

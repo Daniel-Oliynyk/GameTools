@@ -48,6 +48,20 @@ public class Animation {
     }
     
     /**
+     * Creates an animation and copies over the properties from the passed in object.
+     * @param animation The animation to copy the properties from.
+     */
+    public Animation(Animation animation) {
+        frames = animation.frames;
+        speed = animation.speed;
+        frameNumber = animation.frameNumber;
+        frameImage = animation.frameImage;
+        repeatAmount = animation.repeatAmount;
+        repeatNumber = animation.repeatNumber;
+        complete = animation.complete;
+    }
+    
+    /**
      * Creates an animation using each element of the passed in array for a frame
      * and sets the animation speed and repeat amount.
      * @param frames An array of images that represent each frame of the animation.

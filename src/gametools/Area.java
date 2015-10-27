@@ -107,7 +107,7 @@ public class Area {
     }
     
     /**
-     * Creates an area and copies over the properties from the specified object.
+     * Creates an area and copies over the properties from the passed in object.
      * @param area The area to copy the properties from.
      */
     public Area(Area area) {

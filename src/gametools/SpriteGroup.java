@@ -20,11 +20,13 @@ public class SpriteGroup {
     }
     
     /**
-     * Creates a sprite group and copies over the passed in sprites.
-     * @param copy The sprite group to copy sprites in from.
+     * Creates a sprite group and copies over the properties from the passed in object.
+     * @param copy The sprite group to copy sprites and properties in from.
      */
     public SpriteGroup(SpriteGroup copy) {
-        this(copy.getAll());
+        elements = copy.elements;
+        removeSprites = copy.removeSprites;
+        moveableArea = copy.moveableArea;
     }
     
     /**
