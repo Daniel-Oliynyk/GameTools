@@ -7,7 +7,11 @@
   - [ ] Add methods for start and pause.
   - [ ] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
-- [ ] Check over constructors in sprite class and see if more options could be added there.
+- [ ] Add more methods to sprite class.
+  - [ ] Check over constructors and see if more options could be added there.
+  - [ ] Add turn and face methods.
+  - [ ] Add relational movement.
+  - [ ] Allow rotation around a point not just the center.
 - [ ] Look into 3 pixel shift glitch.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
