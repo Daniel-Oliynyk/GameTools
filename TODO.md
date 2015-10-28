@@ -3,10 +3,11 @@
   - [x] Remove extra constructors that complicate the code.
   - [x] Review javadoc.
 - [x] Review and finish clone methods.
-- [ ] Review animation class.
-  - [ ] Add methods for start and pause and reset.
+- [x] Review animation class.
+  - [x] Add methods for start and pause and reset.
   - [x] Check if clone method is needed.
 - [ ] Add sound loading and playing, and see if another class is needed for this.
+- [ ] Fix error handling in sprite sheet.
 - [ ] Add more methods to sprite class.
   - [ ] Check over constructors and see if more options could be added there.
   - [ ] Add turn and face methods.

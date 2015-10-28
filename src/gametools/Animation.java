@@ -10,7 +10,7 @@ public class Animation {
     /**
      * Loop the animation non stop infinity times.
      */
-    public static final int LP_INFINITY = -1;
+    public static final int LOOP_CONTINUOUSLY = -1;
     /**
      * An empty animation to represent a non existent or undefined object.
      */
@@ -25,7 +25,7 @@ public class Animation {
      * @param image A buffered image for the animation.
      */
     public Animation(BufferedImage image) {
-        this(new BufferedImage[]{image}, 2, LP_INFINITY);
+        this(new BufferedImage[]{image}, 2, LOOP_CONTINUOUSLY);
     }
     
     /**
@@ -33,7 +33,7 @@ public class Animation {
      * @param frames An array of images that represent each frame of the animation.
      */
     public Animation(BufferedImage[] frames) {
-        this(frames, 8, LP_INFINITY);
+        this(frames, 8, LOOP_CONTINUOUSLY);
     }
     
     /**
@@ -44,7 +44,7 @@ public class Animation {
      * to move to the next frame.
      */
     public Animation(BufferedImage[] frames, int speed) {
-        this(frames, speed, LP_INFINITY);
+        this(frames, speed, LOOP_CONTINUOUSLY);
     }
     
     /**
@@ -82,7 +82,7 @@ public class Animation {
      * @return The width of the sprite.
      */
     public int getWidth() {
-        return frames[0].getWidth();
+        return getDimensions().width;
     }
     
     /**
@@ -91,14 +91,15 @@ public class Animation {
      * @return The height of the sprite.
      */
     public int getHeight() {
-        return frames[0].getHeight();
+        return getDimensions().height;
     }
     
     /**
      * @return A dimension representing that contains both the width and height of the animation.
      */
     public Dimension getDimensions() {
-        return new Dimension(frames[0].getWidth(), frames[0].getHeight());
+        if (frames != Tools.UNDEFINED_SPRITE_SHEET) return new Dimension(frames[0].getWidth(), frames[0].getHeight());
+        else return new Dimension();
     }
     
     /**
@@ -195,18 +196,28 @@ public class Animation {
     }
     
     /**
+     * Resets and restarts the animations.
+     */
+    public void reset() {
+        frameImage = frames[0];
+        frameNumber = 0;
+        repeatNumber = 0;
+        complete = false;
+    }
+    
+    /**
      * Updates the animation and moves it to the next frame if necessary.
      */
     public void update() {
-        if (!complete && !paused) {
-            frameNumber++;
+        if (!complete) {
+            if (!paused) frameNumber++;
             if (frameNumber + 1 >= frames.length * speed) {
                 frameNumber = 0;
                 repeatNumber++;
-                if (repeatAmount != LP_INFINITY && repeatNumber >= repeatAmount) {
+                if (repeatAmount != LOOP_CONTINUOUSLY && repeatNumber >= repeatAmount) {
                     complete = true;
                     repeatNumber = 0;
-                    repeatAmount = LP_INFINITY;
+                    repeatAmount = LOOP_CONTINUOUSLY;
                 }
             }
             int frame = (int) Math.floor(frameNumber / speed);

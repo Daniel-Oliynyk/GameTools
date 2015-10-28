@@ -13,14 +13,15 @@ public class Tools {
      * An empty image to represent a non existent image or an image that failed to load.
      */
     public static final BufferedImage UNDEFINED_IMAGE = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-    private static Class main;
+    public static final BufferedImage[] UNDEFINED_SPRITE_SHEET = new BufferedImage[]{UNDEFINED_IMAGE};
+//    private static Class root;
     
     /**
      * Initializes the tools and sets up the root directory.
      * @param root The main class or any class in the root directory.
      */
     public static void initialize(Class root) {
-        main = root;
+//        Tools.root = root;
     }
     
     /**
@@ -31,7 +32,7 @@ public class Tools {
     public static BufferedImage loadImage(String path) {
         BufferedImage image;
         try {
-            image = ImageIO.read(main.getResourceAsStream(path));
+            image = ImageIO.read(Tools.class.getClassLoader().getResourceAsStream(path));
         }
         catch(Exception ex) {
             System.err.println("There were errors loading the image '" + path + "':");
@@ -79,7 +80,7 @@ public class Tools {
         }
         else {
             System.err.println("There was an error generating a spritesheet from the image '" + path + "'");
-            return new BufferedImage[]{UNDEFINED_IMAGE};
+            return UNDEFINED_SPRITE_SHEET;
         }
     }
     
@@ -91,7 +92,8 @@ public class Tools {
      * @return An array of buffered images that show the trimmed selection.
      */
     public static BufferedImage[] trimSpriteSheet(BufferedImage[] full, int start, int end) {
-        return Arrays.copyOfRange(full, start, end);
+        if (full != UNDEFINED_SPRITE_SHEET) return Arrays.copyOfRange(full, start, end);
+        else return UNDEFINED_SPRITE_SHEET;
     }
     
     /**
