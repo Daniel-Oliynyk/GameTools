@@ -2,8 +2,13 @@ package gametools;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * A collection of methods to be used across the game.
@@ -14,14 +19,14 @@ public class Tools {
      */
     public static final BufferedImage UNDEFINED_IMAGE = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     public static final BufferedImage[] UNDEFINED_SPRITE_SHEET = new BufferedImage[]{UNDEFINED_IMAGE};
-//    private static Class root;
+    protected static Class root;
     
     /**
      * Initializes the tools and sets up the root directory.
      * @param root The main class or any class in the root directory.
      */
     public static void initialize(Class root) {
-//        Tools.root = root;
+        Tools.root = root;
     }
     
     /**
@@ -32,7 +37,7 @@ public class Tools {
     public static BufferedImage loadImage(String path) {
         BufferedImage image;
         try {
-            image = ImageIO.read(Tools.class.getClassLoader().getResourceAsStream(path));
+            image = ImageIO.read(root.getResourceAsStream(path));
         }
         catch(Exception ex) {
             System.err.println("There were errors loading the image '" + path + "':");
@@ -40,6 +45,19 @@ public class Tools {
             image = UNDEFINED_IMAGE;
         }
         return image;
+    }
+    
+    public static Clip loadClip(String path) {
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(Tools.root.getResourceAsStream(path)));
+        }
+        catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
+            System.err.println("There were errors loading the sound '" + path + "':");
+            System.err.println(ex.toString());
+        }
+        return clip;
     }
     
     /**
