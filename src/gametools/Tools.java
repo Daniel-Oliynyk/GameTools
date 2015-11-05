@@ -2,13 +2,8 @@ package gametools;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * A collection of methods to be used across the game.
@@ -45,19 +40,6 @@ public class Tools {
             image = UNDEFINED_IMAGE;
         }
         return image;
-    }
-    
-    public static Clip loadClip(String path) {
-        Clip clip = null;
-        try {
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Tools.root.getResourceAsStream(path)));
-        }
-        catch (LineUnavailableException | UnsupportedAudioFileException | IOException ex) {
-            System.err.println("There were errors loading the sound '" + path + "':");
-            System.err.println(ex.toString());
-        }
-        return clip;
     }
     
     /**

@@ -6,8 +6,12 @@
 - [x] Review animation class.
   - [x] Add methods for start and pause and reset.
   - [x] Check if clone method is needed.
-- [ ] Add sound loading and playing, and see if another class is needed for this.
+- [ ] Add sound loading and playing
+  - [x] Add sound class.
+  - [ ] Fix pause in loops.
+  - [ ] Add volume adjustment to game and sound.
 - [ ] Fix error handling in sprite sheet.
+- [ ] Add pressed and released methods for game class.
 - [ ] Add more methods to sprite class.
   - [ ] Check over constructors and see if more options could be added there.
   - [ ] Add turn and face methods.
