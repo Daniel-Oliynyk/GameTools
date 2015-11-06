@@ -21,10 +21,10 @@ import javax.swing.JPanel;
  * Manages game input, the game window and the output displayed.
  */
 public abstract class Game {
-    private static int fps = 60, width = 800, height = 800;
+    private static int fps = 60, width = 800, height = 800, mouseX, mouseY;
     private static Graphics2D graphics;
-    private static HashSet<Integer> keys = new HashSet<>();
-    private static int mouseButton, mouseX, mouseY;
+    private static HashSet<Integer> keys = new HashSet<>(), mouse = new HashSet<>(),
+            prevKeys = new HashSet<>(), prevMouse = new HashSet<>();
     private static Color backgroundColor = Color.BLACK;
     private static final JFrame frame = new JFrame();
     private static BufferedImage screen;
@@ -160,7 +160,7 @@ public abstract class Game {
      * @return True if any button on the mouse is currently pressed.
      */
     public static boolean mousePressed() {
-        return mouseButton != MouseEvent.NOBUTTON;
+        return !mouse.isEmpty();
     }
     
     /**
@@ -170,7 +170,7 @@ public abstract class Game {
      * @return True if one of the mouse buttons being pressed down matches the input.
      */
     public static boolean mousePressed(int button) {
-        return mouseButton == button;
+        return mouse.contains(button);
     }
     
     /**
@@ -221,6 +221,8 @@ public abstract class Game {
                 graphics.fillRect(0, 0, width, height);
                 timeStart = System.nanoTime();
                 run();
+                prevKeys = new HashSet<>(keys);
+                prevMouse = new HashSet<>(mouse);
                 frame.repaint();
             }
         }
@@ -272,12 +274,12 @@ public abstract class Game {
     private final MouseAdapter clickControl = new MouseAdapter() {
         @Override
         public void mousePressed(MouseEvent me) {
-            mouseButton = me.getButton();
+            mouse.add(me.getButton());
         }
         
         @Override
         public void mouseReleased(MouseEvent me) {
-            mouseButton = MouseEvent.NOBUTTON;
+            mouse.remove(me.getButton());
         }
     };
     
@@ -285,19 +287,19 @@ public abstract class Game {
         @Override
         public void windowIconified(WindowEvent we) {
             keys = new HashSet<>();
-            mouseButton = MouseEvent.NOBUTTON;
+            mouse = new HashSet<>();
         }
         
         @Override
         public void windowLostFocus(WindowEvent we) {
             keys = new HashSet<>();
-            mouseButton = MouseEvent.NOBUTTON;
+            mouse = new HashSet<>();
         }
         
         @Override
         public void windowDeactivated(WindowEvent we) {
             keys = new HashSet<>();
-            mouseButton = MouseEvent.NOBUTTON;
+            mouse = new HashSet<>();
         }
     };
     //</editor-fold>
