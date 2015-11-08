@@ -5,7 +5,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 /**
- * An easy to use class for sound playback that is a wrapper for the java clip class.
+ * An easy to use class for sound playback that wraps the java clip class.
  */
 public class Sound {
     private Clip clip;
