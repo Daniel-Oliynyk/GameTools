@@ -6,12 +6,13 @@
 - [x] Review animation class.
   - [x] Add methods for start and pause and reset.
   - [x] Check if clone method is needed.
-- [ ] Add sound loading and playing
+- [x] Add sound loading and playing
   - [x] Add sound class.
-  - [ ] Fix pause in loops.
-  - [ ] Add volume adjustment to game and sound.
-- [ ] Fix error handling in sprite sheet.
-- [ ] Add pressed and released methods for game class.
+  - [x] Fix pause in loops.
+  - [x] Add volume adjustment.
+- [x] Fix error handling in sprite sheet.
+- [x] Add pressed and released methods for game class.
+- [x] Add background image method.
 - [ ] Add more methods to sprite class.
   - [ ] Check over constructors and see if more options could be added there.
   - [ ] Add turn and face methods.
@@ -26,6 +27,7 @@
   - [ ] Create one with full image set and basic methods for a card game.
   - [ ] Check what other types need to be made.
 - [ ] Review tools class and see if any more helper methods can be added.
+- [ ] Remove notes about window methods by fixing bugs from execution order.
 - [ ] Finish online segment.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.

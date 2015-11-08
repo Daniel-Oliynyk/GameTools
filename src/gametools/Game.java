@@ -25,9 +25,8 @@ public abstract class Game {
     private static Graphics2D graphics;
     private static HashSet<Integer> keys = new HashSet<>(), mouse = new HashSet<>(),
             prevKeys = new HashSet<>(), prevMouse = new HashSet<>();
-    private static Color backgroundColor = Color.BLACK;
     private static final JFrame frame = new JFrame();
-    private static BufferedImage screen;
+    private static BufferedImage screen, background = Tools.UNDEFINED_IMAGE;
     
     /**
      * Initializes the game and runs the window method.
@@ -89,11 +88,8 @@ public abstract class Game {
         return fps;
     }
     
-    /**
-     * @return The background color that the screen is repainted to every frame.
-     */
-    public static Color getBackgroundColor() {
-        return backgroundColor;
+    public static BufferedImage getBackground() {
+        return background;
     }
     
     /**
@@ -111,12 +107,27 @@ public abstract class Game {
         frame.setTitle(title);
     }
     
-    /**
-     * Sets the color that the screen is repainted to every frame. The default is black.
-     * @param color The color that the screen is repainted to every frame. The default is black.
-     */
     protected void setBackground(Color color) {
-        backgroundColor = color;
+        background = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D back = background.createGraphics();
+        back.setColor(color);
+        back.fillRect(0, 0, width, height);
+    }
+    
+    protected void setBackground(BufferedImage image) {
+        background = image;
+    }
+    
+    private void fixBackground() {
+        if (background == Tools.UNDEFINED_IMAGE) setBackground(Color.BLACK);
+        else if (background.getWidth() != width || background.getHeight() != height) {
+            BufferedImage newBackground = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D back = newBackground.createGraphics();
+            for (int x = 0; x < newBackground.getWidth(); x += background.getWidth())
+                for (int y = 0; y < newBackground.getHeight(); y += background.getHeight())
+                    back.drawImage(background, x, y, null);
+            background = newBackground.getSubimage(0, 0, width, height);
+        }
     }
     
     /**
@@ -156,6 +167,24 @@ public abstract class Game {
     }
     //</editor-fold>
     
+    public static boolean mouseEngaged() {
+        for (Integer button : mouse) if (!prevMouse.contains(button)) return true;
+        return false;
+    }
+    
+    public static boolean mouseEngaged(int button) {
+        return mouse.contains(button) && !prevMouse.contains(button);
+    }
+    
+    public static boolean mouseReleased() {
+        for (Integer button : prevMouse) if (!mouse.contains(button)) return true;
+        return false;
+    }
+    
+    public static boolean mouseReleased(int button) {
+        return prevMouse.contains(button) && !mouse.contains(button);
+    }
+    
     /**
      * @return True if any button on the mouse is currently pressed.
      */
@@ -171,6 +200,28 @@ public abstract class Game {
      */
     public static boolean mousePressed(int button) {
         return mouse.contains(button);
+    }
+    
+    public static boolean mouseInside(Area obj) {
+        return getMousePosition().isInside(obj);
+    }
+    
+    public static boolean keyEngaged() {
+        for (Integer key : keys) if (!prevKeys.contains(key)) return true;
+        return false;
+    }
+    
+    public static boolean keyEngaged(int key) {
+        return keys.contains(key) && !prevKeys.contains(key);
+    }
+    
+    public static boolean keyReleased() {
+        for (Integer key : prevKeys) if (!keys.contains(key)) return true;
+        return false;
+    }
+    
+    public static boolean keyReleased(int key) {
+        return prevKeys.contains(key) && !keys.contains(key);
     }
     
     /**
@@ -198,6 +249,7 @@ public abstract class Game {
     protected void create() {
         screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         graphics = screen.createGraphics();
+        fixBackground();
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.addKeyListener(keyControl);
@@ -217,8 +269,8 @@ public abstract class Game {
         double timeStart = System.nanoTime();
         while (true) {
             if (System.nanoTime() - timeStart > 1000000000 / fps) {
-                graphics.setColor(backgroundColor);
-                graphics.fillRect(0, 0, width, height);
+                fixBackground();
+                graphics.drawImage(background, 0, 0, null);
                 timeStart = System.nanoTime();
                 run();
                 prevKeys = new HashSet<>(keys);

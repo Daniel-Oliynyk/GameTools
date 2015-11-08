@@ -53,7 +53,8 @@ public class Tools {
      */
     public static BufferedImage[] loadSpriteSheet(String path, Dimension size, int start, int end) {
         BufferedImage[] full = loadSpriteSheet(path, size);
-        return trimSpriteSheet(full, start, end);
+        if (full != UNDEFINED_SPRITE_SHEET) return trimSpriteSheet(full, start, end);
+        else return UNDEFINED_SPRITE_SHEET;
     }
     
     /**
