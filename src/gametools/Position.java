@@ -214,6 +214,11 @@ public class Position {
         return Math.atan2(pos.y - y, pos.x - x);
     }
     
+    /**
+     * Checks if the point is inside the specified object.
+     * @param obj The object to check collision against.
+     * @return True if the point is completely inside the specified object.
+     */
     public boolean isInside(Area obj) {
         return obj.isWithin(this);
     }

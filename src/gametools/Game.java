@@ -88,6 +88,9 @@ public abstract class Game {
         return fps;
     }
     
+    /**
+     * @return The current background image set for the game.
+     */
     public static BufferedImage getBackground() {
         return background;
     }
@@ -107,6 +110,10 @@ public abstract class Game {
         frame.setTitle(title);
     }
     
+    /**
+     * Sets the background to a solid color.
+     * @param color The color the background should be.
+     */
     protected void setBackground(Color color) {
         background = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D back = background.createGraphics();
@@ -114,6 +121,11 @@ public abstract class Game {
         back.fillRect(0, 0, width, height);
     }
     
+    /**
+     * Sets an image to a background. If the image is smaller than the screen size
+     * then it will be tiled automatically.
+     * @param image The image or tile to be used for the background.
+     */
     protected void setBackground(BufferedImage image) {
         background = image;
     }
@@ -167,20 +179,40 @@ public abstract class Game {
     }
     //</editor-fold>
     
+    /**
+     * Checks if any mouse button was just pressed down.
+     * @return True if any mouse button was just pressed.
+     */
     public static boolean mouseEngaged() {
         for (Integer button : mouse) if (!prevMouse.contains(button)) return true;
         return false;
     }
     
+    /**
+     * Checks if the specified mouse button was just pressed down.
+     * @param button An integer representing the mouse button pressed down
+     * (use the mouse event class to find the right integer).
+     * @return True if the specified mouse button was just pressed.
+     */
     public static boolean mouseEngaged(int button) {
         return mouse.contains(button) && !prevMouse.contains(button);
     }
     
+    /**
+     * Checks if any mouse button was just released.
+     * @return True if any mouse button was just released.
+     */
     public static boolean mouseReleased() {
         for (Integer button : prevMouse) if (!mouse.contains(button)) return true;
         return false;
     }
     
+    /**
+     * Checks if the specified mouse button was just released.
+     * @param button An integer representing the mouse button released
+     * (use the mouse event class to find the right integer).
+     * @return True if the specified mouse button was just released.
+     */
     public static boolean mouseReleased(int button) {
         return prevMouse.contains(button) && !mouse.contains(button);
     }
@@ -194,32 +226,57 @@ public abstract class Game {
     
     /**
      * Used to determine whether a button on the mouse is currently pressed by the user.
-     * @param button An integer representing the button on the mouse button
-     * being searched for (use the mouse event class to find the right integer).
+     * @param button An integer representing the mouse button being searched for
+     * (use the mouse event class to find the right integer).
      * @return True if one of the mouse buttons being pressed down matches the input.
      */
     public static boolean mousePressed(int button) {
         return mouse.contains(button);
     }
     
+    /**
+     * Checks if the mouse is currently inside an object.
+     * @param obj The object to check collision with the mouse.
+     * @return True if the mouse is completely inside the specified object.
+     */
     public static boolean mouseInside(Area obj) {
         return getMousePosition().isInside(obj);
     }
     
+    /**
+     * Checks if any button on the keyboard was just pressed down.
+     * @return True if any button on the keyboard was just pressed.
+     */
     public static boolean keyEngaged() {
         for (Integer key : keys) if (!prevKeys.contains(key)) return true;
         return false;
     }
     
+    /**
+     * Checks if the specified key was just pressed down.
+     * @param key An integer representing the key pressed down
+     * (use the key event class to find the right integer).
+     * @return True if the specified key was just pressed.
+     */
     public static boolean keyEngaged(int key) {
         return keys.contains(key) && !prevKeys.contains(key);
     }
     
+    /**
+     * Checks if any button on the keyboard was just released.
+     * @return True if any button on the keyboard was just released.
+     */
     public static boolean keyReleased() {
         for (Integer key : prevKeys) if (!keys.contains(key)) return true;
         return false;
     }
     
+    /**
+     * Checks if the specified key was just released.
+     * @param key An integer representing the key released
+     * (use the key event class to find the right integer).
+     * @return True if the specified key was just released.
+     */
     public static boolean keyReleased(int key) {
         return prevKeys.contains(key) && !keys.contains(key);
     }

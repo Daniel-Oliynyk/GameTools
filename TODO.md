@@ -19,6 +19,8 @@
   - [ ] Add relational movement.
   - [ ] Allow rotation around a point not just the center.
 - [ ] Remove or implement final methods.
+- [ ] Add collision methods for point.
+- [ ] Add test classes.
 - [ ] Finish translate methods.
 - [ ] Add sprite group to sprite group methods.
 - [ ] Look into 3 pixel shift glitch.
@@ -28,6 +30,7 @@
   - [ ] Check what other types need to be made.
 - [ ] Review tools class and see if any more helper methods can be added.
 - [ ] Remove notes about window methods by fixing bugs from execution order.
+- [ ] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.

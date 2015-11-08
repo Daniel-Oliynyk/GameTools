@@ -13,7 +13,13 @@ public class Tools {
      * An empty image to represent a non existent image or an image that failed to load.
      */
     public static final BufferedImage UNDEFINED_IMAGE = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+    /**
+     * An undefined sprite sheet or a sprite sheet that could not be created due to load errors.
+     */
     public static final BufferedImage[] UNDEFINED_SPRITE_SHEET = new BufferedImage[]{UNDEFINED_IMAGE};
+    /**
+     * A class situated in the root of the project to help with creating relative paths.
+     */
     protected static Class root;
     
     /**
