@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  * A collection of methods to be used across the game.
@@ -141,5 +142,13 @@ public class Tools {
      */
     public static Dimension dm(int width, int height) {
         return new Dimension(width, height);
+    }
+    
+    public static void messageDialog(String prompt) {
+        JOptionPane.showMessageDialog(null, prompt);
+    }
+    
+    public static String inputDialog(String prompt) {
+        return JOptionPane.showInputDialog(prompt);
     }
 }

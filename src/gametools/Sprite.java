@@ -64,11 +64,10 @@ public class Sprite extends Area {
         COUNTER_CLOCKWISE;
     }
     //</editor-fold>
-    private static final double ROTATION_OFFSET = Math.PI / 2;
     private int speed = 5;
     private Direction lastDirection, moveDirection;
-    private double angle = -ROTATION_OFFSET, moveAngle, rotationSpeed = 0.05;
-    private boolean moved, anglularMovement, directionalMovement;
+    private double angle, moveAngle, rotationSpeed = 0.05;
+    private boolean moved, anglularMovement, directionalMovement, relationalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Area movementArea = Area.UNDEFINED_AREA;
     
@@ -122,6 +121,10 @@ public class Sprite extends Area {
         return speed;
     }
     
+    public double getRotationSpeed() {
+        return rotationSpeed * 100;
+    }
+    
     /**
      * @return The current animation on the sprite.
      */
@@ -139,8 +142,7 @@ public class Sprite extends Area {
     }
     
     /**
-     * @return The current angle of the sprite, with negative half of PI being the
-     * default angle (straight up) for the sprite.
+     * @return The current angle of the sprite.
      */
     public double getAngle() {
         return angle;
@@ -164,7 +166,7 @@ public class Sprite extends Area {
         Position far = new Position();
         boolean flag = true;
         for (Position corner : corners) {
-            corner.rotate(getCenter(), angle + -ROTATION_OFFSET);
+            corner.rotate(getCenter(), angle);
             if (corner.x < image.x || flag) image.x = corner.x;
             if (corner.y < image.y || flag) image.y = corner.y;
             if (corner.x > far.x || flag) far.x(corner.x);
@@ -202,6 +204,10 @@ public class Sprite extends Area {
         this.speed = speed;
     }
     
+    public void setRotationSpeed(double speed) {
+        rotationSpeed = speed / 100;
+    }
+    
     /**
      * Assigns a new animation to the sprite.
      * @param animation A new animation for the sprite.
@@ -212,19 +218,11 @@ public class Sprite extends Area {
     }
     
     /**
-     * Rotates the sprite around its center, with negative half of PI being the
-     * default angle (straight up) for the sprite.
+     * Rotates the sprite around its center.
      * @param ang The new angle of the sprite.
      */
     public void setAngle(double ang) {
         angle = ang;
-    }
-    
-    /**
-     * Resets the rotation of the sprite so it displays an unrotated image.
-     */
-    public void resetAngle() {
-        angle = -ROTATION_OFFSET;
     }
     
     /**
@@ -359,7 +357,7 @@ public class Sprite extends Area {
         }
         animation.update();
         AffineTransform at = new AffineTransform();
-        at.rotate(angle + ROTATION_OFFSET, getCenter().x, getCenter().y);
+        at.rotate(angle, getCenter().x, getCenter().y);
         at.translate(x, y);
         Game.painter().drawImage(animation.getFrame(), at, null);
     }
