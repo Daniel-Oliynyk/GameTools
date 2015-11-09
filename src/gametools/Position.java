@@ -45,28 +45,28 @@ public class Position {
     /**
      * @return The precise x location of the position.
      */
-    public final double x() {
+    public double x() {
         return getX();
     }
     
     /**
      * @return The precise x location of the position.
      */
-    public final double getX() {
+    public double getX() {
         return x;
     }
     
     /**
      * @return The precise y location of the position.
      */
-    public final double y() {
+    public double y() {
         return getY();
     }
     
     /**
      * @return The precise y location of the position.
      */
-    public final double getY() {
+    public double getY() {
         return y;
     }
     
@@ -74,7 +74,7 @@ public class Position {
      * Sets the x value of the position.
      * @param x The new x value.
      */
-    public final void x(double x) {
+    public void x(double x) {
         setX(x);
     }
     
@@ -82,7 +82,7 @@ public class Position {
      * Sets the x value of the position.
      * @param x The new x value.
      */
-    public final void setX(double x) {
+    public void setX(double x) {
         set(x, y);
     }
     
@@ -90,7 +90,7 @@ public class Position {
      * Sets the y value of the position.
      * @param y The new x value.
      */
-    public final void y(double y) {
+    public void y(double y) {
         setY(y);
     }
     
@@ -98,7 +98,7 @@ public class Position {
      * Sets the y value of the position.
      * @param y The new x value.
      */
-    public final void setY(double y) {
+    public void setY(double y) {
         set(x, y);
     }
     
@@ -106,7 +106,7 @@ public class Position {
      * Increments the x value by the specified amount.
      * @param ix The amount to increment the x by.
      */
-    public final void ix(double ix) {
+    public void ix(double ix) {
         incrementX(ix);
     }
     
@@ -114,7 +114,7 @@ public class Position {
      * Increments the x value by the specified amount.
      * @param ix The amount to increment the x by.
      */
-    public final void incrementX(double ix) {
+    public void incrementX(double ix) {
         set(x + ix, y);
     }
     
@@ -122,7 +122,7 @@ public class Position {
      * Increments the y value by the specified amount.
      * @param iy The amount to increment the y by.
      */
-    public final void iy(double iy) {
+    public void iy(double iy) {
         incrementY(iy);
     }
     
@@ -130,7 +130,7 @@ public class Position {
      * Increments the y value by the specified amount.
      * @param iy The amount to increment the y by.
      */
-    public final void incrementY(double iy) {
+    public void incrementY(double iy) {
         set(x, y + iy);
     }
     
@@ -138,7 +138,7 @@ public class Position {
      * Copies over the x and and y from the specified position.
      * @param pos The position to copy coordinates from.
      */
-    public final void set(Position pos) {
+    public void set(Position pos) {
         set(pos.x, pos.y);
     }
     
@@ -147,7 +147,7 @@ public class Position {
      * @param x The new x value.
      * @param y The new y value.
      */
-    public final void set(double x, double y) {
+    public void set(double x, double y) {
         setPosition(x, y);
     }
     
@@ -155,7 +155,7 @@ public class Position {
      * Copies over the x and and y from the specified position.
      * @param pos The position to copy coordinates from.
      */
-    public final void setPosition(Position pos) {
+    public void setPosition(Position pos) {
         setPosition(pos.x, pos.y);
     }
     
@@ -164,7 +164,7 @@ public class Position {
      * @param x The new x value.
      * @param y The new y value.
      */
-    public final void setPosition(double x, double y) {
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -173,7 +173,7 @@ public class Position {
      * Translates the position and adds the passed in values to the x and y.
      * @param trans The amount to add to the current x and y value.
      */
-    public final void trans(Position trans) {
+    public void trans(Position trans) {
         translate(trans);
     }
     
@@ -181,7 +181,7 @@ public class Position {
      * Translates the position and adds the passed in values to the x and y.
      * @param trans The amount to add to the current x and y value.
      */
-    public final void translate(Position trans) {
+    public void translate(Position trans) {
         x = x + trans.x;
         y = y + trans.y;
     }

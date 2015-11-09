@@ -318,7 +318,7 @@ public class Sprite extends Area {
      * Draws the sprite and updates its animation.
      */
     @Override
-    public final void draw() {
+    public void draw() {
         update();
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);

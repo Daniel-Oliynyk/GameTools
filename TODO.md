@@ -18,7 +18,7 @@
   - [ ] Add turn and face methods.
   - [ ] Add relational movement.
   - [ ] Allow rotation around a point not just the center.
-- [ ] Remove or implement final methods.
+- [x] Remove or implement final methods.
 - [ ] Add collision methods for point.
 - [ ] Add test classes.
 - [x] Change constants to enums if possible.
@@ -29,7 +29,7 @@
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
   - [ ] Check what other types need to be made.
-- [ ] Review tools class and see if any more helper methods can be added.
+- [x] Review tools class and see if any more helper methods can be added.
 - [ ] Remove notes about window methods by fixing bugs from execution order.
 - [ ] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.

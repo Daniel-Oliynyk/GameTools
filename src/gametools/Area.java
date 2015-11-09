@@ -133,14 +133,14 @@ public class Area {
     /**
      * @return The x position of the object.
      */
-    public final double getX() {
+    public double getX() {
         return getPosition().x;
     }
     
     /**
      * @return The y position of the object.
      */
-    public final double getY() {
+    public double getY() {
         return getPosition().y;
     }
     
@@ -149,7 +149,7 @@ public class Area {
      * set to be the width of the sprite image.
      * @return The width of the object.
      */
-    public final int getWidth() {
+    public int getWidth() {
         return getDimensions().width;
     }
     
@@ -158,28 +158,28 @@ public class Area {
      * set to be the height of the sprite image.
      * @return The height of the object.
      */
-    public final int getHeight() {
+    public int getHeight() {
         return getDimensions().height;
     }
     
     /**
      * @return A point representing the current position of the object.
      */
-    public final Position getPosition() {
+    public Position getPosition() {
         return new Position(x, y);
     }
     
     /**
      * @return A dimension representing the current width and height of the object.
      */
-    public final Dimension getDimensions() {
+    public Dimension getDimensions() {
         return new Dimension(width, height);
     }
     
     /**
      * @return A point representing the center of the object.
      */
-    public final Position getCenter() {
+    public Position getCenter() {
         return new Position(x + (width / 2), y + (height / 2));
     }
     
@@ -188,7 +188,7 @@ public class Area {
      * @param cor The corner to find the position of.
      * @return A position with the x and y of the specified corner or an undefined position.
      */
-    public final Position getCorner(Corner cor) {
+    public Position getCorner(Corner cor) {
         if (cor == Corner.TOP_LEFT) return new Position(x, y);
         else if (cor == Corner.TOP_RIGHT) return new Position(x + width, y);
         else if (cor == Corner.BOTTOM_LEFT) return new Position(x, y + height);
@@ -200,7 +200,7 @@ public class Area {
      * Returns all four corners of the area.
      * @return An array containing the four corners.
      */
-    public final Position[] getAllCorners() {
+    public Position[] getAllCorners() {
         Position[] all = new Position[4];
         for (int i = 0; i < Corner.values().length; i++) all[i] = getCorner(Corner.values()[i]);
         return all;
@@ -210,7 +210,7 @@ public class Area {
      * Sets the x position of the object.
      * @param x The new x position.
      */
-    public final void setX(double x) {
+    public void setX(double x) {
         setPosition(new Position(x, y));
     }
     
@@ -218,7 +218,7 @@ public class Area {
      * Sets the y position of the object.
      * @param y The new y position.
      */
-    public final void setY(double y) {
+    public void setY(double y) {
         setPosition(new Position(x, y));
     }
     
@@ -226,7 +226,7 @@ public class Area {
      * Sets the x and y position of the object at once.
      * @param pos The new position for the object.
      */
-    public final void setPosition(Position pos) {
+    public void setPosition(Position pos) {
         setArea(pos, getDimensions());
     }
     
@@ -250,7 +250,7 @@ public class Area {
      * Sets the width and height of the object.
      * @param size The new dimensions of the object.
      */
-    public final void setDimensions(Dimension size) {
+    public void setDimensions(Dimension size) {
         setArea(new Position(), size);
     }
     
@@ -258,7 +258,7 @@ public class Area {
      * Copies over the position and dimensions from the specified area.
      * @param area The area whose properties should be copied over.
      */
-    public final void setArea(Area area) {
+    public void setArea(Area area) {
         setArea(area.getPosition(), area.getDimensions());
     }
     
@@ -267,7 +267,7 @@ public class Area {
      * @param pos The new position.
      * @param size The new dimensions.
      */
-    public final void setArea(Position pos, Dimension size) {
+    public void setArea(Position pos, Dimension size) {
         x = pos.x;
         y = pos.y;
         width = size.width;
@@ -278,7 +278,7 @@ public class Area {
      * Centers the object around the specified coordinates.
      * @param pos The position of the center.
      */
-    public final void centerOn(Position pos) {
+    public void centerOn(Position pos) {
         x = pos.x - width / 2;
         y = pos.y - height / 2;
     }
