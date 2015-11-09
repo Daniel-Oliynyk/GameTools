@@ -206,6 +206,15 @@ public class Position {
     }
     
     /**
+     * Uses trigonometry to calculate the angle to center of the specified object.
+     * @param obj The object to calculate the angle to.
+     * @return The angle to the specified position in radians.
+     */
+    public double angleTo(Area obj) {
+        return angleTo(obj.getCenter());
+    }
+    
+    /**
      * Uses trigonometry to calculate the angle to the specified position.
      * @param pos The position to calculate the angle to.
      * @return The angle to the specified position in radians.

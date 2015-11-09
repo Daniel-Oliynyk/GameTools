@@ -82,6 +82,13 @@ public abstract class Game {
     }
     
     /**
+     * @return The center of the screen.
+     */
+    public static Position getCenter() {
+        return getArea().getCenter();
+    }
+    
+    /**
      * @return The rough FPS the game is running at.
      */
     public static int getFPS() {
