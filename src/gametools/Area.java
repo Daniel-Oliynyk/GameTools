@@ -1,7 +1,6 @@
 package gametools;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,60 +8,68 @@ import java.util.List;
  * Used for basic positioning and collision.
  */
 public class Area {
-    //<editor-fold defaultstate="collapsed" desc="Constants">
+    //<editor-fold defaultstate="collapsed" desc="Enums and Constants">
     /**
      * An empty area to represent a non existent or undefined object.
      */
     public static final Area UNDEFINED_AREA = new Area(Position.UNDEFINED_POSITION, new Dimension(-1, -1));
     /**
-     * Collision when the first object has any point within the second.
+     * The different methods for testing collision between two objects.
      */
-    public static final int CL_TOUCH = 0;
+    public static enum Collision {
+        /**
+         * Collision when the first object has any point within the second.
+         */
+        TOUCH,
+        /**
+         * Collision when the first object has any point within the second
+         * horizontally, no matter the vertical position.
+         */
+        TOUCH_X,
+        /**
+         * Collision when the first object has any point within the second
+         * vertically, no matter the horizontal position.
+         */
+        TOUCH_Y,
+        /**
+         * Collision when the first object is completely within the second.
+         */
+        INSIDE,
+        /**
+         * Collision when the first object is completely within the second
+         * horizontally, no matter the vertical position.
+         */
+        INSIDE_X,
+        /**
+         * Collision when the first object is completely within the second
+         * vertically, no matter the horizontal position.
+         */
+        INSIDE_Y;
+    }
     /**
-     * Collision when the first object has any point within the second
-     * horizontally, no matter the vertical position.
+     * The corners of the object.
      */
-    public static final int CL_TOUCH_X = 1;
-    /**
-     * Collision when the first object has any point within the second
-     * vertically, no matter the horizontal position.
-     */
-    public static final int CL_TOUCH_Y = 2;
-    /**
-     * Collision when the first object is completely within the second.
-     */
-    public static final int CL_INSIDE = 3;
-    /**
-     * Collision when the first object is completely within the second
-     * horizontally, no matter the vertical position.
-     */
-    public static final int CL_INSIDE_X = 4;
-    /**
-     * Collision when the first object is completely within the second
-     * vertically, no matter the horizontal position.
-     */
-    public static final int CL_INSIDE_Y = 5;
-    /**
-     * Top left corner of the object.
-     */
-    public static final int CR_TOP_LEFT = 0;
-    /**
-     * Top right corner of the object.
-     */
-    public static final int CR_TOP_RIGHT = 1;
-    /**
-     * Bottom left corner of the object.
-     */
-    public static final int CR_BOTTOM_LEFT = 2;
-    /**
-     * Bottom right corner of the object.
-     */
-    public static final int CR_BOTTOM_RIGHT = 3;
-    private static final List<Integer> CL_TOUCH_ALL = Arrays.asList(CL_TOUCH, CL_TOUCH_X, CL_TOUCH_Y);
-    private static final List<Integer> CL_INSIDE_ALL = Arrays.asList(CL_INSIDE, CL_INSIDE_X, CL_INSIDE_Y);
-    private static final List<Integer> CL_ALL = new ArrayList<Integer>(){{addAll(CL_TOUCH_ALL); addAll(CL_TOUCH_ALL);}};
-    private static final List<Integer> CR_ALL = Arrays.asList(CR_TOP_LEFT, CR_TOP_RIGHT, CR_BOTTOM_LEFT, CR_BOTTOM_RIGHT);
+    public static enum Corner {
+        /**
+         * Top left corner of the object.
+         */
+        TOP_LEFT,
+        /**
+         * Top right corner of the object.
+         */
+        TOP_RIGHT,
+        /**
+         * Bottom left corner of the object.
+         */
+        BOTTOM_LEFT,
+        /**
+         * Bottom right corner of the object.
+         */
+        BOTTOM_RIGHT;
+    }
     //</editor-fold>
+    private static final List<Collision> TOUCH_COLLISION = Arrays.asList(Collision.TOUCH, Collision.TOUCH_X, Collision.TOUCH_Y);
+    private static final List<Collision> INSIDE_COLLISION = Arrays.asList(Collision.INSIDE, Collision.INSIDE_X, Collision.INSIDE_Y);
     /**
      * The precise x position of the object.
      */
@@ -178,17 +185,14 @@ public class Area {
     
     /**
      * Returns a position representing one of the corners of the object.
-     * @param corner A integer that matches one of the corner constants.
+     * @param cor The corner to find the position of.
      * @return A position with the x and y of the specified corner or an undefined position.
      */
-    public final Position getCorner(int corner) {
-        if (CR_ALL.contains(corner)) {
-            if (corner == CR_TOP_LEFT) return new Position(x, y);
-            else if (corner == CR_TOP_RIGHT) return new Position(x + width, y);
-            else if (corner == CR_BOTTOM_LEFT) return new Position(x, y + height);
-            else if (corner == CR_BOTTOM_RIGHT) return new Position(x + width, y + height);
-            else return Position.UNDEFINED_POSITION;
-        }
+    public final Position getCorner(Corner cor) {
+        if (cor == Corner.TOP_LEFT) return new Position(x, y);
+        else if (cor == Corner.TOP_RIGHT) return new Position(x + width, y);
+        else if (cor == Corner.BOTTOM_LEFT) return new Position(x, y + height);
+        else if (cor == Corner.BOTTOM_RIGHT) return new Position(x + width, y + height);
         else return Position.UNDEFINED_POSITION;
     }
     
@@ -198,7 +202,7 @@ public class Area {
      */
     public final Position[] getAllCorners() {
         Position[] all = new Position[4];
-        for (int i = 0; i < 4; i++) all[i] = getCorner(i);
+        for (int i = 0; i < Corner.values().length; i++) all[i] = getCorner(Corner.values()[i]);
         return all;
     }
     
@@ -305,7 +309,7 @@ public class Area {
      * @return True if the objects are in contact.
      */
     public boolean isWithin(Area obj) {
-        return isWithin(obj, CL_TOUCH);
+        return isWithin(obj, Collision.TOUCH);
     }
     
     /**
@@ -315,9 +319,9 @@ public class Area {
      * @param method The collision testing method to use.
      * @return True if the objects are in contact.
      */
-    public boolean isWithin(Area obj, int method) {
+    public boolean isWithin(Area obj, Collision method) {
         boolean horizontal, vertical;
-        if (CL_INSIDE_ALL.contains(method)) {
+        if (INSIDE_COLLISION.contains(method)) {
             horizontal = x > obj.x && x < obj.x + obj.width && x + width <= obj.x + obj.width;
             vertical = y > obj.y && y < obj.y + obj.height && y + height <= obj.y + obj.height;
         }
@@ -325,9 +329,9 @@ public class Area {
             horizontal = x + width > obj.x && x < obj.x + obj.width;
             vertical = y + height > obj.y && y < obj.y + obj.height;
         }
-        if (method == CL_TOUCH || method == CL_INSIDE) return horizontal && vertical;
-        else if (method == CL_TOUCH_X || method == CL_INSIDE_X) return horizontal;
-        else if (method == CL_TOUCH_Y || method == CL_INSIDE_Y) return vertical;
+        if (method == Collision.TOUCH || method == Collision.INSIDE) return horizontal && vertical;
+        else if (method == Collision.TOUCH_X || method == Collision.INSIDE_X) return horizontal;
+        else if (method == Collision.TOUCH_Y || method == Collision.INSIDE_Y) return vertical;
         else return horizontal && vertical;
     }
     

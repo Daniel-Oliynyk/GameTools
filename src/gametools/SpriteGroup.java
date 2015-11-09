@@ -60,7 +60,7 @@ public class SpriteGroup {
      * @return The first sprite that is colliding with the specified object. 
      */
     public Sprite getFirstWithin(Area obj) {
-        return getFirstWithin(obj, Area.CL_TOUCH);
+        return getFirstWithin(obj, Area.Collision.TOUCH);
     }
     
     /**
@@ -70,7 +70,7 @@ public class SpriteGroup {
      * @param method The collision testing method to use.
      * @return The first sprite that is colliding with the specified object. 
      */
-    public Sprite getFirstWithin(Area obj, int method) {
+    public Sprite getFirstWithin(Area obj, Area.Collision method) {
         return getAllWithin(obj, method).get(0);
     }
     
@@ -81,7 +81,7 @@ public class SpriteGroup {
      * @return A sprite group containing all sprites that are touching the object.
      */
     public SpriteGroup getGroupWithin(Area obj) {
-        return getGroupWithin(obj, Area.CL_TOUCH);
+        return getGroupWithin(obj, Area.Collision.TOUCH);
     }
     
     /**
@@ -91,7 +91,7 @@ public class SpriteGroup {
      * @param method The collision testing method to use.
      * @return A sprite group containing all sprites that are touching the object.
      */
-    public SpriteGroup getGroupWithin(Area obj, int method) {
+    public SpriteGroup getGroupWithin(Area obj, Area.Collision method) {
         return new SpriteGroup(getAllWithin(obj, method));
     }
     
@@ -102,7 +102,7 @@ public class SpriteGroup {
      * @return An array list containing all sprites that are touching the object.
      */
     public List<Sprite> getAllWithin(Area obj) {
-        return getAllWithin(obj, Area.CL_TOUCH);
+        return getAllWithin(obj, Area.Collision.TOUCH);
     }
     
     /**
@@ -112,7 +112,7 @@ public class SpriteGroup {
      * @param method The collision testing method to use.
      * @return An array list containing all sprites that are touching the object.
      */
-    public List<Sprite> getAllWithin(Area obj, int method) {
+    public List<Sprite> getAllWithin(Area obj, Area.Collision method) {
         List<Sprite> colliding = new ArrayList<>();
         for (Sprite sprite : elements) if (sprite.isWithin(obj, method)) colliding.add(sprite);
         return colliding;
@@ -176,7 +176,7 @@ public class SpriteGroup {
      * @param obj The object to check collision against.
      */
     public void removeAllWithin(Area obj) {
-        removeAllWithin(obj, Area.CL_TOUCH);
+        removeAllWithin(obj, Area.Collision.TOUCH);
     }
     
     /**
@@ -185,7 +185,7 @@ public class SpriteGroup {
      * @param obj The object to check collision against.
      * @param method The collision testing method to use.
      */
-    public void removeAllWithin(Area obj, int method) {
+    public void removeAllWithin(Area obj, Area.Collision method) {
         removeAll(getAllWithin(obj, method));
     }
     

@@ -21,6 +21,7 @@
 - [ ] Remove or implement final methods.
 - [ ] Add collision methods for point.
 - [ ] Add test classes.
+- [x] Change constants to enums if possible.
 - [ ] Finish translate methods.
 - [ ] Add sprite group to sprite group methods.
 - [ ] Look into 3 pixel shift glitch.

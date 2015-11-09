@@ -15,6 +15,7 @@ public class Animation {
      * An empty animation to represent a non existent or undefined object.
      */
     public static final Animation UNDEFINED_ANIMATION = new Animation(Tools.UNDEFINED_IMAGE);
+    
     private final BufferedImage[] frames;
     private BufferedImage frameImage;
     private int frameNumber, speed, repeatNumber, repeatAmount;

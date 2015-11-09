@@ -1,62 +1,66 @@
 package gametools;
 
 import java.awt.geom.AffineTransform;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Used to represent game objects or characters. Contains methods for movement, animation and collision.
  */
 public class Sprite extends Area {
-    //<editor-fold defaultstate="collapsed" desc="Constants">
+    //<editor-fold defaultstate="collapsed" desc="Enums">
     /**
-     * No movement or movement that does not follow a pre-defined direction.
+     * The predefined directions the sprite can move in.
      */
-    public static final int DR_UNDEFINED = -1;
-    /**
-     * Movement in the east (right) direction.
-     */
-    public static final int DR_EAST = 0;
-    /**
-     * Diagonal movement in the south east (downward and rightward) direction.
-     */
-    public static final int DR_SOUTH_EAST = 1;
-    /**
-     * Movement in the south (downward) direction.
-     */
-    public static final int DR_SOUTH = 2;
-    /**
-     * Diagonal movement in the south west (downward and leftward) direction.
-     */
-    public static final int DR_SOUTH_WEST = 3;
-    /**
-     * Movement in the west (left) direction.
-     */
-    public static final int DR_WEST = 4;
-    /**
-     * Diagonal movement in the north west (upward and leftward) direction.
-     */
-    public static final int DR_NORTH_WEST = 5;
-    /**
-     * Movement in the north (upward) direction.
-     */
-    public static final int DR_NORTH = 6;
-    /**
-     * Diagonal movement in the north east (upward and rightward) direction.
-     */
-    public static final int DR_NORTH_EAST = 7;
-    /**
-     * Clockwise sprite rotation.
-     */
-    public static final int RT_CLOCK_WISE = 0;
-    /**
-     * Counter-clockwise sprite rotation.
-     */
-    public static final int RT_COUNTER_CLOCK_WISE = 0;
-    private static final List<Integer> DR_ALL = Arrays.asList(DR_EAST, DR_SOUTH_EAST, DR_SOUTH,
-            DR_SOUTH_WEST, DR_WEST, DR_NORTH_WEST, DR_NORTH, DR_NORTH_EAST);
+    public static enum Direction {
+        /**
+         * No movement or movement that does not follow a pre-defined direction.
+         */
+        UNDEFINED(-1),
+        /**
+         * Movement in the east (right) direction.
+         */
+        EAST(0),
+        /**
+         * Diagonal movement in the south east (downward and rightward) direction.
+         */
+        SOUTH_EAST(1),
+        /**
+         * Movement in the south (downward) direction.
+         */
+        SOUTH(2),
+        /**
+         * Diagonal movement in the south west (downward and leftward) direction.
+         */
+        SOUTH_WEST(3),
+        /**
+         * Movement in the west (left) direction.
+         */
+        WEST(4),
+        /**
+         * Diagonal movement in the north west (upward and leftward) direction.
+         */
+        NORTH_WEST(5),
+        /**
+         * Movement in the north (upward) direction.
+         */
+        NORTH(6),
+        /**
+         * Diagonal movement in the north east (upward and rightward) direction.
+         */
+        NORTH_EAST(7);
+        
+        private final int rotation;
+        
+        private Direction(int rotation) {
+            this.rotation = rotation;
+        }
+        
+        private int rotation() {
+            return rotation;
+        }
+    }
     //</editor-fold>
-    private int speed = 5, lastDirection, moveDirection;
+    private int speed = 5;
+    private Direction lastDirection, moveDirection;
     private double angle, moveAngle;
     private boolean moved, anglularMovement, directionalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
@@ -167,11 +171,11 @@ public class Sprite extends Area {
     
     /**
      * Returns the direction the sprite was moved in the previous or
-     * current frame. Returns -1 (undefined direction) if the sprite was not recently
+     * current frame. Returns an undefined direction if the sprite was not recently
      * moved or was moved in a direction not defined by one of the constants.
      * @return The last direction the sprite was moved.
      */
-    public int getLastDirection() {
+    public Direction getLastDirection() {
         return lastDirection;
     }
     
@@ -226,7 +230,7 @@ public class Sprite extends Area {
     public void moveAt(double ang) {
         x += Math.cos(ang) * speed;
         y += Math.sin(ang) * speed;
-        lastDirection = DR_UNDEFINED;
+        lastDirection = Direction.UNDEFINED;
     }
     
     /**
@@ -240,29 +244,25 @@ public class Sprite extends Area {
     
     /**
      * Moves the sprite at one of the defined directions at a custom speed.
-     * @param direction One of the direction constants that represents where
-     * the sprite should move to.
+     * @param dir The direction the sprite should move to.
      * @param speed The speed at which to move at.
      */
-    public void moveTo(int direction, int speed) {
+    public void moveTo(Direction dir, int speed) {
         int prev = this.speed;
         this.speed = speed;
-        moveTo(direction);
+        moveTo(dir);
         this.speed = prev;
     }
     
     /**
      * Moves the sprite at one of the defined directions at the set speed.
-     * @param direction One of the direction constants that represents where
-     * the sprite should move to.
+     * @param dir The direction the sprite should move to.
      */
-    public void moveTo(int direction) {
-        if (DR_ALL.contains(direction)) {
-            moved = true;
-            double ang = (Math.PI / 4) * direction;
-            moveAt(ang);
-        }
-        lastDirection = direction;
+    public void moveTo(Direction dir) {
+        moved = true;
+        double ang = (Math.PI / 4) * dir.rotation();
+        moveAt(ang);
+        lastDirection = dir;
     }
     
     /**
@@ -278,15 +278,12 @@ public class Sprite extends Area {
     /**
      * Moves the sprite constantly in the specified direction until it gets
      * removed or it goes outside its movement area.
-     * @param direction One of the direction constants that represents where
-     * the sprite should move to.
+     * @param dir The direction the sprite should move to.
      */
-    public void moveConstantlyTo(int direction) {
-        if (DR_ALL.contains(direction)) {
-            directionalMovement = true;
-            anglularMovement = false;
-            moveDirection = direction;
-        }
+    public void moveConstantlyTo(Direction dir) {
+        directionalMovement = true;
+        anglularMovement = false;
+        moveDirection = dir;
     }
     
     /**
@@ -306,7 +303,7 @@ public class Sprite extends Area {
     public void stopConstantlyMoving() {
         directionalMovement = false;
         anglularMovement = false;
-        moveDirection = DR_UNDEFINED;
+        moveDirection = Direction.UNDEFINED;
         moveAngle = 0;
     }
     
@@ -314,7 +311,7 @@ public class Sprite extends Area {
      * An empty method that runs before the draw method and should be overridden for custom code.
      */
     protected void update() {
-        //Do nothing
+        //Do nothing.
     }
     
     /**
@@ -325,11 +322,11 @@ public class Sprite extends Area {
         update();
         if (directionalMovement) moveTo(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
-        if (!moved) lastDirection = DR_UNDEFINED;
+        if (!moved) lastDirection = Direction.UNDEFINED;
         moved = false;
         if (movementArea != Area.UNDEFINED_AREA) {
-            if (!isWithin(movementArea, CL_INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
-            if (!isWithin(movementArea, CL_INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
+            if (!isWithin(movementArea, Collision.INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
+            if (!isWithin(movementArea, Collision.INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
         }
         animation.update();
         AffineTransform at = new AffineTransform();
