@@ -148,6 +148,10 @@ public class Sprite extends Area {
         return angle;
     }
     
+    public boolean getRelationalMovement() {
+        return relationalMovement;
+    }
+    
     /**
      * Returns the sprite converted to an area object.
      * @return An area that represents the sprite.
@@ -225,6 +229,10 @@ public class Sprite extends Area {
         angle = ang;
     }
     
+    public void setRelationalMovement(boolean relational) {
+        relationalMovement = relational;
+    }
+    
     /**
      * Defines the area the sprite can move inside. A sprite will not be able
      * to go outside this area using the movement commands however the sprite can
@@ -287,6 +295,7 @@ public class Sprite extends Area {
     public void moveTo(Direction dir) {
         moved = true;
         double ang = (Math.PI / 4) * dir.rotation();
+        if (relationalMovement) ang += angle;
         moveAt(ang);
         lastDirection = dir;
     }
