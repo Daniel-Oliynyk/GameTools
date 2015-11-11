@@ -257,6 +257,14 @@ public class Sprite extends Area {
         else if (rot == Rotation.COUNTER_CLOCKWISE) angle -= rotationSpeed;
     }
     
+    public void turnTo(double ang) {
+        ang = ang - Math.PI;
+        double cw = ang - angle;
+        double ccw = (Math.PI * 2) - cw;
+        if (cw > ccw) turn(Rotation.CLOCKWISE);
+        else turn(Rotation.COUNTER_CLOCKWISE);
+    }
+    
     /**
      * Moves the sprite at the passed in angle at the set speed.
      * @param ang A double of the angle in radians.
