@@ -21,7 +21,7 @@ public class Tools {
     /**
      * A class situated in the root of the project to help with creating relative paths.
      */
-    protected static Class root;
+    private static Class root;
     
     /**
      * Initializes the tools and sets up the root directory.
@@ -29,6 +29,10 @@ public class Tools {
      */
     public static void initialize(Class root) {
         Tools.root = root;
+    }
+    
+    public static Class getRoot() {
+        return root;
     }
     
     /**

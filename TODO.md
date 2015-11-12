@@ -17,10 +17,12 @@
   - [x] Check over constructors and see if more options could be added there.
   - [x] Add turn and face methods.
   - [x] Add relational movement.
-  - [ ] Allow rotation around a point not just the center.
+  - [x] Allow rotation around a point not just the center.
   - [ ] Add getter for previous rotation.
+  - [ ] Add constant rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
+- [ ] Add properties to area enums and check other enums (fix sprite).
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.

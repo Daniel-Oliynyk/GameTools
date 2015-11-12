@@ -17,6 +17,12 @@ public class Position {
      */
     protected double y;
     
+    protected static double fixAngle(double ang) {
+        double fixed = ang % (Math.PI * 2);
+        if (fixed < 0) fixed = (Math.PI * 2) + fixed;
+        return fixed;
+    }
+    
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates the object with the position of zero.
@@ -220,7 +226,7 @@ public class Position {
      * @return The angle to the specified position in radians.
      */
     public double angleTo(Position pos) {
-        return Math.atan2(pos.y - y, pos.x - x);
+        return fixAngle(Math.atan2(pos.y - y, pos.x - x));
     }
     
     /**
@@ -240,8 +246,9 @@ public class Position {
     public void rotate(Position mid, double ang) {
         double cur = angleTo(mid);
         double dist = dist(mid);
-        x = mid.x + Math.cos(cur + ang) * dist;
-        y = mid.y + Math.sin(cur + ang) * dist;
+        ang = fixAngle(ang);
+        x = mid.x - (Math.cos(fixAngle(cur + ang)) * dist);
+        y = mid.y - (Math.sin(fixAngle(cur + ang)) * dist);
     }
     
     /**

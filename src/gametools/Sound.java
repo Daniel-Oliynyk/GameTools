@@ -21,7 +21,7 @@ public class Sound {
     public Sound(String path) {
         try {
             clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(Tools.root.getResourceAsStream(path)));
+            clip.open(AudioSystem.getAudioInputStream(Tools.getRoot().getResourceAsStream(path)));
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         }
         catch (Exception ex) {

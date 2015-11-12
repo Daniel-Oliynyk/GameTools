@@ -76,9 +76,8 @@ public class Sprite extends Area {
         COUNTER_CLOCKWISE;
     }
     //</editor-fold>
-    private int speed = 5;
     private Direction lastDirection, moveDirection;
-    private double angle, moveAngle, rotationSpeed = 0.05;
+    private double angle, moveAngle, speed = 5, rotationSpeed = 0.05;
     private boolean moved, anglularMovement, directionalMovement, relationalMovement;
     private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Area movementArea = Area.UNDEFINED_AREA;
@@ -129,7 +128,7 @@ public class Sprite extends Area {
     /**
      * @return The speed the sprite moves at.
      */
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
     
@@ -222,7 +221,7 @@ public class Sprite extends Area {
      * Sets the speed the sprite will move at when using its move methods.
      * @param speed The amount of pixels the sprite will move each frame.
      */
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
     
@@ -248,7 +247,7 @@ public class Sprite extends Area {
      * @param ang The new angle of the sprite.
      */
     public void setAngle(double ang) {
-        angle = fixAngle(ang);
+        angle = Position.fixAngle(ang);
     }
     
     /**
@@ -271,10 +270,17 @@ public class Sprite extends Area {
     }
     //</editor-fold>
     
-    private double fixAngle(double ang) {
-        double fixed = ang % (Math.PI * 2);
-        if (fixed < 0) fixed = (Math.PI * 2) + fixed;
-        return fixed;
+    public void rotate(Position mid, Rotation rot) {
+        if (rot == Rotation.CLOCKWISE) rotate(mid, rotationSpeed);
+        else if (rot == Rotation.COUNTER_CLOCKWISE) rotate(mid, -rotationSpeed);
+    }
+    
+    public void rotate(Position mid, double ang) {
+        Position newLoc = new Position(getCenter());
+        newLoc.rotate(mid, ang);
+        x = newLoc.x - (width / 2);
+        y = newLoc.y - (height / 2);
+        face(mid);
     }
     
     /**
@@ -323,7 +329,7 @@ public class Sprite extends Area {
      * @param ang The angle the sprite should turn towards.
      */
     public void turnTo(double ang) {
-        ang = fixAngle(ang);
+        ang = Position.fixAngle(ang);
         double dif = ang - angle;
         Rotation rot;
         if (Math.abs(dif) > Math.PI) {
@@ -362,10 +368,10 @@ public class Sprite extends Area {
      * @param dir The direction the sprite should move to.
      * @param speed The speed at which to move at.
      */
-    public void moveTo(Direction dir, int speed) {
-        int prev = this.speed;
+    public void move(Direction dir, int speed) {
+        double prev = this.speed;
         this.speed = speed;
-        moveTo(dir);
+        move(dir);
         this.speed = prev;
     }
     
@@ -373,7 +379,7 @@ public class Sprite extends Area {
      * Moves the sprite at one of the defined directions at the set speed.
      * @param dir The direction the sprite should move to.
      */
-    public void moveTo(Direction dir) {
+    public void move(Direction dir) {
         moved = true;
         double ang = (Math.PI / 4) * dir.rotation();
         if (relationalMovement) ang += angle;
@@ -437,7 +443,7 @@ public class Sprite extends Area {
     @Override
     public void draw() {
         update();
-        if (directionalMovement) moveTo(moveDirection);
+        if (directionalMovement) move(moveDirection);
         else if (anglularMovement) moveAt(moveAngle);
         if (!moved) lastDirection = Direction.UNDEFINED;
         moved = false;

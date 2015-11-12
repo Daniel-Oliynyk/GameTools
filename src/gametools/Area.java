@@ -67,9 +67,9 @@ public class Area {
          */
         BOTTOM_RIGHT;
     }
-    //</editor-fold>
     private static final List<Collision> TOUCH_COLLISION = Arrays.asList(Collision.TOUCH, Collision.TOUCH_X, Collision.TOUCH_Y);
     private static final List<Collision> INSIDE_COLLISION = Arrays.asList(Collision.INSIDE, Collision.INSIDE_X, Collision.INSIDE_Y);
+    //</editor-fold>
     /**
      * The precise x position of the object.
      */
