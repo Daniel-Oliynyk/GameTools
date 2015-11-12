@@ -18,6 +18,7 @@
   - [x] Add turn and face methods.
   - [x] Add relational movement.
   - [ ] Allow rotation around a point not just the center.
+  - [ ] Add getter for previous rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
 - [ ] Create small libraries on top of current code for more difficult operations.

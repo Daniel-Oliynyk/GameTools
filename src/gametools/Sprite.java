@@ -58,9 +58,21 @@ public class Sprite extends Area {
             return rotation;
         }
     }
+    /**
+     * The directions in which the sprite can rotate.
+     */
     public static enum Rotation {
+        /**
+         * No movement or movement that does not follow a pre-defined direction.
+         */
         UNDEFINED,
+        /**
+         * Clockwise rotation.
+         */
         CLOCKWISE,
+        /**
+         * Counter clockwise rotation.
+         */
         COUNTER_CLOCKWISE;
     }
     //</editor-fold>
@@ -121,6 +133,9 @@ public class Sprite extends Area {
         return speed;
     }
     
+    /**
+     * @return The rotation speed of the sprite.
+     */
     public double getRotationSpeed() {
         return rotationSpeed * 100;
     }
@@ -148,6 +163,9 @@ public class Sprite extends Area {
         return angle;
     }
     
+    /**
+     * @return Whether or not the sprite is moving using directions relative to its angle.
+     */
     public boolean getRelationalMovement() {
         return relationalMovement;
     }
@@ -208,8 +226,12 @@ public class Sprite extends Area {
         this.speed = speed;
     }
     
+    /**
+     * Sets the speed the sprite will rotate at. The default is ten.
+     * @param speed The speed the sprite will rotate at.
+     */
     public void setRotationSpeed(double speed) {
-        rotationSpeed = speed / 100;
+        rotationSpeed = speed / 200;
     }
     
     /**
@@ -226,9 +248,14 @@ public class Sprite extends Area {
      * @param ang The new angle of the sprite.
      */
     public void setAngle(double ang) {
-        angle = ang;
+        angle = fixAngle(ang);
     }
     
+    /**
+     * Turns on or off relational movement, where a sprite's directions are
+     * relational to where it is facing (its angle).
+     * @param relational True to turn relational movement on, false to turn it off.
+     */
     public void setRelationalMovement(boolean relational) {
         relationalMovement = relational;
     }
@@ -244,25 +271,71 @@ public class Sprite extends Area {
     }
     //</editor-fold>
     
+    private double fixAngle(double ang) {
+        double fixed = ang % (Math.PI * 2);
+        if (fixed < 0) fixed = (Math.PI * 2) + fixed;
+        return fixed;
+    }
+    
+    /**
+     * Sets the angle of the sprite to face the center of the specified object.
+     * @param obj The object the sprite should face.
+     */
     public void face(Area obj) {
         face(obj.getCenter());
     }
     
+    /**
+     * Sets the angle of the sprite to face the specified position.
+     * @param pos The position the sprite should face.
+     */
     public void face(Position pos) {
         setAngle(getCenter().angleTo(pos));
     }
     
+    /**
+     * Turns the sprite in the specified direction using the sprite's rotation speed.
+     * @param rot The rotation constant for the direction the sprite should turn in.
+     */
     public void turn(Rotation rot) {
-        if (rot == Rotation.CLOCKWISE) angle += rotationSpeed;
-        else if (rot == Rotation.COUNTER_CLOCKWISE) angle -= rotationSpeed;
+        if (rot == Rotation.CLOCKWISE) setAngle(angle + rotationSpeed);
+        else if (rot == Rotation.COUNTER_CLOCKWISE) setAngle(angle - rotationSpeed);
     }
     
+    /**
+     * Turns the sprite until it faces the specified object.
+     * @param obj The object the sprite should turn towards.
+     */
+    public void turnTo(Area obj) {
+        turnTo(obj.getCenter());
+    }
+    
+    /**
+     * Turns the sprite until it faces the specified position.
+     * @param pos The position the sprite should turn towards.
+     */
+    public void turnTo(Position pos) {
+        turnTo(getCenter().angleTo(pos));
+    }
+    
+    /**
+     * Turns the sprite until it reaches the specified angle.
+     * @param ang The angle the sprite should turn towards.
+     */
     public void turnTo(double ang) {
-        ang = ang - Math.PI;
-        double cw = ang - angle;
-        double ccw = (Math.PI * 2) - cw;
-        if (cw > ccw) turn(Rotation.CLOCKWISE);
-        else turn(Rotation.COUNTER_CLOCKWISE);
+        ang = fixAngle(ang);
+        double dif = ang - angle;
+        Rotation rot;
+        if (Math.abs(dif) > Math.PI) {
+            if (dif > 0) rot = Rotation.COUNTER_CLOCKWISE;
+            else rot = Rotation.CLOCKWISE;
+        }
+        else {
+            if (dif > 0) rot = Rotation.CLOCKWISE;
+            else rot = Rotation.COUNTER_CLOCKWISE;
+        }
+        if (Math.abs(dif) > rotationSpeed) turn(rot);
+        else setAngle(ang);
     }
     
     /**

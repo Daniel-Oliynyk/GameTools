@@ -376,14 +376,14 @@ public abstract class Game {
     private final MouseMotionAdapter moveControl = new MouseMotionAdapter() {
         @Override
         public void mouseDragged(MouseEvent me) {
-            mouseX = me.getX();
-            mouseY = me.getY() - 3;
+            mouseX = me.getX() - 1;
+            mouseY = me.getY() - 5;
         }
         
         @Override
         public void mouseMoved(MouseEvent me) {
-            mouseX = me.getX();
-            mouseY = me.getY() - 3;
+            mouseX = me.getX() - 1;
+            mouseY = me.getY() - 5;
         }
     };
 
