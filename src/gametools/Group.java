@@ -7,38 +7,38 @@ import java.util.List;
 /**
  * Class for managing and updating groups of sprites.
  */
-public class SpriteGroup {
+public class Group {
     private final List<Sprite> elements;
     private boolean removeSprites;
-    private Area moveableArea;
+    private Area moveableArea = Area.UNDEFINED_AREA;
     
     /**
-     * Creates a blank sprite group.
+     * Creates a blank group with no sprites.
      */
-    public SpriteGroup() {
+    public Group() {
         this(new ArrayList<>());
     }
     
     /**
-     * Creates a sprite group and copies over the properties from the passed in object.
-     * @param copy The sprite group to copy sprites and properties in from.
+     * Creates a copy of the specified group.
+     * @param copy The group to copy contents and properties from.
      */
-    public SpriteGroup(SpriteGroup copy) {
+    public Group(Group copy) {
         elements = copy.elements;
         removeSprites = copy.removeSprites;
         moveableArea = copy.moveableArea;
     }
     
     /**
-     * Creates a sprite group and fills it with the passed in sprites.
+     * Creates a group from the passed in sprites.
      * @param elements The sprites the group should start with.
      */
-    public SpriteGroup(List<Sprite> elements) {
+    public Group(List<Sprite> elements) {
         this.elements = elements;
     }
     
     /**
-     * Returns a single sprite from the group at the specified reference.
+     * Returns a single sprite at the specified position in the group.
      * @param i The index of the sprite.
      * @return The sprite at the specified position in the group.
      */
@@ -47,7 +47,7 @@ public class SpriteGroup {
     }
     
     /**
-     * @return An array list containing all sprites in order.
+     * @return An array list containing all the sprites in order.
      */
     public List<Sprite> getAll() {
         return elements;
@@ -75,24 +75,22 @@ public class SpriteGroup {
     }
     
     /**
-     * Returns all sprites from the group that are colliding with the specified
-     * object as a new sprite group.
+     * Returns a group of all the sprites that are colliding with the specified object.
      * @param obj The object to check collision against.
-     * @return A sprite group containing all sprites that are touching the object.
+     * @return A group containing all sprites that are touching the object.
      */
-    public SpriteGroup getGroupWithin(Area obj) {
+    public Group getGroupWithin(Area obj) {
         return getGroupWithin(obj, Area.Collision.TOUCH);
     }
     
     /**
-     * Returns all sprites from the group that are colliding with the specified
-     * object as a new sprite group.
+     * Returns a group of all the sprites that are colliding with the specified object.
      * @param obj The object to check collision against.
      * @param method The collision testing method to use.
-     * @return A sprite group containing all sprites that are touching the object.
+     * @return A group containing all sprites that are touching the object.
      */
-    public SpriteGroup getGroupWithin(Area obj, Area.Collision method) {
-        return new SpriteGroup(getAllWithin(obj, method));
+    public Group getGroupWithin(Area obj, Area.Collision method) {
+        return new Group(getAllWithin(obj, method));
     }
     
     /**
@@ -193,7 +191,7 @@ public class SpriteGroup {
      * Removes all the sprites from the group that match the ones passed in.
      * @param sprites An group of sprites to remove.
      */
-    public void removeAll(SpriteGroup sprites) {
+    public void removeAll(Group sprites) {
         elements.removeAll(sprites.getAll());
     }
     
@@ -228,7 +226,7 @@ public class SpriteGroup {
      */
     public void removeWhenOffScreen() {
         removeSprites = true;
-        moveableArea = new Area(new Position(), Game.getDimensions());
+        moveableArea = new Area(Game.getArea());
     }
     
     /**
@@ -238,7 +236,8 @@ public class SpriteGroup {
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) {
             Sprite sprite = it.next();
             sprite.draw();
-            if (removeSprites && !sprite.isWithin(moveableArea)) it.remove();
+            if (removeSprites && moveableArea != Area.UNDEFINED_AREA)
+                if (!sprite.isWithin(moveableArea)) it.remove();
         }
     }
 }

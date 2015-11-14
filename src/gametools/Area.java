@@ -78,16 +78,7 @@ public class Area {
      * The precise y position of the object.
      */
     protected double y;
-    /**
-     * The width of the object (usually the width of the object's associated
-     * image if it exists).
-     */
-    protected int width;
-    /**
-     * The height of the object (usually the height of the object's associated
-     * image if it exists).
-     */
-    protected int height;
+    int width, height;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
@@ -127,7 +118,10 @@ public class Area {
      * @param size The dimensions of the area.
      */
     public Area(Position pos, Dimension size) {
-        setArea(pos, size);
+        x = pos.x;
+        y = pos.y;
+        width = size.width;
+        height = size.height;
     }
     
     /**
@@ -251,7 +245,7 @@ public class Area {
      * @param size The new dimensions of the object.
      */
     public void setDimensions(Dimension size) {
-        setArea(new Position(), size);
+        setArea(getPosition(), size);
     }
     
     /**
@@ -333,6 +327,11 @@ public class Area {
         else if (method == Collision.TOUCH_X || method == Collision.INSIDE_X) return horizontal;
         else if (method == Collision.TOUCH_Y || method == Collision.INSIDE_Y) return vertical;
         else return horizontal && vertical;
+    }
+    
+    public void draw(Position pos) {
+        setPosition(pos);
+        draw();
     }
     
     /**

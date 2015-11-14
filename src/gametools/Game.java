@@ -126,6 +126,7 @@ public abstract class Game {
         Graphics2D back = background.createGraphics();
         back.setColor(color);
         back.fillRect(0, 0, width, height);
+        back.dispose();
     }
     
     /**
@@ -146,6 +147,7 @@ public abstract class Game {
                 for (int y = 0; y < newBackground.getHeight(); y += background.getHeight())
                     back.drawImage(background, x, y, null);
             background = newBackground.getSubimage(0, 0, width, height);
+            back.dispose();
         }
     }
     

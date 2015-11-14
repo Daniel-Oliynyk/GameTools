@@ -45,7 +45,7 @@ public class Tools {
         try {
             image = ImageIO.read(root.getResourceAsStream(path));
         }
-        catch(Exception ex) {
+        catch (Exception ex) {
             System.err.println("There were errors loading the image '" + path + "':");
             System.err.println(ex.toString());
             image = UNDEFINED_IMAGE;

@@ -1,11 +1,11 @@
 package gametools;
 
-import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 /**
  * Used to represent game objects or characters. Contains methods for movement, animation and collision.
  */
-public class Sprite extends Area {
+public class Sprite extends Graphic {
     //<editor-fold defaultstate="collapsed" desc="Enums">
     /**
      * The predefined directions the sprite can move in.
@@ -77,19 +77,24 @@ public class Sprite extends Area {
     }
     //</editor-fold>
     private Direction lastDirection, moveDirection;
-    private double angle, moveAngle, speed = 5, rotationSpeed = 0.05;
+    private double moveAngle, speed = 5, rotationSpeed = 0.05;
     private boolean moved, anglularMovement, directionalMovement, relationalMovement;
-    private Animation animation, previous = Animation.UNDEFINED_ANIMATION;
     private Area movementArea = Area.UNDEFINED_AREA;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
-     * Creates a blank placeholder sprite without an image or animation.<br>
-     * <b>Note</b>: This sprite may cause errors if it is attempted to be drawn
-     * without an image or animation first set.
+     * Creates a blank sprite without an image or animation.
      */
     public Sprite() {
         super();
+    }
+    
+    /**
+     * Creates a sprite in the default location (the corner of the screen) with a custom image.
+     * @param image The image for the sprite.
+     */
+    public Sprite(BufferedImage image) {
+        super(image);
     }
     
     /**
@@ -97,22 +102,7 @@ public class Sprite extends Area {
      * @param animation The animation for the sprite.
      */
     public Sprite(Animation animation) {
-        this(new Position(), animation);
-    }
-    
-    /**
-     * Creates a sprite and copies over the properties from the passed in object.
-     * @param sprite The sprite to copy the properties from.
-     */
-    public Sprite(Sprite sprite) {
-        this(sprite.getPosition(), sprite.animation);
-        speed = sprite.speed;
-        angle = sprite.angle;
-        moveDirection = sprite.moveDirection;
-        moveAngle = sprite.moveAngle;
-        movementArea = sprite.movementArea;
-        anglularMovement = sprite.anglularMovement;
-        directionalMovement = sprite.directionalMovement;
+        super(animation);
     }
     
     /**
@@ -121,8 +111,7 @@ public class Sprite extends Area {
      * @param animation The image for the sprite.
      */
     public Sprite(Position pos, Animation animation) {
-        super(pos, animation.getDimensions());
-        this.animation = animation;
+        super(pos, animation);
     }
     
     /**
@@ -140,26 +129,12 @@ public class Sprite extends Area {
     }
     
     /**
-     * @return The current animation on the sprite.
-     */
-    public Animation getAnimation() {
-        return animation;
-    }
-    
-    /**
      * Returns the area in which the sprite is allowed to move with the movement commands.
      * @return The area in which the sprite is allowed to move within or the constant
      * for an undefined area if none is currently set.
      */
     public Area getMovementArea() {
         return movementArea;
-    }
-    
-    /**
-     * @return The current angle of the sprite.
-     */
-    public double getAngle() {
-        return angle;
     }
     
     /**
@@ -170,36 +145,6 @@ public class Sprite extends Area {
     }
     
     /**
-     * Returns the sprite converted to an area object.
-     * @return An area that represents the sprite.
-     */
-    public Area getArea() {
-        return new Area(getPosition(), getDimensions());
-    }
-    
-    /**
-     * Returns the full area of the rotated image.
-     * @return An area that completely covers the rotated image.
-     */
-    public Area getImageArea() {
-        Area image = new Area(getArea());
-        Position[] corners = getAllCorners();
-        Position far = new Position();
-        boolean flag = true;
-        for (Position corner : corners) {
-            corner.rotate(getCenter(), angle);
-            if (corner.x < image.x || flag) image.x = corner.x;
-            if (corner.y < image.y || flag) image.y = corner.y;
-            if (corner.x > far.x || flag) far.x(corner.x);
-            if (corner.y > far.y || flag) far.y(corner.y);
-            flag = false;
-        }
-        image.width = (int) (far.x - image.x);
-        image.height = (int) (far.y - image.y);
-        return image;
-    }
-    
-    /**
      * Returns the direction the sprite was moved in the previous or
      * current frame. Returns an undefined direction if the sprite was not recently
      * moved or was moved in a direction not defined by one of the constants.
@@ -207,14 +152,6 @@ public class Sprite extends Area {
      */
     public Direction getLastDirection() {
         return lastDirection;
-    }
-    
-    /**
-     * @return The previous animation of the sprite, or the constant for an undefined
-     * animation if no previous animation was set.
-     */
-    public Animation getPreviousAnimation() {
-        return previous;
     }
     
     /**
@@ -231,23 +168,6 @@ public class Sprite extends Area {
      */
     public void setRotationSpeed(double speed) {
         rotationSpeed = speed / 200;
-    }
-    
-    /**
-     * Assigns a new animation to the sprite.
-     * @param animation A new animation for the sprite.
-     */
-    public void setAnimation(Animation animation) {
-        previous = this.animation;
-        this.animation = animation;
-    }
-    
-    /**
-     * Rotates the sprite around its center.
-     * @param ang The new angle of the sprite.
-     */
-    public void setAngle(double ang) {
-        angle = Position.fixAngle(ang);
     }
     
     /**
@@ -432,9 +352,7 @@ public class Sprite extends Area {
     /**
      * An empty method that runs before the draw method and should be overridden for custom code.
      */
-    protected void update() {
-        //Do nothing.
-    }
+    protected void update() {}
     
     /**
      * Draws the sprite and updates its animation.<br>
@@ -451,10 +369,6 @@ public class Sprite extends Area {
             if (!isWithin(movementArea, Collision.INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
             if (!isWithin(movementArea, Collision.INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
         }
-        animation.update();
-        AffineTransform at = new AffineTransform();
-        at.rotate(angle, getCenter().x, getCenter().y);
-        at.translate(x, y);
-        Game.painter().drawImage(animation.getFrame(), at, null);
+        super.draw();
     }
 }

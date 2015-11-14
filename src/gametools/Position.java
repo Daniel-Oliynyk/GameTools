@@ -17,7 +17,7 @@ public class Position {
      */
     protected double y;
     
-    protected static double fixAngle(double ang) {
+    public static double fixAngle(double ang) {
         double fixed = ang % (Math.PI * 2);
         if (fixed < 0) fixed = (Math.PI * 2) + fixed;
         return fixed;
@@ -201,6 +201,10 @@ public class Position {
         return getClass().getName() + "[x=" + x + ", y=" + y + "]";
     }
     //</editor-fold>
+    
+    public double dist(Area obj) {
+        return dist(obj.getCenter());
+    }
     
     /**
      * Calculates the distance between two positions using pythagorean theorem.

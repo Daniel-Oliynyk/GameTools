@@ -1,7 +1,10 @@
 package gametools;
 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import sun.java2d.loops.ScaledBlit;
 
 /**
  * Used to animate game objects such as sprites.
@@ -16,8 +19,7 @@ public class Animation {
      */
     public static final Animation UNDEFINED_ANIMATION = new Animation(Tools.UNDEFINED_IMAGE);
     
-    private final BufferedImage[] frames;
-    private BufferedImage frameImage;
+    private final BufferedImage[] frames, original;
     private int frameNumber, speed, repeatNumber, repeatAmount;
     private boolean complete, paused;
     
@@ -53,10 +55,10 @@ public class Animation {
      * @param animation The animation to copy the properties from.
      */
     public Animation(Animation animation) {
-        frames = animation.frames;
+        original = animation.frames;
+        frames = animation.original;
         speed = animation.speed;
         frameNumber = animation.frameNumber;
-        frameImage = animation.frameImage;
         repeatAmount = animation.repeatAmount;
         repeatNumber = animation.repeatNumber;
         complete = animation.complete;
@@ -71,7 +73,7 @@ public class Animation {
      * @param repeatAmount The amount of times the animation should repeat before completing.
      */
     public Animation(BufferedImage[] frames, int speed, int repeatAmount) {
-        frameImage = frames[0];
+        original = frames;
         this.frames = frames;
         this.speed = speed;
         this.repeatAmount = repeatAmount;
@@ -107,7 +109,7 @@ public class Animation {
      * @return A buffered image of the current frame of the animation.
      */
     public BufferedImage getFrame() {
-        return frameImage;
+        return frames[frameNumber];
     }
     
     /**
@@ -196,11 +198,27 @@ public class Animation {
         paused = pause;
     }
     
+    public void setWidth(int width) {
+        setDimensions(new Dimension(width, frames[0].getHeight()));
+    }
+    
+    public void setHeight(int height) {
+        setDimensions(new Dimension(frames[0].getWidth(), height));
+    }
+    
+    public void setDimensions(Dimension size) {
+        for (int i = 0; i < original.length; i++) {
+            BufferedImage resized = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB); 
+            Graphics2D graphics = resized.createGraphics();
+            graphics.drawImage(resized, 0, 0, size.width, size.height, null);
+            graphics.dispose();
+        }
+    }
+    
     /**
      * Resets and restarts the animations.
      */
     public void reset() {
-        frameImage = frames[0];
         frameNumber = 0;
         repeatNumber = 0;
         complete = false;
@@ -221,9 +239,8 @@ public class Animation {
                     repeatAmount = LOOP_CONTINUOUSLY;
                 }
             }
-            int frame = (int) Math.floor(frameNumber / speed);
-            frameImage = frames[frame];
+            frameNumber = (int) Math.floor(frameNumber / speed);
         }
-        else frameImage = frames[0];
+        else frameNumber = 0;
     }
 }
