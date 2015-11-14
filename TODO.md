@@ -14,7 +14,7 @@
 - [x] Add pressed and released methods for game class.
 - [x] Add background image method.
 - [ ] Add more methods to sprite class.
-  - [x] Check over constructors and see if more options could be added there.
+  - [ ] Check over constructors and see if more options could be added there.
   - [x] Add turn and face methods.
   - [x] Add relational movement.
   - [x] Allow rotation around a point not just the center.
@@ -22,14 +22,27 @@
   - [ ] Add constant rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
-- [ ] Add properties to area enums and check other enums (fix sprite).
+- [ ] Add properties to area enums and check other enums (fix sprite and make public).
+- [ ] Split sprite class to graphic class.
+  - [ ] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
+    - [ ] Fix joker image and add more card backs.
+    - [x] Change to extend graphic class.
   - [ ] Create a level chooser.
   - [ ] See if GUI can be added.
   - [ ] Check what other types need to be made.
 - [x] Change constants to enums if possible.
+- [ ] Add on press and release methods to sprite.
+- [ ] Add image to animation conversion and graphic to sprite conversion.
+- [ ] Remove width and height changing on sprites or make it consistent.
+  - [ ] Add a scale method and use it override the height and width methods.
+- [x] Remove get image area method.
+- [ ] Animation error image checking.
+- [ ] Add dragging of an area.
+- [ ] Add ... methods.
+- [ ] Standardize method order.
 - [ ] Add custom cursor options.
 - [ ] Finish translate methods.
 - [ ] Add sprite group to sprite group methods and group rotation methods.
@@ -39,5 +52,8 @@
 - [ ] Remove notes about window methods by fixing bugs from execution order.
 - [ ] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.
+  - [ ] Try automating compressing and zipping.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.
+- [ ] Maybe standardize code line length.
+- [ ] Re check clone and to string methods.
