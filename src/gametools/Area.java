@@ -80,7 +80,7 @@ public class Area {
      */
     protected double y;
     int width, height;
-    private boolean draggable;
+    private boolean draggable, dragging;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
@@ -275,6 +275,7 @@ public class Area {
     }
     
     public void setDraggable(boolean draggable) {
+        if (!draggable) dragging = false;
         this.draggable = draggable;
     }
     
@@ -340,8 +341,10 @@ public class Area {
     }
     
     protected void updateDrag() {
-        if (draggable && Game.mousePressed(MouseEvent.BUTTON1) && Game.mouseInside(this))
-            centerOn(Game.getMousePosition());
+        if (draggable && Game.mouseEngaged(MouseEvent.BUTTON1) && Game.mouseInside(this))
+            dragging = true;
+        if (dragging) centerOn(Game.getMousePosition());
+        if (!Game.mousePressed()) dragging = false;
     }
     
     /**

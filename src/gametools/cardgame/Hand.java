@@ -1,28 +1,33 @@
 package gametools.cardgame;
 
 import gametools.Graphic;
-import gametools.Position;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Hand extends Graphic {
     private final List<Card> hand = new ArrayList<>();
-
+    
     public Hand() {
         setImage(Card.BACK_BLUE);
     }
     
-    public void add(Card card) {
-        hand.add(card);
+    public void addAll(List<Card> cards) {
+        
     }
     
-    @Override
-    public void draw() {
-        updateDrag();
-        for (int i = 0; i < hand.size(); i++) {
-            hand.get(i).setDraggable(false);
-            hand.get(i).setPosition(new Position(x, y + i * 35));
-            hand.get(i).draw();
+    public void add(Card card) {
+        if (getImage() == Card.BACK_BLUE) setImage(card.getImage());
+        else {
+            Dimension size = new Dimension(getImage().getWidth(), getImage().getHeight() + 30);
+            BufferedImage all = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D draw = all.createGraphics();
+            draw.drawImage(getImage(), 0, 0, null);
+            draw.drawImage(card.getImage(), 0, all.getHeight() - card.getImage().getHeight(), null);
+            setImage(all);
         }
+        hand.add(card);
     }
 }
