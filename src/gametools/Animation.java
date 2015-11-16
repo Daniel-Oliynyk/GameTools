@@ -2,9 +2,8 @@ package gametools;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import sun.java2d.loops.ScaledBlit;
 
 /**
  * Used to animate game objects such as sprites.
@@ -55,8 +54,8 @@ public class Animation {
      * @param animation The animation to copy the properties from.
      */
     public Animation(Animation animation) {
-        original = animation.frames;
-        frames = animation.original;
+        original = animation.original.clone();
+        frames = animation.frames.clone();
         speed = animation.speed;
         frameNumber = animation.frameNumber;
         repeatAmount = animation.repeatAmount;
@@ -73,7 +72,7 @@ public class Animation {
      * @param repeatAmount The amount of times the animation should repeat before completing.
      */
     public Animation(BufferedImage[] frames, int speed, int repeatAmount) {
-        original = frames;
+        original = frames.clone();
         this.frames = frames;
         this.speed = speed;
         this.repeatAmount = repeatAmount;
@@ -198,20 +197,36 @@ public class Animation {
         paused = pause;
     }
     
-    public void setWidth(int width) {
-        setDimensions(new Dimension(width, frames[0].getHeight()));
+    /**
+     * Scales the animation to match the new width.
+     * @param width The new width.
+     */
+    protected void setWidth(int width) {
+        setDimensions(new Dimension(width, getHeight()));
     }
     
-    public void setHeight(int height) {
-        setDimensions(new Dimension(frames[0].getWidth(), height));
+    /**
+     * Scales the animation to match the new width.
+     * @param height The new height.
+     */
+    protected void setHeight(int height) {
+        setDimensions(new Dimension(getWidth(), height));
     }
     
-    public void setDimensions(Dimension size) {
+    /**
+     * Scales the animation to match the new width and height.
+     * @param size The new size of the animation frames.
+     */
+    protected void setDimensions(Dimension size) {
         for (int i = 0; i < original.length; i++) {
-            BufferedImage resized = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB); 
-            Graphics2D graphics = resized.createGraphics();
-            graphics.drawImage(resized, 0, 0, size.width, size.height, null);
-            graphics.dispose();
+            BufferedImage scaledImage = new BufferedImage(size.width, size.height,
+                    BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            graphics2D.drawImage(original[i], 0, 0, size.width, size.height, null);
+            graphics2D.dispose();
+            frames[i] = scaledImage;
         }
     }
     

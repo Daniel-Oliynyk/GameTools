@@ -1,6 +1,7 @@
 package gametools;
 
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,6 +80,7 @@ public class Area {
      */
     protected double y;
     int width, height;
+    private boolean draggable;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
@@ -200,6 +202,10 @@ public class Area {
         return all;
     }
     
+    public boolean isDraggable() {
+        return draggable;
+    }
+    
     /**
      * Sets the x position of the object.
      * @param x The new x position.
@@ -221,7 +227,8 @@ public class Area {
      * @param pos The new position for the object.
      */
     public void setPosition(Position pos) {
-        setArea(pos, getDimensions());
+        x = pos.x;
+        y = pos.y;
     }
     
     /**
@@ -245,7 +252,8 @@ public class Area {
      * @param size The new dimensions of the object.
      */
     public void setDimensions(Dimension size) {
-        setArea(getPosition(), size);
+        width = size.width;
+        height = size.height;
     }
     
     /**
@@ -262,10 +270,12 @@ public class Area {
      * @param size The new dimensions.
      */
     public void setArea(Position pos, Dimension size) {
-        x = pos.x;
-        y = pos.y;
-        width = size.width;
-        height = size.height;
+        setDimensions(size);
+        setPosition(pos);
+    }
+    
+    public void setDraggable(boolean draggable) {
+        this.draggable = draggable;
     }
     
     /**
@@ -329,15 +339,28 @@ public class Area {
         else return horizontal && vertical;
     }
     
+    protected void updateDrag() {
+        if (draggable && Game.mousePressed(MouseEvent.BUTTON1) && Game.mouseInside(this))
+            centerOn(Game.getMousePosition());
+    }
+    
+    /**
+     * Sets the position of the object, and then runs the draw method.
+     * @param pos The new position of the object.
+     */
     public void draw(Position pos) {
         setPosition(pos);
+        boolean prev = draggable;
+        draggable = false;
         draw();
+        draggable = prev;
     }
     
     /**
      * Fills a rectangle on the current area using whatever color is currently set.
      */
     public void draw() {
+        updateDrag();
         Game.painter().fillRect((int) x, (int) y, width, height);
     }
 }

@@ -3,7 +3,7 @@ package gametools;
 import java.awt.image.BufferedImage;
 
 /**
- * Used to represent game objects or characters. Contains methods for movement, animation and collision.
+ * Used for adding movement and behavior for graphics.
  */
 public class Sprite extends Graphic {
     //<editor-fold defaultstate="collapsed" desc="Enums">
@@ -83,7 +83,7 @@ public class Sprite extends Graphic {
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
-     * Creates a blank sprite without an image or animation.
+     * Creates a blank sprite without an image or position.
      */
     public Sprite() {
         super();
@@ -348,11 +348,6 @@ public class Sprite extends Graphic {
         moveDirection = Direction.UNDEFINED;
         moveAngle = 0;
     }
-    
-    /**
-     * An empty method that runs before the draw method and should be overridden for custom code.
-     */
-    protected void update() {}
     
     /**
      * Draws the sprite and updates its animation.<br>

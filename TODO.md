@@ -23,24 +23,29 @@
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
 - [ ] Add properties to area enums and check other enums (fix sprite and make public).
-- [ ] Split sprite class to graphic class.
+- [x] Split sprite class to graphic class.
   - [ ] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
   - [ ] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
     - [ ] Fix joker image and add more card backs.
     - [x] Change to extend graphic class.
+    - [ ] Add error checking.
+    - [ ] Update method on cards.
   - [ ] Create a level chooser.
   - [ ] See if GUI can be added.
   - [ ] Check what other types need to be made.
+- [ ] Add game is dragging check.
 - [x] Change constants to enums if possible.
 - [ ] Add on press and release methods to sprite.
 - [ ] Add image to animation conversion and graphic to sprite conversion.
-- [ ] Remove width and height changing on sprites or make it consistent.
-  - [ ] Add a scale method and use it override the height and width methods.
+- [x] Remove width and height changing on sprites or make it consistent.
+  - [x] Add a scale method and use it override the height and width methods.
 - [x] Remove get image area method.
+- [ ] Remove default access modifiers.
+- [ ] Look over comparisons between classes.
 - [ ] Animation error image checking.
-- [ ] Add dragging of an area.
+- [x] Add dragging of an area.
 - [ ] Add ... methods.
 - [ ] Standardize method order.
 - [ ] Add custom cursor options.
