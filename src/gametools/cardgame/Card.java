@@ -6,9 +6,10 @@ import gametools.Tools;
 import java.awt.image.BufferedImage;
 
 public class Card extends Graphic {
-    public static final Card UNDEFINED_CARD = new Card(-1, -1);
-    public static BufferedImage BACK_BLUE = Tools.UNDEFINED_IMAGE;
-    public static BufferedImage BACK_RED = Tools.UNDEFINED_IMAGE;
+    public static final Card UNDEFINED_CARD = new Card(-1, -1),
+            JOKER_BLACK = new Card(-1, 14), JOKER_RED = new Card(-2, 14);
+    public static BufferedImage BACK_BLUE = Tools.UNDEFINED_IMAGE,
+            BACK_RED = Tools.UNDEFINED_IMAGE;
     public static final class Value {
         private Value() {}
         public static final int ACE = 1, JACK = 11, QUEEN = 12, KING = 13, JOKER = 14;
@@ -30,6 +31,7 @@ public class Card extends Graphic {
         if (suit == -1 && value == -1) {
             setImage(Tools.UNDEFINED_IMAGE);
         }
+        else if (value == Value.JOKER) setImage(Tools.UNDEFINED_IMAGE);
         else {
             boolean validSuit = suit >= 0 && suit < 4;
             boolean validValue = value >= 1 && suit < Deck.Type.ALL_CARDS.limit();

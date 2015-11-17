@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Deck extends Graphic {
     public static enum Type {
-        ALL_CARDS(15), NO_JOKERS(14), NO_FACE_CARDS(11);
+        ALL_CARDS(14), NO_JOKERS(14), NO_FACE_CARDS(11);
         
         private final int limit;
         
@@ -32,8 +32,11 @@ public class Deck extends Graphic {
         for (int s = 1; s < 4; s++)
             for (int v = 1; v < type.limit(); v++)
                 deck.add(new Card(s, v));
+        if (type == Type.ALL_CARDS) {
+            deck.add(Card.JOKER_BLACK);
+            deck.add(Card.JOKER_RED);
+        }
         shuffle();
-        //Remove extra jokers
         //Contains method
     }
     

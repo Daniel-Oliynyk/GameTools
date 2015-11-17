@@ -20,19 +20,17 @@ public class CardTools {
             return ImageIO.read(CardTools.class.getResourceAsStream(fullPath));
         }
     }
-    private static final BufferedImage[][] CARD_IMAGES = new BufferedImage[4][14];
+    private static final BufferedImage[][] CARD_IMAGES = new BufferedImage[4][13];
     
     public static void load(Directory type) {
         try {
             for (int s = 0; s < 4; s++)
                 for (int v = 0; v < 13; v++)
                     CARD_IMAGES[s][v] = type.loadImage(s + "-" + (v + 1));
-            CARD_IMAGES[Card.Suit.SPADE][Card.Value.JOKER - 1] = type.loadImage("black-joker");
-            CARD_IMAGES[Card.Suit.HEART][Card.Value.JOKER - 1] = type.loadImage("red-joker");
-            CARD_IMAGES[Card.Suit.DIAMOND][Card.Value.JOKER - 1] = type.loadImage("red-joker");
-            CARD_IMAGES[Card.Suit.CLUB][Card.Value.JOKER - 1] = type.loadImage("black-joker");
             Card.BACK_BLUE = type.loadImage("blue-back");
             Card.BACK_RED = type.loadImage("red-back");
+            Card.JOKER_BLACK.setImage(type.loadImage("black-joker"));
+            Card.JOKER_RED.setImage(type.loadImage("red-joker"));
         }
         catch (Exception ex) {
             for (int s = 0; s < 5; s++)
