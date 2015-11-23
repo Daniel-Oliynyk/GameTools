@@ -6,12 +6,11 @@ import gametools.Tools;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Hand extends Graphic {
     public static enum Sort {
-        VALUE, VALUE_DESC, SUIT_UNORDERED, SUIT_VALUE, SUIT_VALUE_DESC;
+        VALUE, VALUE_DESC, SUIT, SUIT_DESC;
     }
     private final List<Card> hand = new ArrayList<>();
     private Position offset = new Position(0, 30);
@@ -30,7 +29,14 @@ public class Hand extends Graphic {
     
     public void sort(Sort sort) {
         if (sort == Sort.VALUE)
-            hand.sort((Card c1, Card c2) -> c1.getValue() - c2.getValue());
+            hand.sort((Card t1, Card t2) -> t1.getValue() - t2.getValue());
+        else if (sort == Sort.VALUE_DESC)
+            hand.sort((Card t1, Card t2) -> t2.getValue() - t1.getValue());
+        else if (sort == Sort.SUIT)
+            hand.sort((Card t1, Card t2) -> t1.getSuit() - t2.getSuit());
+        else if (sort == Sort.SUIT_DESC)
+            hand.sort((Card t1, Card t2) -> t2.getSuit() - t1.getSuit());
+        fixImage();
         //Finish here
     }
     
@@ -44,6 +50,7 @@ public class Hand extends Graphic {
     
     public void setOffset(Position offset) {
         this.offset = offset;
+        fixImage();
     }
     
     public void addAll(List<Card> cards) {
@@ -72,5 +79,11 @@ public class Hand extends Graphic {
     public void add(Card card) {
         hand.add(card);
         fixImage();
+    }
+    
+    public int getTotal() {
+        int total = 0;
+        for (Card card : hand) total += card.getValue();
+        return total;
     }
 }

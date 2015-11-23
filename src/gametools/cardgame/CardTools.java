@@ -42,6 +42,6 @@ public class CardTools {
     }
     
     public static BufferedImage getImage(int suit, int value) {
-        return CARD_IMAGES[suit][value - 1];
+        return CARD_IMAGES[suit - 1][value - 1];
     }
 }

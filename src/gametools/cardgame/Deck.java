@@ -29,7 +29,7 @@ public class Deck extends Graphic {
     
     public Deck(Type type) {
         super(Card.BACK_BLUE);
-        for (int s = 1; s < 4; s++)
+        for (int s = 1; s < 5; s++)
             for (int v = 1; v < type.limit(); v++)
                 deck.add(new Card(s, v));
         if (type == Type.ALL_CARDS) {

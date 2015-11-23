@@ -33,7 +33,7 @@ public class Card extends Graphic {
         }
         else if (value == Value.JOKER) setImage(Tools.UNDEFINED_IMAGE);
         else {
-            boolean validSuit = suit >= 0 && suit < 4;
+            boolean validSuit = suit >= 1 && suit < 5;
             boolean validValue = value >= 1 && suit < Deck.Type.ALL_CARDS.limit();
             if (validSuit && validValue) setImage(CardTools.getImage(suit, value));
             else {
