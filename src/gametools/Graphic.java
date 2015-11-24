@@ -18,24 +18,45 @@ public class Graphic extends Area {
         super();
     }
     
+    /**
+     * Creates a graphic in the default location (the corner of the screen) with a custom image.
+     * @param image The image for the graphic.
+     */
     public Graphic(BufferedImage image) {
         this(new Position(), new Animation(image));
     }
     
+    /**
+     * Creates a graphic in the default location (the corner of the screen) with a custom animation.
+     * @param animation The animation for the graphic.
+     */
     public Graphic(Animation animation) {
         this(new Position(), animation);
     }
     
+    /**
+     * Creates an exact copy of the passed in graphic.
+     * @param graphic The graphic to copy properties from.
+     */
     public Graphic(Graphic graphic) {
         this(graphic.getPosition(), graphic.animation);
         angle = graphic.angle;
     }
     
+    /**
+     * Creates a graphic at the specified coordinates with a custom animation.
+     * @param pos The position of the graphic.
+     * @param animation The image for the graphic.
+     */
     public Graphic(Position pos, Animation animation) {
         super(pos, animation.getDimensions());
         this.animation = animation;
     }
     
+    /**
+     * Returns the current image representing the object.
+     * @return
+     */
     public BufferedImage getImage() {
         return animation.getFrame();
     }
@@ -66,7 +87,7 @@ public class Graphic extends Area {
     
     @Override
     public void setDimensions(Dimension size) {
-        if (size.width != animation.getWidth() || size.height != animation.getHeight()) {
+        if (size.width != animation.getWidth() && size.height != animation.getHeight()) {
             Animation prev = previous;
             animation.setDimensions(size);
             setAnimation(animation);
@@ -74,10 +95,18 @@ public class Graphic extends Area {
         }
     }
     
+    /**
+     * Sets a new one image animation for the object.
+     * @param image The image for the object.
+     */
     public void setImage(BufferedImage image) {
         setAnimation(new Animation(image));
     }
     
+    /**
+     * Sets the animation for the object.
+     * @param animation The animation for the object.
+     */
     public void setAnimation(Animation animation) {
         double prev = angle;
         setAngle(0);
@@ -117,7 +146,7 @@ public class Graphic extends Area {
             height = (int) ((getCenter().y - rotated.y) * 2);
             centerOn(trueCen);
         }
-        angle = Position.fixAngle(ang);
+        angle = Tools.fixAngle(ang);
     }
 
     /**

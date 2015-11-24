@@ -230,6 +230,31 @@ public class Group {
     }
     
     /**
+     * Turns all the sprites in the group in the specified direction.
+     * @param rot The rotation constant for the direction the sprite should turn in.
+     */
+    public void turn(Sprite.Rotation rot) {
+        for (Sprite sprite : elements) sprite.turn(rot);
+    }
+    
+    /**
+     * Rotates all the sprites in the group around the specified position.
+     * @param mid The position around which to rotate.
+     * @param rot The direction to rotate in.
+     */
+    public void rotate(Position mid, Sprite.Rotation rot) {
+        for (Sprite sprite : elements) sprite.rotate(mid, rot);
+    }
+    
+    /**
+     * Translates all the sprites in the group.
+     * @param trans The amount translate the group by.
+     */
+    public void translate(Position trans) {
+        for (Sprite sprite : elements) sprite.translate(trans);
+    }
+    
+    /**
      * Runs the draw method on every sprite and removes sprites as necessary.
      */
     public void drawAll() {

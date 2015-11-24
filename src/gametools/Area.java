@@ -81,6 +81,7 @@ public class Area {
     protected double y;
     int width, height;
     private boolean draggable, dragging;
+    private Position offset = Position.UNDEFINED_POSITION;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
@@ -202,6 +203,10 @@ public class Area {
         return all;
     }
     
+    /**
+     * Whether or not the area can be dragged by the mouse.
+     * @return True if the area is draggable.
+     */
     public boolean isDraggable() {
         return draggable;
     }
@@ -274,6 +279,10 @@ public class Area {
         setPosition(pos);
     }
     
+    /**
+     * Turns object dragging on or off.
+     * @param draggable Whether or not to allow the object to be dragged by the user.
+     */
     public void setDraggable(boolean draggable) {
         if (!draggable) dragging = false;
         this.draggable = draggable;
@@ -286,6 +295,15 @@ public class Area {
     public void centerOn(Position pos) {
         x = pos.x - width / 2;
         y = pos.y - height / 2;
+    }
+    
+    /**
+     * Translates the object and adds the passed in values to the x and y.
+     * @param trans The amount to add to the current x and y value.
+     */
+    public void translate(Position trans) {
+        x = x + trans.x;
+        y = y + trans.y;
     }
     
     /**
@@ -340,10 +358,16 @@ public class Area {
         else return horizontal && vertical;
     }
     
-    protected void updateDrag() {
-        if (draggable && Game.mouseEngaged(MouseEvent.BUTTON1) && Game.mouseInside(this))
+    void updateDrag() {
+        if (draggable && Game.mouseEngaged(MouseEvent.BUTTON1) && Game.mouseInside(this)) {
             dragging = true;
-        if (dragging) centerOn(Game.getMousePosition());
+            offset = new Position(Game.getMousePosition().x - x, Game.getMousePosition().y - y);
+        }
+        if (dragging) {
+            double offsetX = Game.getMousePosition().x - offset.x;
+            double offsetY = Game.getMousePosition().y - offset.y;
+            setPosition(new Position(offsetX, offsetY));
+        }
         if (!Game.mousePressed()) dragging = false;
     }
     

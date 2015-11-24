@@ -1,6 +1,12 @@
 package gametools;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
@@ -31,8 +37,19 @@ public class Tools {
         Tools.root = root;
     }
     
-    public static Class getRoot() {
+    static Class getRoot() {
         return root;
+    }
+    
+    /**
+     * Converts negatives and angles past a full rotation into a more readable format.
+     * @param ang The angle to fix.
+     * @return The same angle but represented non negatively and smaller than two PI.
+     */
+    public static double fixAngle(double ang) {
+        double fixed = ang % (Math.PI * 2);
+        if (fixed < 0) fixed = (Math.PI * 2) + fixed;
+        return fixed;
     }
     
     /**
@@ -109,6 +126,15 @@ public class Tools {
     }
     
     /**
+     * The short form notation for creating an area.
+     * @param size The width and height of the area.
+     * @return An area with the specified coordinates and size.
+     */
+    public static Area ar(Dimension size) {
+        return new Area(size);
+    }
+    
+    /**
      * Converts two points to an area object going through those positions.
      * @param tl The position of the top left corner.
      * @param br The position of the bottom right corner.
@@ -148,11 +174,47 @@ public class Tools {
         return new Dimension(width, height);
     }
     
+    /**
+     * Creates a text pop up for the user with the passed in text.
+     * @param prompt The text to display inside the pop up.
+     */
     public static void messageDialog(String prompt) {
         JOptionPane.showMessageDialog(null, prompt);
     }
     
+    /**
+     * Creates an input prompt with the passed in text.
+     * @param prompt The text to display inside the pop up.
+     * @return The data the user inputted.
+     */
     public static String inputDialog(String prompt) {
         return JOptionPane.showInputDialog(prompt);
+    }
+    
+    /**
+     * Generates a button graphic with a custom color and centered text.
+     * @param back The background color of the button.
+     * @param fore The text color of the button.
+     * @param text The string to draw in one line on the button.
+     * @param bounds The position and size of the button.
+     * @return A button graphics with the passed in properties.
+     */
+    public static Graphic generateButton(Color back, Color fore, String text, Area bounds) {
+        BufferedImage button = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = button.createGraphics();
+        Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
+        GradientPaint grad = new GradientPaint(0, -bounds.height, Color.WHITE, 0, bounds.height, end);
+        graphics.setPaint(grad);
+        graphics.fillRoundRect(0, 0, bounds.width, bounds.height, 7, 7);
+        graphics.setColor(Color.BLACK);
+        graphics.setStroke(new BasicStroke(2));
+        graphics.drawRoundRect(1, 1, bounds.width - 2, bounds.height - 2, 5, 5);
+        FontMetrics font = graphics.getFontMetrics();
+        Rectangle2D rect = font.getStringBounds(text, graphics);
+        int x = (int) ((bounds.width - rect.getWidth()) / 2);
+        int y = (int) ((bounds.height - rect.getHeight()) / 2) + font.getAscent();
+        graphics.setColor(fore);
+        graphics.drawString(text, x, y);
+        return new Graphic(bounds.getPosition(), new Animation(button));
     }
 }

@@ -63,10 +63,6 @@ public class Sprite extends Graphic {
      */
     public static enum Rotation {
         /**
-         * No movement or movement that does not follow a pre-defined direction.
-         */
-        UNDEFINED,
-        /**
          * Clockwise rotation.
          */
         CLOCKWISE,
@@ -106,12 +102,38 @@ public class Sprite extends Graphic {
     }
     
     /**
+     * Creates a sprite and copies over all the properties from the graphic.
+     * @param graphic The graphic to copy the properties from.
+     */
+    public Sprite(Graphic graphic) {
+        super(graphic);
+    }
+    
+    /**
      * Creates a sprite at the specified coordinates with a custom animation.
      * @param pos The position of the sprite.
      * @param animation The image for the sprite.
      */
     public Sprite(Position pos, Animation animation) {
         super(pos, animation);
+    }
+    
+    /**
+     * Creates an exact copy of the passed in sprite.
+     * @param sprite The sprite to copy properties from.
+     */
+    public Sprite(Sprite sprite) {
+        super(sprite);
+        lastDirection = sprite.lastDirection;
+        moveDirection = sprite.moveDirection;
+        moveAngle = sprite.moveAngle;
+        speed = sprite.speed;
+        rotationSpeed = sprite.rotationSpeed;
+        moved = sprite.moved;
+        anglularMovement = sprite.anglularMovement;
+        directionalMovement = sprite.directionalMovement;
+        relationalMovement = sprite.relationalMovement;
+        movementArea = sprite.movementArea;
     }
     
     /**
@@ -190,17 +212,27 @@ public class Sprite extends Graphic {
     }
     //</editor-fold>
     
+    /**
+     * Rotates the sprite around the specified position at the sprite's speed.
+     * @param mid The position around which to rotate.
+     * @param rot The direction to rotate in.
+     */
     public void rotate(Position mid, Rotation rot) {
         if (rot == Rotation.CLOCKWISE) rotate(mid, rotationSpeed);
         else if (rot == Rotation.COUNTER_CLOCKWISE) rotate(mid, -rotationSpeed);
     }
     
+    /**
+     * Rotates the sprite around the specified position at the passed in amount.
+     * @param mid The position around which to rotate.
+     * @param ang How far to rotate in radians.
+     */
     public void rotate(Position mid, double ang) {
         Position newLoc = new Position(getCenter());
         newLoc.rotate(mid, ang);
         x = newLoc.x - (width / 2);
         y = newLoc.y - (height / 2);
-        face(mid);
+        angle = Tools.fixAngle(angle + ang);
     }
     
     /**
@@ -249,7 +281,7 @@ public class Sprite extends Graphic {
      * @param ang The angle the sprite should turn towards.
      */
     public void turnTo(double ang) {
-        ang = Position.fixAngle(ang);
+        ang = Tools.fixAngle(ang);
         double dif = ang - angle;
         Rotation rot;
         if (Math.abs(dif) > Math.PI) {
@@ -300,11 +332,13 @@ public class Sprite extends Graphic {
      * @param dir The direction the sprite should move to.
      */
     public void move(Direction dir) {
-        moved = true;
-        double ang = (Math.PI / 4) * dir.rotation();
-        if (relationalMovement) ang += angle;
-        moveAt(ang);
-        lastDirection = dir;
+        if (dir != Direction.UNDEFINED) {
+            moved = true;
+            double ang = (Math.PI / 4) * dir.rotation();
+            if (relationalMovement) ang += angle;
+            moveAt(ang);
+            lastDirection = dir;
+        }
     }
     
     /**
