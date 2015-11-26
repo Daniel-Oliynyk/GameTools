@@ -74,7 +74,7 @@ public class Sprite extends Graphic {
     //</editor-fold>
     private Direction lastDirection, moveDirection;
     private double moveAngle, speed = 5, rotationSpeed = 0.05;
-    private boolean moved, anglularMovement, directionalMovement, relationalMovement;
+    private boolean moved, anglularMovement, directionalMovement, relational;
     private Area movementArea = Area.UNDEFINED_AREA;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
@@ -132,7 +132,7 @@ public class Sprite extends Graphic {
         moved = sprite.moved;
         anglularMovement = sprite.anglularMovement;
         directionalMovement = sprite.directionalMovement;
-        relationalMovement = sprite.relationalMovement;
+        relational = sprite.relational;
         movementArea = sprite.movementArea;
     }
     
@@ -163,7 +163,7 @@ public class Sprite extends Graphic {
      * @return Whether or not the sprite is moving using directions relative to its angle.
      */
     public boolean getRelationalMovement() {
-        return relationalMovement;
+        return relational;
     }
     
     /**
@@ -198,7 +198,7 @@ public class Sprite extends Graphic {
      * @param relational True to turn relational movement on, false to turn it off.
      */
     public void setRelationalMovement(boolean relational) {
-        relationalMovement = relational;
+        this.relational = relational;
     }
     
     /**
@@ -312,7 +312,10 @@ public class Sprite extends Graphic {
      */
     public void moveTo(Position pos) {
         double ang = getCenter().angleTo(pos);
+        double prev = speed;
+        if (getCenter().dist(pos) < speed) speed = getCenter().dist(pos);
         moveAt(ang);
+        speed = prev;
     }
     
     /**
@@ -335,7 +338,7 @@ public class Sprite extends Graphic {
         if (dir != Direction.UNDEFINED) {
             moved = true;
             double ang = (Math.PI / 4) * dir.rotation();
-            if (relationalMovement) ang += angle;
+            if (relational) ang += angle;
             moveAt(ang);
             lastDirection = dir;
         }
@@ -356,7 +359,7 @@ public class Sprite extends Graphic {
      * removed or it goes outside its movement area.
      * @param dir The direction the sprite should move to.
      */
-    public void moveConstantlyTo(Direction dir) {
+    public void moveConstantly(Direction dir) {
         directionalMovement = true;
         anglularMovement = false;
         moveDirection = dir;

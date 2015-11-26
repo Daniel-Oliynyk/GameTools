@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
@@ -28,6 +29,7 @@ public class Tools {
      * A class situated in the root of the project to help with creating relative paths.
      */
     private static Class root;
+    private static Random rand = new Random();
     
     /**
      * Initializes the tools and sets up the root directory.
@@ -189,6 +191,25 @@ public class Tools {
      */
     public static String inputDialog(String prompt) {
         return JOptionPane.showInputDialog(prompt);
+    }
+    
+    /**
+     * Generates a completely random position that is greater than zero.
+     * @return A position with random coordinates.
+     */
+    public static Position randomPosition() {
+        return new Position(rand.nextInt(), rand.nextInt());
+    }
+    
+    /**
+     * Generates a random position within the passed in area.
+     * @param area The area within which the random position will be.
+     * @return A random position within the passed in area.
+     */
+    public static Position randomPosition(Area area) {
+        double x = rand.nextInt((int) area.width) + area.x;
+        double y = rand.nextInt((int) area.height) + area.y;
+        return new Position(x, y);
     }
     
     /**

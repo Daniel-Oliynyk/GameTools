@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 public abstract class Game {
     private static int fps = 60, width = 800, height = 800, mouseX, mouseY;
     private static Graphics2D graphics;
-    private static HashSet<Integer> keys = new HashSet<>(), mouse = new HashSet<>(),
+    private static volatile HashSet<Integer> keys = new HashSet<>(), mouse = new HashSet<>(),
             prevKeys = new HashSet<>(), prevMouse = new HashSet<>();
     private static final JFrame frame = new JFrame();
     private static BufferedImage screen, background = Tools.UNDEFINED_IMAGE;

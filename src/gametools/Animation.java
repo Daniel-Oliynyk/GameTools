@@ -19,7 +19,7 @@ public class Animation {
     public static final Animation UNDEFINED_ANIMATION = new Animation(Tools.UNDEFINED_IMAGE);
     
     private final BufferedImage[] frames, original;
-    private int frameNumber, speed, repeatNumber, repeatAmount;
+    private int counter, frame, speed, repeatNumber, repeatAmount;
     private boolean complete, paused;
     
     /**
@@ -57,7 +57,8 @@ public class Animation {
         original = animation.original.clone();
         frames = animation.frames.clone();
         speed = animation.speed;
-        frameNumber = animation.frameNumber;
+        counter = animation.counter;
+        frame = animation.frame;
         repeatAmount = animation.repeatAmount;
         repeatNumber = animation.repeatNumber;
         complete = animation.complete;
@@ -73,7 +74,7 @@ public class Animation {
      */
     public Animation(BufferedImage[] frames, int speed, int repeatAmount) {
         original = frames.clone();
-        this.frames = frames;
+        this.frames = frames.clone();
         this.speed = speed;
         this.repeatAmount = repeatAmount;
     }
@@ -108,7 +109,7 @@ public class Animation {
      * @return A buffered image of the current frame of the animation.
      */
     public BufferedImage getFrame() {
-        return frames[frameNumber];
+        return frames[frame];
     }
     
     /**
@@ -136,7 +137,7 @@ public class Animation {
      * @return The current frame the animation is at.
      */
     public int getFrameNumber() {
-        return (int) Math.floor(frameNumber / speed);
+        return (int) Math.floor(frame / speed);
     }
     
     /**
@@ -173,13 +174,15 @@ public class Animation {
      */
     public void setSpeed(int speed) {
         this.speed = speed;
+        this.counter = frame * speed;
     }
     
     /**
      * @param frameNumber The frame the animation should jump to.
      */
     public void setFrameNumber(int frameNumber) {
-        this.frameNumber = frameNumber;
+        this.frame = frameNumber;
+        this.counter = frame * speed;
     }
     
     /**
@@ -234,7 +237,7 @@ public class Animation {
      * Resets and restarts the animations.
      */
     public void reset() {
-        frameNumber = 0;
+        frame = 0;
         repeatNumber = 0;
         complete = false;
     }
@@ -244,9 +247,9 @@ public class Animation {
      */
     public void update() {
         if (!complete) {
-            if (!paused) frameNumber++;
-            if (frameNumber + 1 >= frames.length * speed) {
-                frameNumber = 0;
+            if (!paused) counter++;
+            if (counter + 1 >= frames.length * speed) {
+                counter = 0;
                 repeatNumber++;
                 if (repeatAmount != LOOP_CONTINUOUSLY && repeatNumber >= repeatAmount) {
                     complete = true;
@@ -254,8 +257,11 @@ public class Animation {
                     repeatAmount = LOOP_CONTINUOUSLY;
                 }
             }
-            frameNumber = (int) Math.floor(frameNumber / speed);
+            frame = (int) Math.floor(counter / speed);
         }
-        else frameNumber = 0;
+        else {
+            counter = 0;
+            frame = 0;
+        }
     }
 }
