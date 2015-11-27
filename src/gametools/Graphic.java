@@ -69,6 +69,14 @@ public class Graphic extends Area {
     }
     
     /**
+     * Returns the previous animation used by the object.
+     * @return The previous animation or an undefined animation if there was none.
+     */
+    public Animation getPreviousAnimation() {
+        return new Animation(previous);
+    }
+    
+    /**
      * @return The current angle of the object.
      */
     public double getAngle() {
