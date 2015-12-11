@@ -14,12 +14,12 @@
 - [x] Add pressed and released methods for game class.
 - [x] Add background image method.
 - [ ] Add more methods to sprite class.
-  - [ ] Check over constructors and see if more options could be added there.
+  - [x] Check over constructors and see if more options could be added there.
   - [x] Add turn and face methods.
   - [x] Add relational movement.
   - [x] Allow rotation around a point not just the center.
   - [ ] Add getter for previous rotation.
-  - [ ] Add constant rotation.
+  - [x] Add constant rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
 - [ ] Add properties to area enums and check other enums (fix sprite and make public).
@@ -34,7 +34,7 @@
   - [ ] Create a level chooser.
   - [ ] See if GUI can be added.
   - [ ] Check what other types need to be made.
-- [ ] Add game is dragging check.
+- [ ] Add game is dragging check and retest drag code.
 - [x] Change constants to enums if possible.
 - [ ] Add on press and release methods to sprite.
 - [x] Add image to animation conversion and graphic to sprite conversion.
@@ -44,19 +44,21 @@
 - [ ] Look over comparisons between classes.
 - [ ] Animation error image checking.
 - [x] Add dragging of an area.
-- [ ] Add ... methods.
+- [x] Add ... methods.
+- [ ] Add more collision methods.
 - [ ] Standardize method order.
 - [ ] Add custom cursor options.
 - [x] Finish translate methods.
-- [ ] Add sprite group to sprite group methods and group rotation methods.
+- [x] Add sprite group to sprite group methods and group rotation methods.
 - [ ] Look into 3 pixel shift glitch.
 - [ ] Add test classes.
-- [ ] Review tools class and see if any more helper methods can be added.
+- [x] Review tools class and see if any more helper methods can be added.
 - [ ] Remove notes about window methods by fixing bugs from execution order.
 - [ ] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.
   - [ ] Try automating compressing and zipping.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.
+- [ ] Maybe remove some rarely used getters or easy replicated methods.
 - [ ] Maybe standardize code line length.
 - [ ] Re check clone and to string methods.

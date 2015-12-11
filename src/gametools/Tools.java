@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -174,6 +175,10 @@ public class Tools {
      */
     public static Dimension dm(int width, int height) {
         return new Dimension(width, height);
+    }
+    
+    public static Group grp(List<Sprite> sprites) {
+        return new Group(sprites);
     }
     
     /**

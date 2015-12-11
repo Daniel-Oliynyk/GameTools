@@ -63,6 +63,10 @@ public class Sprite extends Graphic {
      */
     public static enum Rotation {
         /**
+         * No rotation or an undefined rotation direction.
+         */
+//        UNDEFINED,
+        /**
          * Clockwise rotation.
          */
         CLOCKWISE,
@@ -72,9 +76,10 @@ public class Sprite extends Graphic {
         COUNTER_CLOCKWISE;
     }
     //</editor-fold>
-    private Direction lastDirection, moveDirection;
-    private double moveAngle, speed = 5, rotationSpeed = 0.05;
-    private boolean moved, anglularMovement, directionalMovement, relational;
+    private Direction lastDirection;
+    private Script script = Script.UNDEFINED_SCRIPT;
+    private double speed = 5, rotationSpeed = 0.05;
+    private boolean moved, relationalMovement;
     private Area movementArea = Area.UNDEFINED_AREA;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
@@ -110,9 +115,18 @@ public class Sprite extends Graphic {
     }
     
     /**
+     * Creates a sprite at the specified coordinates with a custom image.
+     * @param pos The position of the sprite.
+     * @param image The image for the sprite.
+     */
+    public Sprite(Position pos, BufferedImage image) {
+        super(pos, image);
+    }
+    
+    /**
      * Creates a sprite at the specified coordinates with a custom animation.
      * @param pos The position of the sprite.
-     * @param animation The image for the sprite.
+     * @param animation The animation for the sprite.
      */
     public Sprite(Position pos, Animation animation) {
         super(pos, animation);
@@ -125,15 +139,12 @@ public class Sprite extends Graphic {
     public Sprite(Sprite sprite) {
         super(sprite);
         lastDirection = sprite.lastDirection;
-        moveDirection = sprite.moveDirection;
-        moveAngle = sprite.moveAngle;
         speed = sprite.speed;
         rotationSpeed = sprite.rotationSpeed;
         moved = sprite.moved;
-        anglularMovement = sprite.anglularMovement;
-        directionalMovement = sprite.directionalMovement;
-        relational = sprite.relational;
+        relationalMovement = sprite.relationalMovement;
         movementArea = sprite.movementArea;
+        //finish this
     }
     
     /**
@@ -163,7 +174,11 @@ public class Sprite extends Graphic {
      * @return Whether or not the sprite is moving using directions relative to its angle.
      */
     public boolean getRelationalMovement() {
-        return relational;
+        return relationalMovement;
+    }
+    
+    public Script getScript() {
+        return script;
     }
     
     /**
@@ -198,7 +213,15 @@ public class Sprite extends Graphic {
      * @param relational True to turn relational movement on, false to turn it off.
      */
     public void setRelationalMovement(boolean relational) {
-        this.relational = relational;
+        this.relationalMovement = relational;
+    }
+    
+    public void setScript(Script script) {
+        this.script = script;
+    }
+    
+    public void removeScript() {
+        this.script = Script.UNDEFINED_SCRIPT;
     }
     
     /**
@@ -338,52 +361,10 @@ public class Sprite extends Graphic {
         if (dir != Direction.UNDEFINED) {
             moved = true;
             double ang = (Math.PI / 4) * dir.rotation();
-            if (relational) ang += angle;
+            if (relationalMovement) ang += angle;
             moveAt(ang);
             lastDirection = dir;
         }
-    }
-    
-    /**
-     * Moves the sprite constantly to the specified position until it gets
-     * removed or it goes outside its movement area.
-     * @param pos The location to move constantly to.
-     */
-    public void moveConstantlyTo(Position pos) {
-        double ang = getCenter().angleTo(pos);
-        moveConstantlyAt(ang);
-    }
-    
-    /**
-     * Moves the sprite constantly in the specified direction until it gets
-     * removed or it goes outside its movement area.
-     * @param dir The direction the sprite should move to.
-     */
-    public void moveConstantly(Direction dir) {
-        directionalMovement = true;
-        anglularMovement = false;
-        moveDirection = dir;
-    }
-    
-    /**
-     * Moves the sprite constantly at the specified angle until it gets
-     * removed or it goes outside its movement area.
-     * @param ang The angle the sprite should move at in radians.
-     */
-    public void moveConstantlyAt(double ang) {
-        anglularMovement = true;
-        directionalMovement = false;
-        moveAngle = ang;
-    }
-    
-    /**
-     * Disables the sprite from moving constantly if it was set to do so in a different method.
-     */
-    public void stopConstantlyMoving() {
-        directionalMovement = false;
-        anglularMovement = false;
-        moveDirection = Direction.UNDEFINED;
-        moveAngle = 0;
     }
     
     /**
@@ -393,8 +374,7 @@ public class Sprite extends Graphic {
     @Override
     public void draw() {
         update();
-        if (directionalMovement) move(moveDirection);
-        else if (anglularMovement) moveAt(moveAngle);
+        if (this.script != Script.UNDEFINED_SCRIPT) script.update();
         if (!moved) lastDirection = Direction.UNDEFINED;
         moved = false;
         if (movementArea != Area.UNDEFINED_AREA) {

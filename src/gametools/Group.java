@@ -1,8 +1,11 @@
 package gametools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class for managing and updating groups of sprites.
@@ -33,6 +36,14 @@ public class Group {
      * Creates a group from the passed in sprites.
      * @param elements The sprites the group should start with.
      */
+    public Group(Sprite... elements) {
+        this(Arrays.asList(elements));
+    }
+    
+    /**
+     * Creates a group from the passed in sprites.
+     * @param elements The sprites the group should start with.
+     */
     public Group(List<Sprite> elements) {
         this.elements = elements;
     }
@@ -53,44 +64,65 @@ public class Group {
         return elements;
     }
     
-    /**
-     * Returns the first sprite (in the group's default order) that is colliding
-     * with the specified object.
-     * @param obj The object to check collision against.
-     * @return The first sprite that is colliding with the specified object. 
-     */
-    public Sprite getFirstWithin(Area obj) {
-        return getFirstWithin(obj, Area.Collision.TOUCH);
+    public boolean isWithin(Area obj) {
+        return isWithin(obj, Area.Collision.TOUCH);
     }
     
-    /**
-     * Returns the first sprite (in the group's default order) that is colliding
-     * with the object using the specified collision method.
-     * @param obj The object to check collision against.
-     * @param method The collision testing method to use.
-     * @return The first sprite that is colliding with the specified object. 
-     */
-    public Sprite getFirstWithin(Area obj, Area.Collision method) {
-        return getAllWithin(obj, method).get(0);
+    public boolean isWithin(Group sprites) {
+        return getAllWithin(sprites, Area.Collision.TOUCH).size() > 0;
     }
     
-    /**
-     * Returns a group of all the sprites that are colliding with the specified object.
-     * @param obj The object to check collision against.
-     * @return A group containing all sprites that are touching the object.
-     */
-    public Group getGroupWithin(Area obj) {
-        return getGroupWithin(obj, Area.Collision.TOUCH);
+    public boolean isWithin(Sprite... sprites) {
+        return isWithin(Arrays.asList(sprites), Area.Collision.TOUCH);
     }
     
-    /**
-     * Returns a group of all the sprites that are colliding with the specified object.
-     * @param obj The object to check collision against.
-     * @param method The collision testing method to use.
-     * @return A group containing all sprites that are touching the object.
-     */
-    public Group getGroupWithin(Area obj, Area.Collision method) {
-        return new Group(getAllWithin(obj, method));
+    public boolean isWithin(List<Sprite> sprites) {
+        return getAllWithin(sprites, Area.Collision.TOUCH).size() > 0;
+    }
+    
+    public boolean isWithin(Area obj, Area.Collision method) {
+        return getAllWithin(obj, method).size() > 0;
+    }
+    
+    public boolean isWithin(Group sprites, Area.Collision method) {
+        return getAllWithin(sprites, method).size() > 0;
+    }
+    
+    public boolean isWithin(Area.Collision method, Sprite... sprites) {
+        return isWithin(Arrays.asList(sprites), method);
+    }
+    
+    public boolean isWithin(List<Sprite> sprites, Area.Collision method) {
+        return getAllWithin(sprites, method).size() > 0;
+    }
+    
+    public List<Sprite> getAllWithin(Sprite... sprites) {
+        return getAllWithin(Arrays.asList(sprites));
+    }
+    
+    public List<Sprite> getAllWithin(Group sprites) {
+        return getAllWithin(sprites.getAll());
+    }
+    
+    public List<Sprite> getAllWithin(List<Sprite> sprites) {
+        return getAllWithin(sprites, Area.Collision.TOUCH);
+    }
+    
+    public List<Sprite> getAllWithin(Area.Collision method, Sprite... sprites) {
+        return getAllWithin(Arrays.asList(sprites), method);
+    }
+    
+    public List<Sprite> getAllWithin(Group sprites, Area.Collision method) {
+        return getAllWithin(sprites.getAll(), method);
+    }
+    
+    public List<Sprite> getAllWithin(List<Sprite> sprites, Area.Collision method) {
+        List<Sprite> all = new ArrayList<>();
+        for (Sprite sprite : sprites) all.addAll(getAllWithin(sprite, method));
+        Set<Sprite> noDuplicates = new LinkedHashSet<>(all);
+        all.clear();
+        all.addAll(noDuplicates);
+        return all;
     }
     
     /**
@@ -170,36 +202,22 @@ public class Group {
     }
     
     /**
-     * Removes all sprites that are colliding with the specified object.
-     * @param obj The object to check collision against.
-     */
-    public void removeAllWithin(Area obj) {
-        removeAllWithin(obj, Area.Collision.TOUCH);
-    }
-    
-    /**
-     * Removes all sprites that are colliding with the specified object using a
-     * custom collision testing method.
-     * @param obj The object to check collision against.
-     * @param method The collision testing method to use.
-     */
-    public void removeAllWithin(Area obj, Area.Collision method) {
-        removeAll(getAllWithin(obj, method));
-    }
-    
-    /**
      * Removes all the sprites from the group that match the ones passed in.
      * @param sprites An group of sprites to remove.
      */
-    public void removeAll(Group sprites) {
+    public void remove(Group sprites) {
         elements.removeAll(sprites.getAll());
+    }
+    
+    public void remove(Sprite... sprites) {
+        remove(Arrays.asList(sprites));
     }
     
     /**
      * Removes all the sprites from the group that match the ones passed in.
      * @param sprites An array list of sprites to remove from the group.
      */
-    public void removeAll(List<Sprite> sprites) {
+    public void remove(List<Sprite> sprites) {
         elements.removeAll(sprites);
     }
     
@@ -219,6 +237,14 @@ public class Group {
     public void setRemoveArea(Area area) {
         moveableArea = area;
         removeSprites = true;
+    }
+    
+    public void setScript(Script script) {
+        for (Sprite sprite : elements) sprite.setScript(script);
+    }
+    
+    public void removeScript() {
+        for (Sprite sprite : elements) sprite.removeScript();
     }
     
     /**

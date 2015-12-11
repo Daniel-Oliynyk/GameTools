@@ -44,9 +44,19 @@ public class Graphic extends Area {
     }
     
     /**
+     * Creates a graphic at the specified coordinates with a custom image.
+     * @param pos The position of the graphic.
+     * @param image The image for the graphic.
+     */
+    public Graphic(Position pos, BufferedImage image) {
+        super(pos, new Dimension(image.getWidth(), image.getHeight()));
+        this.animation = new Animation(image);
+    }
+    
+    /**
      * Creates a graphic at the specified coordinates with a custom animation.
      * @param pos The position of the graphic.
-     * @param animation The image for the graphic.
+     * @param animation The animation for the graphic.
      */
     public Graphic(Position pos, Animation animation) {
         super(pos, animation.getDimensions());
@@ -66,6 +76,14 @@ public class Graphic extends Area {
      */
     public Animation getAnimation() {
         return animation;
+    }
+    
+    /**
+     * Returns the previous animation used by the object.
+     * @return The previous animation or an undefined animation if there was none.
+     */
+    public Animation getPreviousAnimation() {
+        return new Animation(previous);
     }
     
     /**
