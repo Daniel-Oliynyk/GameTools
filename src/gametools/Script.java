@@ -12,7 +12,7 @@ public abstract class Script {
         this.sprite = sprite;
     }
     
-    public Sprite sprite() {
+    public final Sprite sprite() {
         return sprite;
     }
     

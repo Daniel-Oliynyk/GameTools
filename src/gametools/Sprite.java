@@ -65,15 +65,25 @@ public class Sprite extends Graphic {
         /**
          * No rotation or an undefined rotation direction.
          */
-//        UNDEFINED,
+        UNDEFINED(0),
         /**
          * Clockwise rotation.
          */
-        CLOCKWISE,
+        CLOCKWISE(1),
         /**
          * Counter clockwise rotation.
          */
-        COUNTER_CLOCKWISE;
+        COUNTER_CLOCKWISE(-1);
+        
+        private final int mult;
+        
+        private Rotation(int mult) {
+            this.mult = mult;
+        }
+        
+        private double mult(double speed) {
+            return mult * speed;
+        }
     }
     //</editor-fold>
     private Direction lastDirection;
@@ -139,12 +149,12 @@ public class Sprite extends Graphic {
     public Sprite(Sprite sprite) {
         super(sprite);
         lastDirection = sprite.lastDirection;
+        script = sprite.script;
         speed = sprite.speed;
         rotationSpeed = sprite.rotationSpeed;
         moved = sprite.moved;
         relationalMovement = sprite.relationalMovement;
         movementArea = sprite.movementArea;
-        //finish this
     }
     
     /**
@@ -241,8 +251,7 @@ public class Sprite extends Graphic {
      * @param rot The direction to rotate in.
      */
     public void rotate(Position mid, Rotation rot) {
-        if (rot == Rotation.CLOCKWISE) rotate(mid, rotationSpeed);
-        else if (rot == Rotation.COUNTER_CLOCKWISE) rotate(mid, -rotationSpeed);
+        rotate(mid, rot.mult(rotationSpeed));
     }
     
     /**
@@ -279,8 +288,7 @@ public class Sprite extends Graphic {
      * @param rot The rotation constant for the direction the sprite should turn in.
      */
     public void turn(Rotation rot) {
-        if (rot == Rotation.CLOCKWISE) setAngle(angle + rotationSpeed);
-        else if (rot == Rotation.COUNTER_CLOCKWISE) setAngle(angle - rotationSpeed);
+        setAngle(angle + rot.mult(rotationSpeed));
     }
     
     /**

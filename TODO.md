@@ -22,7 +22,7 @@
   - [x] Add constant rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
-- [ ] Add properties to area enums and check other enums (fix sprite and make public).
+- [x] Add properties to area enums and check other enums.
 - [x] Split sprite class to graphic class.
   - [x] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
@@ -32,7 +32,7 @@
     - [x] Change to extend graphic class.
     - [ ] Add error checking.
   - [ ] Create a level chooser.
-  - [ ] See if GUI can be added.
+  - [x] See if GUI can be added.
   - [ ] Check what other types need to be made.
 - [ ] Add game is dragging check and retest drag code.
 - [x] Change constants to enums if possible.
@@ -41,7 +41,7 @@
 - [x] Remove width and height changing on sprites or make it consistent.
   - [x] Add a scale method and use it override the height and width methods.
 - [x] Remove get image area method.
-- [ ] Look over comparisons between classes.
+- [ ] Look over comparisons between classes and see if equals methods are needed.
 - [ ] Animation error image checking.
 - [x] Add dragging of an area.
 - [x] Add ... methods.
@@ -56,7 +56,7 @@
 - [ ] Remove notes about window methods by fixing bugs from execution order.
 - [ ] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.
-  - [ ] Try automating compressing and zipping.
+  - [ ] Try automating creating light and full libraries.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.
 - [ ] Maybe remove some rarely used getters or easy replicated methods.

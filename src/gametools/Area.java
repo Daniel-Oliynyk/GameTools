@@ -2,8 +2,6 @@ package gametools;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Used for basic positioning and collision.
@@ -21,31 +19,54 @@ public class Area {
         /**
          * Collision when the first object has any point within the second.
          */
-        TOUCH,
+        TOUCH(null, Modifier.BOTH),
         /**
          * Collision when the first object has any point within the second
          * horizontally, no matter the vertical position.
          */
-        TOUCH_X,
+        TOUCH_X(TOUCH, Modifier.X),
         /**
          * Collision when the first object has any point within the second
          * vertically, no matter the horizontal position.
          */
-        TOUCH_Y,
+        TOUCH_Y(TOUCH, Modifier.Y),
         /**
          * Collision when the first object is completely within the second.
          */
-        INSIDE,
+        INSIDE(null, Modifier.BOTH),
         /**
          * Collision when the first object is completely within the second
          * horizontally, no matter the vertical position.
          */
-        INSIDE_X,
+        INSIDE_X(INSIDE, Modifier.X),
         /**
          * Collision when the first object is completely within the second
          * vertically, no matter the horizontal position.
          */
-        INSIDE_Y;
+        INSIDE_Y(INSIDE, Modifier.Y),
+        EDGE(null, Modifier.BOTH),
+        EDGE_X(EDGE, Modifier.X),
+        EDGE_Y(EDGE, Modifier.Y);
+        
+        private static enum Modifier {
+            X, Y, BOTH;
+        }
+        
+        private final Collision parent;
+        private final Modifier modifier;
+        
+        private Collision(Collision parent, Modifier type) {
+            this.parent = parent;
+            this.modifier = type;
+        }
+        
+        private boolean isType(Collision type) {
+            return (parent == null && this == type) || parent == type;
+        }
+        
+        private boolean hasModifier(Modifier mod) {
+            return modifier == mod;
+        }
     }
     /**
      * The corners of the object.
@@ -68,8 +89,6 @@ public class Area {
          */
         BOTTOM_RIGHT;
     }
-    private static final List<Collision> TOUCH_COLLISION = Arrays.asList(Collision.TOUCH, Collision.TOUCH_X, Collision.TOUCH_Y);
-    private static final List<Collision> INSIDE_COLLISION = Arrays.asList(Collision.INSIDE, Collision.INSIDE_X, Collision.INSIDE_Y);
     //</editor-fold>
     /**
      * The precise x position of the object.
@@ -344,17 +363,21 @@ public class Area {
      */
     public boolean isWithin(Area obj, Collision method) {
         boolean horizontal, vertical;
-        if (INSIDE_COLLISION.contains(method)) {
-            horizontal = x > obj.x && x < obj.x + obj.width && x + width <= obj.x + obj.width;
-            vertical = y > obj.y && y < obj.y + obj.height && y + height <= obj.y + obj.height;
+        if (method.isType(Collision.INSIDE)) {
+            horizontal = x >= obj.x && x <= obj.x + obj.width && x + width <= obj.x + obj.width;
+            vertical = y >= obj.y && y <= obj.y + obj.height && y + height <= obj.y + obj.height;
+        }
+        else if (method.isType(Collision.EDGE)) {
+            horizontal = x - 1 == obj.x + obj.width || x + width == obj.x - 1;
+            vertical = y - 1 == obj.y + obj.height || y + height == obj.y - 1;
         }
         else {
             horizontal = x + width > obj.x && x < obj.x + obj.width;
             vertical = y + height > obj.y && y < obj.y + obj.height;
         }
-        if (method == Collision.TOUCH || method == Collision.INSIDE) return horizontal && vertical;
-        else if (method == Collision.TOUCH_X || method == Collision.INSIDE_X) return horizontal;
-        else if (method == Collision.TOUCH_Y || method == Collision.INSIDE_Y) return vertical;
+        if (method.hasModifier(Collision.Modifier.BOTH)) return horizontal && vertical;
+        else if (method.hasModifier(Collision.Modifier.X)) return horizontal;
+        else if (method.hasModifier(Collision.Modifier.Y)) return vertical;
         else return horizontal && vertical;
     }
     
