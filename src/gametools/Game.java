@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +23,7 @@ import javax.swing.JPanel;
  */
 public abstract class Game {
     private static int fps = 60, width = 800, height = 800, mouseX, mouseY;
+    private static boolean dragging;
     private static Graphics2D graphics;
     private static volatile HashSet<Integer> keys = new HashSet<>(), mouse = new HashSet<>(),
             prevKeys = new HashSet<>(), prevMouse = new HashSet<>();
@@ -77,7 +79,7 @@ public abstract class Game {
     /**
      * @return The full mouse coordinates stored within a position.
      */
-    public static Position getMousePosition() {
+    public static Position mousePosition() {
         return new Position(mouseX, mouseY);
     }
     
@@ -107,6 +109,10 @@ public abstract class Game {
      */
     public static String getTitle() {
         return frame.getTitle();
+    }
+    
+    public static boolean isDragging() {
+        return dragging;
     }
     
     /**
@@ -183,8 +189,12 @@ public abstract class Game {
      * @param size The dimensions of the game.
      */
     protected void setDimensions(Dimension size) {
-        width = (int) size.getWidth();
-        height = (int) size.getHeight();
+        width = (int) size.width;
+        height = (int) size.height;
+    }
+    
+    static void setDragging(boolean drag) {
+        dragging = drag;
     }
     //</editor-fold>
     
@@ -248,8 +258,16 @@ public abstract class Game {
      * @param obj The object to check collision with the mouse.
      * @return True if the mouse is completely inside the specified object.
      */
-    public static boolean mouseInside(Area obj) {
-        return getMousePosition().isInside(obj);
+    public static boolean mouseWithin(Area obj) {
+        return mousePosition().isInside(obj);
+    }
+    
+    public static boolean mouseWithin(List<Sprite> sprites) {
+        return mouseWithin(new Group(sprites));
+    }
+    
+    public static boolean mouseWithin(Group sprites) {
+        return sprites.isWithin(mousePosition());
     }
     
     /**

@@ -13,12 +13,11 @@
 - [x] Fix error handling in sprite sheet.
 - [x] Add pressed and released methods for game class.
 - [x] Add background image method.
-- [ ] Add more methods to sprite class.
+- [x] Add more methods to sprite class.
   - [x] Check over constructors and see if more options could be added there.
   - [x] Add turn and face methods.
   - [x] Add relational movement.
   - [x] Allow rotation around a point not just the center.
-  - [ ] Add getter for previous rotation.
   - [x] Add constant rotation.
 - [x] Remove or implement final methods.
 - [x] Add collision methods for point.
@@ -26,7 +25,7 @@
 - [x] Split sprite class to graphic class.
   - [x] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
-  - [ ] Create one with platforms and gravity for a platform game.
+  - [x] Create one with platforms and gravity for a platform game.
   - [ ] Create one with full image set and basic methods for a card game.
     - [ ] Fix joker image and add more card backs.
     - [x] Change to extend graphic class.
@@ -34,18 +33,18 @@
   - [ ] Create a level chooser.
   - [x] See if GUI can be added.
   - [ ] Check what other types need to be made.
-- [ ] Add game is dragging check and retest drag code.
+- [x] Add game is dragging check and retest drag code.
 - [x] Change constants to enums if possible.
 - [ ] Add on press and release methods to sprite.
 - [x] Add image to animation conversion and graphic to sprite conversion.
 - [x] Remove width and height changing on sprites or make it consistent.
   - [x] Add a scale method and use it override the height and width methods.
 - [x] Remove get image area method.
-- [ ] Look over comparisons between classes and see if equals methods are needed.
-- [ ] Animation error image checking.
+- [x] Look over comparisons between classes and see if equals methods are needed.
+- [x] Animation error image checking.
 - [x] Add dragging of an area.
 - [x] Add ... methods.
-- [ ] Add more collision methods.
+- [x] Add more collision methods.
 - [ ] Standardize method order.
 - [ ] Add custom cursor options.
 - [x] Finish translate methods.

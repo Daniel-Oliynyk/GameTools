@@ -1,7 +1,9 @@
 package gametools;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -64,6 +66,10 @@ public class Group {
         return elements;
     }
     
+    public boolean isWithin(Position pos) {
+        return isWithin(new Area(pos, new Dimension(1, 1)));
+    }
+    
     public boolean isWithin(Area obj) {
         return isWithin(obj, Area.Collision.TOUCH);
     }
@@ -123,6 +129,10 @@ public class Group {
         all.clear();
         all.addAll(noDuplicates);
         return all;
+    }
+    
+    public List<Sprite> getAllWithin(Position pos) {
+        return getAllWithin(new Area(pos, new Dimension(1, 1)));
     }
     
     /**
@@ -239,8 +249,8 @@ public class Group {
         removeSprites = true;
     }
     
-    public void setScript(Script script) {
-        for (Sprite sprite : elements) sprite.setScript(script);
+    public void script(Script script) {
+        for (Sprite sprite : elements) sprite.script(script);
     }
     
     public void removeScript() {
@@ -286,9 +296,12 @@ public class Group {
     public void drawAll() {
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) {
             Sprite sprite = it.next();
-            sprite.draw();
+            sprite.draw(Graphic.UpdateType.UPDATE_ONLY);
             if (removeSprites && moveableArea != Area.UNDEFINED_AREA)
                 if (!sprite.isWithin(moveableArea)) it.remove();
         }
+        Collections.reverse(elements);
+        for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) it.next().draw(Graphic.UpdateType.DRAW_ONLY);
+        Collections.reverse(elements);
     }
 }

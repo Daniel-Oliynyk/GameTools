@@ -12,10 +12,6 @@ public class Sprite extends Graphic {
      */
     public static enum Direction {
         /**
-         * No movement or movement that does not follow a pre-defined direction.
-         */
-        UNDEFINED(-1),
-        /**
          * Movement in the east (right) direction.
          */
         EAST(0),
@@ -63,10 +59,6 @@ public class Sprite extends Graphic {
      */
     public static enum Rotation {
         /**
-         * No rotation or an undefined rotation direction.
-         */
-        UNDEFINED(0),
-        /**
          * Clockwise rotation.
          */
         CLOCKWISE(1),
@@ -86,10 +78,9 @@ public class Sprite extends Graphic {
         }
     }
     //</editor-fold>
-    private Direction lastDirection;
     private Script script = Script.UNDEFINED_SCRIPT;
     private double speed = 5, rotationSpeed = 0.05;
-    private boolean moved, relationalMovement;
+    private boolean relational;
     private Area movementArea = Area.UNDEFINED_AREA;
     
     //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
@@ -148,12 +139,10 @@ public class Sprite extends Graphic {
      */
     public Sprite(Sprite sprite) {
         super(sprite);
-        lastDirection = sprite.lastDirection;
         script = sprite.script;
         speed = sprite.speed;
         rotationSpeed = sprite.rotationSpeed;
-        moved = sprite.moved;
-        relationalMovement = sprite.relationalMovement;
+        relational = sprite.relational;
         movementArea = sprite.movementArea;
     }
     
@@ -184,21 +173,11 @@ public class Sprite extends Graphic {
      * @return Whether or not the sprite is moving using directions relative to its angle.
      */
     public boolean getRelationalMovement() {
-        return relationalMovement;
+        return relational;
     }
     
     public Script getScript() {
         return script;
-    }
-    
-    /**
-     * Returns the direction the sprite was moved in the previous or
-     * current frame. Returns an undefined direction if the sprite was not recently
-     * moved or was moved in a direction not defined by one of the constants.
-     * @return The last direction the sprite was moved.
-     */
-    public Direction getLastDirection() {
-        return lastDirection;
     }
     
     /**
@@ -223,10 +202,10 @@ public class Sprite extends Graphic {
      * @param relational True to turn relational movement on, false to turn it off.
      */
     public void setRelationalMovement(boolean relational) {
-        this.relationalMovement = relational;
+        this.relational = relational;
     }
     
-    public void setScript(Script script) {
+    public void script(Script script) {
         this.script = script;
     }
     
@@ -334,7 +313,6 @@ public class Sprite extends Graphic {
     public void moveAt(double ang) {
         x += Math.cos(ang) * speed;
         y += Math.sin(ang) * speed;
-        lastDirection = Direction.UNDEFINED;
     }
     
     /**
@@ -354,7 +332,7 @@ public class Sprite extends Graphic {
      * @param dir The direction the sprite should move to.
      * @param speed The speed at which to move at.
      */
-    public void move(Direction dir, int speed) {
+    public void move(Direction dir, double speed) {
         double prev = this.speed;
         this.speed = speed;
         move(dir);
@@ -366,29 +344,25 @@ public class Sprite extends Graphic {
      * @param dir The direction the sprite should move to.
      */
     public void move(Direction dir) {
-        if (dir != Direction.UNDEFINED) {
-            moved = true;
-            double ang = (Math.PI / 4) * dir.rotation();
-            if (relationalMovement) ang += angle;
-            moveAt(ang);
-            lastDirection = dir;
-        }
+        double ang = (Math.PI / 4) * dir.rotation();
+        if (relational) ang += angle;
+        moveAt(ang);
     }
     
-    /**
+    /* *
      * Draws the sprite and updates its animation.<br>
      * <b>Note</b>: Overriding this method may cause unpredictable behavior for the sprite.
      */
     @Override
-    public void draw() {
-        update();
-        if (this.script != Script.UNDEFINED_SCRIPT) script.update();
-        if (!moved) lastDirection = Direction.UNDEFINED;
-        moved = false;
-        if (movementArea != Area.UNDEFINED_AREA) {
-            if (!isWithin(movementArea, Collision.INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
-            if (!isWithin(movementArea, Collision.INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
+    public void draw(UpdateType type) {
+        if (type.update()) {
+            update();
+            if (this.script != Script.UNDEFINED_SCRIPT) script.update();
+            if (movementArea != Area.UNDEFINED_AREA) {
+                if (!isWithin(movementArea, Collision.INSIDE_X)) x = (x <= 0)? 0 : movementArea.width - width;
+                if (!isWithin(movementArea, Collision.INSIDE_Y)) y = (y <= 0)? 0 : movementArea.height - height;
+            }
         }
-        super.draw();
+        super.draw(type);
     }
 }

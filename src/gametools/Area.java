@@ -2,6 +2,7 @@ package gametools;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * Used for basic positioning and collision.
@@ -368,30 +369,51 @@ public class Area {
             vertical = y >= obj.y && y <= obj.y + obj.height && y + height <= obj.y + obj.height;
         }
         else if (method.isType(Collision.EDGE)) {
-            horizontal = x - 1 == obj.x + obj.width || x + width == obj.x - 1;
-            vertical = y - 1 == obj.y + obj.height || y + height == obj.y - 1;
+            horizontal = x == obj.x + obj.width || x + width == obj.x;
+            vertical = y == obj.y + obj.height || y + height == obj.y;
         }
         else {
             horizontal = x + width > obj.x && x < obj.x + obj.width;
             vertical = y + height > obj.y && y < obj.y + obj.height;
         }
-        if (method.hasModifier(Collision.Modifier.BOTH)) return horizontal && vertical;
+        if (method == Collision.EDGE) return horizontal || vertical;
+        else if (method.hasModifier(Collision.Modifier.BOTH)) return horizontal && vertical;
         else if (method.hasModifier(Collision.Modifier.X)) return horizontal;
         else if (method.hasModifier(Collision.Modifier.Y)) return vertical;
         else return horizontal && vertical;
     }
     
+    public boolean isWithin(List<Sprite> sprites) {
+        return isWithin(new Group(sprites));
+    }
+    
+    public boolean isWithin(Group sprites) {
+        return isWithin(sprites, Collision.TOUCH);
+    }
+    
+    public boolean isWithin(List<Sprite> sprites, Collision method) {
+        return isWithin(new Group(sprites), method);
+    }
+    
+    public boolean isWithin(Group sprites, Collision method) {
+        return sprites.isWithin(this);
+    }
+    
     void updateDrag() {
-        if (draggable && Game.mouseEngaged(MouseEvent.BUTTON1) && Game.mouseInside(this)) {
+        if (draggable && Game.mouseEngaged(MouseEvent.BUTTON1) && Game.mouseWithin(this) && !Game.isDragging()) {
+            Game.setDragging(true);
             dragging = true;
-            offset = new Position(Game.getMousePosition().x - x, Game.getMousePosition().y - y);
+            offset = new Position(Game.mousePosition().x - x, Game.mousePosition().y - y);
         }
         if (dragging) {
-            double offsetX = Game.getMousePosition().x - offset.x;
-            double offsetY = Game.getMousePosition().y - offset.y;
+            double offsetX = Game.mousePosition().x - offset.x;
+            double offsetY = Game.mousePosition().y - offset.y;
             setPosition(new Position(offsetX, offsetY));
         }
-        if (!Game.mousePressed()) dragging = false;
+        if (!Game.mousePressed()) {
+            if (dragging) Game.setDragging(false);
+            dragging = false;
+        }
     }
     
     /**

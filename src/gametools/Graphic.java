@@ -8,6 +8,27 @@ import java.awt.image.BufferedImage;
  * Combines the area and animation classes into one object.
  */
 public class Graphic extends Area {
+    public static enum UpdateType {
+        NONE(false, false),
+        UPDATE_ONLY(true, false),
+        DRAW_ONLY(false, true),
+        UPDATE_DRAW(true, true);
+        
+        private final boolean update, draw;
+        
+        private UpdateType(boolean update, boolean draw) {
+            this.update = update;
+            this.draw = draw;
+        }
+        
+        boolean update() {
+            return update;
+        }
+        
+        boolean draw() {
+            return draw;
+        }
+    }
     double angle;
     Animation animation = Animation.UNDEFINED_ANIMATION, previous = animation;
     
@@ -174,13 +195,21 @@ public class Graphic extends Area {
     
     @Override
     public void draw() {
-        updateDrag();
-        animation.update();
-        AffineTransform at = new AffineTransform();
-        at.rotate(angle, getCenter().x, getCenter().y);
-        double trueX = getCenter().x - (animation.getWidth() / 2);
-        double trueY = getCenter().y - (animation.getHeight() / 2);
-        at.translate(trueX, trueY);
-        Game.painter().drawImage(animation.getFrame(), at, null);
+        draw(UpdateType.UPDATE_DRAW);
+    }
+    
+    public void draw(UpdateType type) {
+        if (type.update()) {
+            updateDrag();
+            animation.update();
+        }
+        if (type.draw()) {
+            AffineTransform at = new AffineTransform();
+            at.rotate(angle, getCenter().x, getCenter().y);
+            double trueX = getCenter().x - (animation.getWidth() / 2);
+            double trueY = getCenter().y - (animation.getHeight() / 2);
+            at.translate(trueX, trueY);
+            Game.painter().drawImage(animation.getFrame(), at, null);
+        }
     }
 }

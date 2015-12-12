@@ -30,7 +30,7 @@ public class Tools {
      * A class situated in the root of the project to help with creating relative paths.
      */
     private static Class root;
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
     
     /**
      * Initializes the tools and sets up the root directory.
@@ -206,6 +206,10 @@ public class Tools {
         return new Position(rand.nextInt(), rand.nextInt());
     }
     
+    public static Position randomPosition(Dimension size) {
+        return randomPosition(new Area(size));
+    }
+    
     /**
      * Generates a random position within the passed in area.
      * @param area The area within which the random position will be.
@@ -217,6 +221,27 @@ public class Tools {
         return new Position(x, y);
     }
     
+    public static BufferedImage generateBox(Color back, Dimension size) {
+        Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
+        return generateBox(Color.WHITE, end, Color.BLACK, size);
+    }
+    
+    public static BufferedImage generateBox(Color start, Color end, Color border, Dimension size) {
+        BufferedImage box = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics = box.createGraphics();
+        GradientPaint grad = new GradientPaint(0, -size.height, start, 0, size.height, end);
+        graphics.setPaint(grad);
+        graphics.fillRoundRect(0, 0, size.width, size.height, 7, 7);
+        graphics.setColor(border);
+        graphics.setStroke(new BasicStroke(2));
+        graphics.drawRoundRect(1, 1, size.width - 2, size.height - 2, 5, 5);
+        return box;
+    }
+    
+    public static Graphic generateButton(Color back, Color fore, String text, Dimension size) {
+        return generateButton(back, fore, text, new Area(size));
+    }
+    
     /**
      * Generates a button graphic with a custom color and centered text.
      * @param back The background color of the button.
@@ -226,21 +251,15 @@ public class Tools {
      * @return A button graphics with the passed in properties.
      */
     public static Graphic generateButton(Color back, Color fore, String text, Area bounds) {
-        BufferedImage button = new BufferedImage(bounds.width, bounds.height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = button.createGraphics();
         Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
-        GradientPaint grad = new GradientPaint(0, -bounds.height, Color.WHITE, 0, bounds.height, end);
-        graphics.setPaint(grad);
-        graphics.fillRoundRect(0, 0, bounds.width, bounds.height, 7, 7);
-        graphics.setColor(Color.BLACK);
-        graphics.setStroke(new BasicStroke(2));
-        graphics.drawRoundRect(1, 1, bounds.width - 2, bounds.height - 2, 5, 5);
+        BufferedImage button = generateBox(Color.WHITE, end, Color.BLACK, bounds.getDimensions());
+        Graphics2D graphics = button.createGraphics();
         FontMetrics font = graphics.getFontMetrics();
         Rectangle2D rect = font.getStringBounds(text, graphics);
         int x = (int) ((bounds.width - rect.getWidth()) / 2);
         int y = (int) ((bounds.height - rect.getHeight()) / 2) + font.getAscent();
         graphics.setColor(fore);
         graphics.drawString(text, x, y);
-        return new Graphic(bounds.getPosition(), new Animation(button));
+        return new Graphic(bounds.getPosition(), button);
     }
 }
