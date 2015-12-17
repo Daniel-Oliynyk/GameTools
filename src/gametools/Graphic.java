@@ -21,11 +21,11 @@ public class Graphic extends Area {
             this.draw = draw;
         }
         
-        boolean update() {
+        public boolean update() {
             return update;
         }
         
-        boolean draw() {
+        public boolean draw() {
             return draw;
         }
     }

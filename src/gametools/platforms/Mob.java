@@ -122,30 +122,32 @@ public class Mob extends Sprite {
     }
     
     @Override
-    public void draw() {
-        onGround = false;
-        if (gravity >= boost) {
-            int height = (int) Math.ceil(multiplier);
-            move(Direction.NORTH, boost);
-            loop:
-            for (int i = 0; i < gravity / multiplier; i++) {
-                move(Direction.SOUTH, multiplier);
-                Area mobBottom = new Area(new Position(x, y + getHeight() - height), new Dimension(getWidth(), height));
-                for (Sprite platform : Platformer.platforms().getAll()) {
-                    Area platBottom = new Area(platform.getPosition(), new Dimension(platform.getWidth(), height));
-                    if (mobBottom.isWithin(platBottom)) {
-                        y = platform.getY() - getHeight();
-                        gravity = 0;
-                        boost = 0;
-                        onGround = true;
-                        break loop;
+    public void draw(UpdateType type) {
+        if (type.update()) {
+            onGround = false;
+            if (gravity >= boost) {
+                int height = (int) Math.ceil(multiplier);
+                move(Direction.NORTH, boost);
+                loop:
+                for (int i = 0; i < gravity / multiplier; i++) {
+                    move(Direction.SOUTH, multiplier);
+                    Area mobBottom = new Area(new Position(x, y + getHeight() - height), new Dimension(getWidth(), height));
+                    for (Sprite platform : Platformer.platforms().getAll()) {
+                        Area platBottom = new Area(platform.getPosition(), new Dimension(platform.getWidth(), height));
+                        if (mobBottom.isWithin(platBottom)) {
+                            y = platform.getY() - getHeight();
+                            gravity = 0;
+                            boost = 0;
+                            onGround = true;
+                            break loop;
+                        }
                     }
                 }
             }
+            else move(Direction.NORTH, boost - gravity);
+            gravity += multiplier;
+            if (gravity > terminalVelocity + boost) gravity = terminalVelocity + boost;
         }
-        else move(Direction.NORTH, boost - gravity);
-        gravity += multiplier;
-        if (gravity > terminalVelocity + boost) gravity = terminalVelocity + boost;
-        super.draw();
+        super.draw(type);
     }
 }
