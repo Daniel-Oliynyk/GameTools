@@ -98,22 +98,29 @@ public class Tools {
     public static BufferedImage[] loadSpriteSheet(String path, Dimension size) {
         BufferedImage sheet = loadImage(path);
         if (sheet != UNDEFINED_IMAGE) {
-            int horizontal = (int) Math.floor(sheet.getWidth() / size.width);
-            int vertical = (int) Math.floor(sheet.getHeight() / size.height);
-            BufferedImage[] sprites = new BufferedImage[horizontal * vertical];
-            int total = 0;
-            for (int y = 0; y < vertical; y++) {
-                for (int x = 0; x < horizontal; x++) {
-                    sprites[total] = sheet.getSubimage(x * size.width, y * size.height, size.width, size.height);
-                    total++;
+            int horizontal = (int) Math.ceil((double) sheet.getWidth() / size.width);
+            int vertical = (int) Math.ceil((double) sheet.getHeight() / size.height);
+            if (horizontal * vertical > 0) {
+                BufferedImage[] sprites = new BufferedImage[horizontal * vertical];
+                int total = 0;
+                boolean tooBig = false;
+                for (int y = 0; y < vertical; y++) {
+                    for (int x = 0; x < horizontal; x++) {
+                        int outerX = (x + 1) * size.width;
+                        int outerY = (y + 1) * size.height;
+                        if (outerX > sheet.getWidth() || outerY > sheet.getHeight()) tooBig = true;
+                        int width = (outerX > sheet.getWidth())? sheet.getWidth() - x * size.width : size.width;
+                        int height = (outerY > sheet.getHeight())? sheet.getHeight() - y * size.height : size.height;
+                        sprites[total] = sheet.getSubimage(x * size.width, y * size.height, width, height);
+                        total++;
+                    }
                 }
+                if (tooBig) System.err.println("The size passed in for the spritesheet '" + path + "' was too large");
+                return sprites;
             }
-            return sprites;
         }
-        else {
-            System.err.println("There was an error generating a spritesheet from the image '" + path + "'");
-            return UNDEFINED_SPRITE_SHEET;
-        }
+        System.err.println("There was an error generating a spritesheet from the image '" + path + "'");
+        return UNDEFINED_SPRITE_SHEET;
     }
     
     /**
@@ -124,8 +131,12 @@ public class Tools {
      * @return An array of buffered images that show the trimmed selection.
      */
     public static BufferedImage[] trimSpriteSheet(BufferedImage[] full, int start, int end) {
-        if (full != UNDEFINED_SPRITE_SHEET) return Arrays.copyOfRange(full, start, end);
-        else return UNDEFINED_SPRITE_SHEET;
+        if (full == UNDEFINED_SPRITE_SHEET) return UNDEFINED_SPRITE_SHEET;
+        if (end >= full.length || start >= end) {
+            System.err.println("There was an error generating a spritesheet from the passed in range");
+            return full;
+        }
+        return Arrays.copyOfRange(full, start, end);
     }
     
     /**

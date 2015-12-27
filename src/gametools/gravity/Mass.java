@@ -1,4 +1,4 @@
-package gametools.platforms;
+package gametools.gravity;
 
 import gametools.Animation;
 import gametools.Area;
@@ -8,7 +8,7 @@ import gametools.Sprite;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
-public class Mob extends Sprite {
+public class Mass extends Sprite {
     private double multiplier, gravity, terminalVelocity, boost;
     private boolean onGround;
     
@@ -16,40 +16,40 @@ public class Mob extends Sprite {
     /* *
      * Creates a blank sprite without an image or position.
      */
-    public Mob() {
+    public Mass() {
         super();
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
      * Creates a sprite in the default location (the corner of the screen) with a custom image.
      * @param image The image for the sprite.
      */
-    public Mob(BufferedImage image) {
+    public Mass(BufferedImage image) {
         super(image);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
      * Creates a sprite in the default location (the corner of the screen) with a custom animation.
      * @param animation The animation for the sprite.
      */
-    public Mob(Animation animation) {
+    public Mass(Animation animation) {
         super(animation);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
      * Creates a sprite and copies over all the properties from the graphic.
      * @param graphic The graphic to copy the properties from.
      */
-    public Mob(Graphic graphic) {
+    public Mass(Graphic graphic) {
         super(graphic);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
@@ -57,10 +57,10 @@ public class Mob extends Sprite {
      * @param pos The position of the sprite.
      * @param image The image for the sprite.
      */
-    public Mob(Position pos, BufferedImage image) {
+    public Mass(Position pos, BufferedImage image) {
         super(pos, image);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
@@ -68,23 +68,23 @@ public class Mob extends Sprite {
      * @param pos The position of the sprite.
      * @param animation The animation for the sprite.
      */
-    public Mob(Position pos, Animation animation) {
+    public Mass(Position pos, Animation animation) {
         super(pos, animation);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
     /* *
      * Creates an exact copy of the passed in sprite.
      * @param sprite The sprite to copy properties from.
      */
-    public Mob(Sprite sprite) {
+    public Mass(Sprite sprite) {
         super(sprite);
-        multiplier = Platformer.getDefaultGravity() / 100;
-        terminalVelocity = Platformer.getDefaultTerminalVelocity();
+        multiplier = GravityGame.getDefaultGravity() / 100;
+        terminalVelocity = GravityGame.getDefaultTerminalVelocity();
     }
     
-    public Mob(Mob mob) {
+    public Mass(Mass mob) {
         super(mob);
         multiplier = mob.multiplier;
         gravity = mob.gravity;
@@ -113,6 +113,11 @@ public class Mob extends Sprite {
         gravity = 0;
     }
     
+    public void stopJump() {
+        boost = 0;
+        gravity = 0;
+    }
+    
     public boolean isJumping() {
         return boost != 0;
     }
@@ -132,7 +137,7 @@ public class Mob extends Sprite {
                 for (int i = 0; i < gravity / multiplier; i++) {
                     move(Direction.SOUTH, multiplier);
                     Area mobBottom = new Area(new Position(x, y + getHeight() - height), new Dimension(getWidth(), height));
-                    for (Sprite platform : Platformer.platforms().getAll()) {
+                    for (Sprite platform : GravityGame.platforms().getAll()) {
                         Area platBottom = new Area(platform.getPosition(), new Dimension(platform.getWidth(), height));
                         if (mobBottom.isWithin(platBottom)) {
                             y = platform.getY() - getHeight();

@@ -84,7 +84,7 @@ public class Graphic extends Area {
         this.animation = animation;
     }
     
-    /**
+    /* *
      * Returns the current image representing the object.
      * @return
      */

@@ -180,6 +180,10 @@ public class Group {
         elements.add(sprite);
     }
     
+    public void add(int i, Sprite sprite) {
+        elements.add(i, sprite);
+    }
+    
     /**
      * Adds all the passed in elements to the group.
      * @param sprites An array list of sprites to add to the group.

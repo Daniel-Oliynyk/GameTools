@@ -1,9 +1,9 @@
-package gametools.platforms;
+package gametools.gravity;
 
 import gametools.Game;
 import gametools.Group;
 
-public abstract class Platformer extends Game {
+public abstract class GravityGame extends Game {
     private static final Group platforms = new Group(), objects = new Group();
     private static double defaultMultiplier = 1, defaultTerminalVelocity = 25;
     

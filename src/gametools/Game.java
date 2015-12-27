@@ -1,8 +1,10 @@
 package gametools;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -191,6 +193,11 @@ public abstract class Game {
     protected void setDimensions(Dimension size) {
         width = (int) size.width;
         height = (int) size.height;
+    }
+    
+    protected void hideCursor(boolean hide) {
+        if (hide) frame.setCursor(frame.getToolkit().createCustomCursor(Tools.UNDEFINED_IMAGE, new Point(), null));
+        else frame.setCursor(Cursor.getDefaultCursor());
     }
     
     static void setDragging(boolean drag) {
