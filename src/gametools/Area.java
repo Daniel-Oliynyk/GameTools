@@ -148,6 +148,7 @@ public class Area {
     }
     
     /**
+     * Returns the x position of the object.
      * @return The x position of the object.
      */
     public double getX() {
@@ -155,6 +156,7 @@ public class Area {
     }
     
     /**
+     * Returns the y position of the object.
      * @return The y position of the object.
      */
     public double getY() {
@@ -180,6 +182,7 @@ public class Area {
     }
     
     /**
+     * Returns the current position.
      * @return A point representing the current position of the object.
      */
     public Position getPosition() {
@@ -187,6 +190,7 @@ public class Area {
     }
     
     /**
+     * Returns the size of the object.
      * @return A dimension representing the current width and height of the object.
      */
     public Dimension getDimensions() {
@@ -194,6 +198,7 @@ public class Area {
     }
     
     /**
+     * Returns the center of the object.
      * @return A point representing the center of the object.
      */
     public Position getCenter() {

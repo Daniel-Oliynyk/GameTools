@@ -147,6 +147,7 @@ public class Sprite extends Graphic {
     }
     
     /**
+     * Returns the amount the sprite moves each frame.
      * @return The speed the sprite moves at.
      */
     public double getSpeed() {
@@ -154,6 +155,7 @@ public class Sprite extends Graphic {
     }
     
     /**
+     * The amount the sprite rotates each frame.
      * @return The rotation speed of the sprite.
      */
     public double getRotationSpeed() {
@@ -170,7 +172,8 @@ public class Sprite extends Graphic {
     }
     
     /**
-     * @return Whether or not the sprite is moving using directions relative to its angle.
+     * Returns whether or not the sprite is moving using directions relative to its angle.
+     * @return Whether or not the sprite is using relational movement.
      */
     public boolean getRelationalMovement() {
         return relational;

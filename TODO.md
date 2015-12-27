@@ -53,7 +53,7 @@
 - [ ] Add test classes.
 - [x] Review tools class and see if any more helper methods can be added.
 - [ ] Remove notes about window methods by fixing bugs from execution order.
-- [ ] Fix javadoc without descriptions and review javadoc in general.
+- [x] Fix javadoc without descriptions and review javadoc in general.
 - [ ] Finish online segment.
   - [ ] Try automating creating light and full libraries.
   - [ ] Add code samples to website.

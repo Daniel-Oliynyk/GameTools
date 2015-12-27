@@ -98,7 +98,8 @@ public class Animation {
     }
     
     /**
-     * @return A dimension representing that contains both the width and height of the animation.
+     * Returns both the width and height of the animation.
+     * @return A dimension that contains both the width and height of the animation.
      */
     public Dimension getDimensions() {
         if (frames != Tools.UNDEFINED_SPRITE_SHEET) return new Dimension(frames[0].getWidth(), frames[0].getHeight());
@@ -106,6 +107,7 @@ public class Animation {
     }
     
     /**
+     * Returns the image of the current frame.
      * @return A buffered image of the current frame of the animation.
      */
     public BufferedImage getFrame() {
@@ -113,6 +115,7 @@ public class Animation {
     }
     
     /**
+     * Returns all of the frame images.
      * @return A array of the buffered images for each frame.
      */
     public BufferedImage[] getAllFrames() {
@@ -120,6 +123,7 @@ public class Animation {
     }
     
     /**
+     * Returns the amount of frames in the animation.
      * @return The amount of frames in the animation.
      */
     public int getLength() {
@@ -127,6 +131,7 @@ public class Animation {
     }
     
     /**
+     * Returns the current update speed of the animation.
      * @return The amount of updates it will take to move to the next frame of the animation.
      */
     public int getSpeed() {
@@ -134,6 +139,7 @@ public class Animation {
     }
     
     /**
+     * Returns the index of the current frame.
      * @return The current frame the animation is at.
      */
     public int getFrameNumber() {
@@ -141,6 +147,7 @@ public class Animation {
     }
     
     /**
+     * Returns the amount of times the animation has already replayed.
      * @return The amount of times the animation has already replayed.
      */
     public int getRepeatNumber() {
@@ -148,6 +155,7 @@ public class Animation {
     }
     
     /**
+     * Returns the repeat amount set for the animation.
      * @return The amount of times the animation will repeat before stopping.
      */
     public int getRepeatAmount() {
@@ -155,6 +163,7 @@ public class Animation {
     }
     
     /**
+     * Returns whether or not the animation has completed.
      * @return True is the animation has completed.
      */
     public boolean isComplete() {
@@ -162,6 +171,7 @@ public class Animation {
     }
     
     /**
+     * Returns whether or not the animation is paused.
      * @return True if the animation is currently paused.
      */
     public boolean isPaused() {
@@ -178,6 +188,7 @@ public class Animation {
     }
     
     /**
+     * Sets the frame number.
      * @param frameNumber The frame the animation should jump to.
      */
     public void setFrameNumber(int frameNumber) {
@@ -186,6 +197,7 @@ public class Animation {
     }
     
     /**
+     * Sets the amount the animation should repeat.
      * @param repeatAmount Sets the amount of times the animation should repeat.
      */
     public void setRepeatAmount(int repeatAmount) {

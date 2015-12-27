@@ -43,6 +43,7 @@ public class Position {
     }
     
     /**
+     * Returns the precise x location of the position.
      * @return The precise x location of the position.
      */
     public double x() {
@@ -50,6 +51,7 @@ public class Position {
     }
     
     /**
+     * Returns the precise x location of the position.
      * @return The precise x location of the position.
      */
     public double getX() {
@@ -57,6 +59,7 @@ public class Position {
     }
     
     /**
+     * Returns the precise y location of the position.
      * @return The precise y location of the position.
      */
     public double y() {
@@ -64,6 +67,7 @@ public class Position {
     }
     
     /**
+     * Returns the precise y location of the position.
      * @return The precise y location of the position.
      */
     public double getY() {

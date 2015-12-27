@@ -60,6 +60,7 @@ public class Group {
     }
     
     /**
+     * Returns all the elements in the group.
      * @return An array list containing all the sprites in order.
      */
     public List<Sprite> getAll() {
@@ -159,6 +160,7 @@ public class Group {
     }
     
     /**
+     * Returns the size of the group.
      * @return The amount of elements contained in the group.
      */
     public int size() {
@@ -166,7 +168,8 @@ public class Group {
     }
     
     /**
-     * @return True if the group is removing sprites outside their boundaries.
+     * Returns whether or not the group is removing sprites outside their boundaries.
+     * @return True if the group is removing sprites.
      */
     public boolean removeSprites() {
         return removeSprites;
@@ -236,8 +239,8 @@ public class Group {
     }
     
     /**
-     * @param remove Whether or not to remove sprites from the group if
-     * they go outside their boundaries.
+     * Sets whether or not to remove sprites from the group if they go outside their boundaries.
+     * @param remove Whether or not to remove sprites from the group.
      */
     public void removeSprites(boolean remove) {
         removeSprites = remove;

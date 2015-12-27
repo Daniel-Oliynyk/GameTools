@@ -101,6 +101,7 @@ public class Sound {
     }
     
     /**
+     * Returns if the sound is playing.
      * @return True if the sound is not paused and is currently playing.
      */
     public boolean isPlaying() {

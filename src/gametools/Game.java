@@ -41,6 +41,7 @@ public abstract class Game {
     
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     /**
+     * Returns the width.
      * @return The width of the screen.
      */
     public static int getWidth() {
@@ -48,6 +49,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns the height.
      * @return The height of the screen.
      */
     public static int getHeight() {
@@ -55,6 +57,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns the screen dimensions.
      * @return A dimension of the screen size.
      */
     public static Dimension getDimensions() {
@@ -62,6 +65,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns the screen size.
      * @return An area of the screen size.
      */
     public static Area getArea() {
@@ -79,6 +83,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns the mouse position.
      * @return The full mouse coordinates stored within a position.
      */
     public static Position mousePosition() {
@@ -86,13 +91,15 @@ public abstract class Game {
     }
     
     /**
-     * @return The center of the screen.
+     * Returns the center of the screen.
+     * @return A position representing the center of the screen.
      */
     public static Position getCenter() {
         return getArea().getCenter();
     }
     
     /**
+     * Returns the FPS.
      * @return The rough FPS the game is running at.
      */
     public static int getFPS() {
@@ -100,6 +107,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns the current background image.
      * @return The current background image set for the game.
      */
     public static BufferedImage getBackground() {
@@ -107,7 +115,8 @@ public abstract class Game {
     }
     
     /**
-     * @return The title of the game window.
+     * Returns the title of the game.
+     * @return The title displayed at the top of the game window.
      */
     public static String getTitle() {
         return frame.getTitle();
@@ -244,6 +253,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns whether or not anything on the mouse is pressed.
      * @return True if any button on the mouse is currently pressed.
      */
     public static boolean mousePressed() {
@@ -316,6 +326,7 @@ public abstract class Game {
     }
     
     /**
+     * Returns whether or not anything on the keyboard is pressed.
      * @return True if any button on the keyboard is currently pressed.
      */
     public static boolean keyPressed() {
