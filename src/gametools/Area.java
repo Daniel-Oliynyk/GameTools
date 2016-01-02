@@ -8,7 +8,6 @@ import java.util.List;
  * Used for basic positioning and collision.
  */
 public class Area {
-    //<editor-fold defaultstate="collapsed" desc="Enums and Constants">
     /**
      * An empty area to represent a non existent or undefined object.
      */
@@ -45,8 +44,19 @@ public class Area {
          * vertically, no matter the horizontal position.
          */
         INSIDE_Y(INSIDE, Modifier.Y),
+        /**
+         * Collision when only the edges of the two objects are in contact.
+         */
         EDGE(null, Modifier.BOTH),
+        /**
+         * Collision when only the edges of the two objects are in contact
+         * horizontally, no matter the vertical position.
+         */
         EDGE_X(EDGE, Modifier.X),
+        /**
+         * Collision when only the edges of the two objects are in contact
+         * vertically, no matter the horizontal position.
+         */
         EDGE_Y(EDGE, Modifier.Y);
         
         private static enum Modifier {
@@ -90,7 +100,6 @@ public class Area {
          */
         BOTTOM_RIGHT;
     }
-    //</editor-fold>
     /**
      * The precise x position of the object.
      */
@@ -103,7 +112,6 @@ public class Area {
     private boolean draggable, dragging;
     private Position offset = Position.UNDEFINED_POSITION;
     
-    //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates an area with the coordinates and dimensions of zero.
      */
@@ -339,7 +347,6 @@ public class Area {
     public String toString() {
         return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]";
     }
-    //</editor-fold>
     
     /**
      * Checks if a point is within the object.
@@ -352,7 +359,7 @@ public class Area {
     
     /**
      * Checks if the object is colliding with another object or area using rectangular
-     * collision and touch collision as the collision testing method.
+     * collision and touch collision as the collision detection method.
      * @param obj The object to test collision against.
      * @return True if the objects are in contact.
      */
@@ -362,9 +369,9 @@ public class Area {
     
     /**
      * Checks if the object is colliding with another object or area using rectangular
-     * collision and a custom collision flag.
+     * collision and a custom collision method.
      * @param obj The object to test collision against.
-     * @param method The collision testing method to use.
+     * @param method The collision detection method to use.
      * @return True if the objects are in contact.
      */
     public boolean isWithin(Area obj, Collision method) {
@@ -388,18 +395,44 @@ public class Area {
         else return horizontal && vertical;
     }
     
+    /**
+     * Checks if the object is colliding with any of the elements in the group
+     * using the default collision method.
+     * @param sprites The array list of sprites to test collision against.
+     * @return True if the object is colliding with at least one element in the group.
+     */
     public boolean isWithin(List<Sprite> sprites) {
         return isWithin(new Group(sprites));
     }
     
+    /**
+     * Checks if the object is colliding with any of the elements in the group
+     * using the default collision method.
+     * @param sprites The group of sprites to test collision against.
+     * @return True if the object is colliding with at least one element in the group.
+     */
     public boolean isWithin(Group sprites) {
         return isWithin(sprites, Collision.TOUCH);
     }
     
+    /**
+     * Checks if the object is colliding with any of the elements in the group
+     * using the default collision method.
+     * @param sprites The array list of sprites to test collision against.
+     * @param method The collision detection method to use.
+     * @return True if the object is colliding with at least one element in the group.
+     */
     public boolean isWithin(List<Sprite> sprites, Collision method) {
         return isWithin(new Group(sprites), method);
     }
     
+    /**
+     * Checks if the object is colliding with any of the elements in the group
+     * using the default collision method.
+     * @param sprites The group of sprites to test collision against.
+     * @param method The collision detection method to use.
+     * @return True if the object is colliding with at least one element in the group.
+     */
     public boolean isWithin(Group sprites, Collision method) {
         return sprites.isWithin(this);
     }

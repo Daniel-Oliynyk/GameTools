@@ -188,6 +188,20 @@ public class Tools {
         return new Dimension(width, height);
     }
     
+    /**
+     * Creates a group from the passed in sprites.
+     * @param sprites The sprites to be contained in the group.
+     * @return A group containing all the passed in sprites.
+     */
+    public static Group grp(Sprite... sprites) {
+        return grp(Arrays.asList(sprites));
+    }
+    
+    /**
+     * Converts an array list of sprites to a group.
+     * @param sprites An array list of sprites.
+     * @return A group containing all the sprites from the array list.
+     */
     public static Group grp(List<Sprite> sprites) {
         return new Group(sprites);
     }
@@ -217,6 +231,11 @@ public class Tools {
         return new Position(rand.nextInt(), rand.nextInt());
     }
     
+    /**
+     * Generates a random position within the passed in dimension.
+     * @param size The dimension within which the random position will be.
+     * @return A random position within the passed in dimension.
+     */
     public static Position randomPosition(Dimension size) {
         return randomPosition(new Area(size));
     }
@@ -232,11 +251,25 @@ public class Tools {
         return new Position(x, y);
     }
     
+    /**
+     * Generates a box image with rounded corners and a gradient background.
+     * @param back The background color of the box.
+     * @param size The dimensions of the image.
+     * @return A box image with the passed in size and color.
+     */
     public static BufferedImage generateBox(Color back, Dimension size) {
         Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
         return generateBox(Color.WHITE, end, Color.BLACK, size);
     }
     
+    /**
+     * Generates a box image with rounded corners and a gradient background.
+     * @param start The top color of the gradient.
+     * @param end The bottom color of the gradient.
+     * @param border The color of the border.
+     * @param size The dimensions of the image.
+     * @return A box image with the passed in parameters.
+     */
     public static BufferedImage generateBox(Color start, Color end, Color border, Dimension size) {
         BufferedImage box = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = box.createGraphics();
@@ -249,6 +282,14 @@ public class Tools {
         return box;
     }
     
+    /**
+     * Generates a button graphic with a custom color, centered text and a position of zero.
+     * @param back The background color of the button.
+     * @param fore The text color of the button.
+     * @param text The string to draw in one line on the button.
+     * @param size The dimensions of the button.
+     * @return A button graphics with the passed in properties.
+     */
     public static Graphic generateButton(Color back, Color fore, String text, Dimension size) {
         return generateButton(back, fore, text, new Area(size));
     }

@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
  * Used for adding movement and behavior for graphics.
  */
 public class Sprite extends Graphic {
-    //<editor-fold defaultstate="collapsed" desc="Enums">
     /**
      * The predefined directions the sprite can move in.
      */
@@ -77,13 +76,11 @@ public class Sprite extends Graphic {
             return mult * speed;
         }
     }
-    //</editor-fold>
     private Script script = Script.UNDEFINED_SCRIPT;
     private double speed = 5, rotationSpeed = 0.05;
     private boolean relational;
     private Area movementArea = Area.UNDEFINED_AREA;
     
-    //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates a blank sprite without an image or position.
      */
@@ -179,6 +176,11 @@ public class Sprite extends Graphic {
         return relational;
     }
     
+    /**
+     * Returns the current script acting on the sprite or an undefined script
+     * if there is none.
+     * @return The script the sprite is using.
+     */
     public Script getScript() {
         return script;
     }
@@ -208,10 +210,17 @@ public class Sprite extends Graphic {
         this.relational = relational;
     }
     
+    /**
+     * Sets a script for the sprite to use.
+     * @param script A script to run every time the sprite is updated.
+     */
     public void script(Script script) {
         this.script = script;
     }
     
+    /**
+     * Removes the script the sprite is using if it has any.
+     */
     public void removeScript() {
         this.script = Script.UNDEFINED_SCRIPT;
     }
@@ -225,7 +234,6 @@ public class Sprite extends Graphic {
     public void lockMovementArea(Area area) {
         movementArea = area;
     }
-    //</editor-fold>
     
     /**
      * Rotates the sprite around the specified position at the sprite's speed.
@@ -352,10 +360,6 @@ public class Sprite extends Graphic {
         moveAt(ang);
     }
     
-    /* *
-     * Draws the sprite and updates its animation.<br>
-     * <b>Note</b>: Overriding this method may cause unpredictable behavior for the sprite.
-     */
     @Override
     public void draw(UpdateType type) {
         if (type.update()) {

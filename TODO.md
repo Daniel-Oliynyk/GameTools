@@ -30,8 +30,8 @@
     - [ ] Fix joker image and add more card backs.
     - [x] Change to extend graphic class.
     - [ ] Add error checking.
+    - [ ] Move card tools to card game class.
   - [ ] Create a level chooser.
-  - [x] See if GUI can be added.
   - [ ] Check what other types need to be made.
 - [x] Add game is dragging check and retest drag code.
 - [x] Change constants to enums if possible.
@@ -46,7 +46,10 @@
 - [x] Add ... methods.
 - [x] Add more collision methods.
 - [ ] Standardize method order.
-- [ ] Add custom cursor options.
+- [ ] Add a collision method opposite to inside and fix it getting reversed.
+- [ ] Break down a few more commonly used methods that use positions or dimensions.
+- [ ] Add position collision methods and remove mouse within methods.
+- [x] Add custom cursor options.
 - [x] Finish translate methods.
 - [x] Add sprite group to sprite group methods and group rotation methods.
 - [ ] Look into 3 pixel shift glitch.

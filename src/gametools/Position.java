@@ -17,7 +17,6 @@ public class Position {
      */
     protected double y;
     
-    //<editor-fold defaultstate="collapsed" desc="Constructors, Getters and Setters">
     /**
      * Creates the object with the position of zero.
      */
@@ -198,7 +197,6 @@ public class Position {
     public String toString() {
         return getClass().getName() + "[x=" + x + ", y=" + y + "]";
     }
-    //</editor-fold>
     
     /**
      * Calculates the distance to the center of object using pythagorean theorem.

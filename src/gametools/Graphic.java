@@ -8,10 +8,25 @@ import java.awt.image.BufferedImage;
  * Combines the area and animation classes into one object.
  */
 public class Graphic extends Area {
+    /**
+     * The different ways of drawing the object.
+     */
     public static enum UpdateType {
+        /**
+         * Does not update the object or draw it.
+         */
         NONE(false, false),
+        /**
+         * Only updates the object.
+         */
         UPDATE_ONLY(true, false),
+        /**
+         * Only draws the object.
+         */
         DRAW_ONLY(false, true),
+        /**
+         * First updates the object, and then draws it.
+         */
         UPDATE_DRAW(true, true);
         
         private final boolean update, draw;
@@ -21,10 +36,18 @@ public class Graphic extends Area {
             this.draw = draw;
         }
         
+        /**
+         * Whether or not this update type requires updating.
+         * @return True if the update type requires updating.
+         */
         public boolean update() {
             return update;
         }
         
+        /**
+         * Whether or not this update type requires drawing.
+         * @return True if the update type requires drawing.
+         */
         public boolean draw() {
             return draw;
         }
@@ -84,9 +107,9 @@ public class Graphic extends Area {
         this.animation = animation;
     }
     
-    /* *
+    /**
      * Returns the current image representing the object.
-     * @return
+     * @return A buffered image representing the current state of the object.
      */
     public BufferedImage getImage() {
         return animation.getFrame();
@@ -193,11 +216,20 @@ public class Graphic extends Area {
      */
     protected void update() {}
     
+    /**
+     * Draws the object and updates its animation.<br>
+     * <b>Note</b>: Overriding this method may cause unpredictable behavior for the object.
+     */
     @Override
     public void draw() {
         draw(UpdateType.UPDATE_DRAW);
     }
     
+    /**
+     * Draws the object and updates its animation.<br>
+     * <b>Note</b>: Overriding this method may cause unpredictable behavior for the object.
+     * @param type The way the object should be updated.
+     */
     public void draw(UpdateType type) {
         if (type.update()) {
             updateDrag();

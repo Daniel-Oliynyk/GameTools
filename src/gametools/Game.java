@@ -39,7 +39,6 @@ public abstract class Game {
         window();
     }
     
-    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     /**
      * Returns the width.
      * @return The width of the screen.
@@ -122,6 +121,10 @@ public abstract class Game {
         return frame.getTitle();
     }
     
+    /**
+     * Returns true if any object in the game is currently being dragged.
+     * @return True if any object in the game is currently being dragged.
+     */
     public static boolean isDragging() {
         return dragging;
     }
@@ -204,6 +207,10 @@ public abstract class Game {
         height = (int) size.height;
     }
     
+    /**
+     * Hides the cursor to allow a custom one, or displays it if it was hidden.
+     * @param hide True to hide the cursor, false to display it again.
+     */
     protected void hideCursor(boolean hide) {
         if (hide) frame.setCursor(frame.getToolkit().createCustomCursor(Tools.UNDEFINED_IMAGE, new Point(), null));
         else frame.setCursor(Cursor.getDefaultCursor());
@@ -212,7 +219,6 @@ public abstract class Game {
     static void setDragging(boolean drag) {
         dragging = drag;
     }
-    //</editor-fold>
     
     /**
      * Checks if any mouse button was just pressed down.
@@ -279,10 +285,20 @@ public abstract class Game {
         return mousePosition().isInside(obj);
     }
     
+    /**
+     * Checks if the mouse is inside any of the elements in the group.
+     * @param sprites The array list to check collision with.
+     * @return True if the mouse is within at least one element in the group.
+     */
     public static boolean mouseWithin(List<Sprite> sprites) {
         return mouseWithin(new Group(sprites));
     }
     
+    /**
+     * Checks if the mouse is inside any of the elements in the group.
+     * @param sprites The group to check collision with.
+     * @return True if the mouse is within at least one element in the group.
+     */
     public static boolean mouseWithin(Group sprites) {
         return sprites.isWithin(mousePosition());
     }

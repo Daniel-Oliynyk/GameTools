@@ -12,7 +12,6 @@ public class Mass extends Sprite {
     private double multiplier, gravity, terminalVelocity, boost;
     private boolean onGround;
     
-    //<editor-fold defaultstate="collapsed" desc="Constructors">
     /* *
      * Creates a blank sprite without an image or position.
      */
@@ -90,7 +89,6 @@ public class Mass extends Sprite {
         gravity = mob.gravity;
         terminalVelocity = mob.terminalVelocity;
     }
-    //</editor-fold>
     
     public double getGravity() {
         return multiplier * 100;
@@ -128,6 +126,7 @@ public class Mass extends Sprite {
     
     @Override
     public void draw(UpdateType type) {
+        if (type.update()) super.draw(UpdateType.UPDATE_ONLY);
         if (type.update()) {
             onGround = false;
             if (gravity >= boost) {
@@ -153,6 +152,6 @@ public class Mass extends Sprite {
             gravity += multiplier;
             if (gravity > terminalVelocity + boost) gravity = terminalVelocity + boost;
         }
-        super.draw(type);
+        if (type.draw()) super.draw(UpdateType.DRAW_ONLY);
     }
 }
