@@ -14,8 +14,8 @@
       <h1 class="project-name">Gametools</h1>
       <h2 class="project-tagline">A 2D game library for Java</h2>
       <a href="https://github.com/Daniel-Oliynyk/GameTools" class="btn">View on GitHub</a>
-      <a href="javadoc/index.html" class="btn">View Javadoc</a>
-      <a href="#resources" class="btn">Download Library</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
@@ -36,13 +36,15 @@
 <li>Animation</li>
 </ul>
 
+<h1></h1>
+
 <h2>
 <a id="guide" class="anchor" href="#guide" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guide</h2>
 
 <h4>
 <a id="setting-up-the-library" class="anchor" href="#setting-up-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Up the Library</h4>
 
-<p>To begin, download the latest version of the library JAR. This file contains the compiled source code of the library, and must be added to your project. The way this is done depends on the IDE you are using for coding, however if an option exists to attach javadoc from a URL, then feel free to link it to the library javadoc at <code>http://daniel-oliynyk.github.io/GameTools/javadoc/</code>.</p>
+<p>To begin, download the latest version of the <a href="#resources">library JAR</a>. This file contains the compiled source code of the library, and must be added to your project. The way this is done depends on the IDE you are using for coding, however if an option exists to attach javadoc from a URL, then feel free to link it to the library javadoc at <code>http://daniel-oliynyk.github.io/GameTools/javadoc/</code>.</p>
 
 <h4>
 <a id="code-layout" class="anchor" href="#code-layout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Layout</h4>
@@ -52,7 +54,7 @@
 <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">gametools.*</span>;
 <span class="pl-k">import static</span> <span class="pl-smi">gametools.Tools.*</span>;</pre></div>
 
-<p>The first line imports the main components of the library into your project, and second statically imports all the methods from the <code>Tools</code> class, which shortens the amount of code you have to type when using them (<code>Tools.pt(2, 4)</code> vs the much simpler <code>pt(2, 4)</code>).</p>
+<p>The first line imports the main components of the library into your project, and second statically imports all the methods from the <code>Tools</code> class, which shortens the amount of code you have to type when using them (typing <code>pt(2, 4)</code> is much simpler than typing out <code>Tools.pt(2, 4)</code> every time).</p>
 
 <p>The main class of your project should extend the <code>Game</code> class. Here's an example:</p>
 
@@ -86,6 +88,23 @@
         <span class="pl-c">//Method runs at a set FPS and contains main game code</span>
     }
 }</pre></div>
+
+<h4>
+<a id="importing-images" class="anchor" href="#importing-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Importing Images</h4>
+
+<p>It is very simple to import images with the Gametools library. After the library's <code>Tools</code> class is <a href="#code-layout">imported and initialized</a>, images can be loaded by typing:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">BufferedImage</span> car <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>racecar.png<span class="pl-pds">"</span></span>); <span class="pl-c">//The race car image is stored in the project root</span>
+<span class="pl-smi">BufferedImage</span> dog <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>animals/dog.jpg<span class="pl-pds">"</span></span>); <span class="pl-c">//Slashes separate filenames and folders</span></pre></div>
+
+<p>The root folder of the project is the folder that the class passed into the <code>initialize</code> method of the <code>Tools</code> class. Ideally, images should be imported in the setup method of the project to prevent performance issues from constantly importing the same image.</p>
+
+<h4>
+<a id="drawing-shapes-and-text" class="anchor" href="#drawing-shapes-and-text" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing Shapes and Text</h4>
+
+<p>In the Gametools library, it is possible to draw simple shapes and text on the screen using the <code>painter()</code> object. This painter is a pointer to a <a href="https://docs.oracle.com/javase/tutorial/2d/"><code>Graphics2D</code></a> object, which has built in methods for drawing many things.</p>
+
+<h1></h1>
 
 <h2>
 <a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
