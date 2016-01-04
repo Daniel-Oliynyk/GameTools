@@ -12,15 +12,15 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Gametools</h1>
-      <h2 class="project-tagline">A 2D game library for Java.</h2>
+      <h2 class="project-tagline">A 2D game library for Java</h2>
       <a href="https://github.com/Daniel-Oliynyk/GameTools" class="btn">View on GitHub</a>
-      <a href="javadoc/index.html" class="btn">View Javadoc</a>
-      <a href="GameTools.jar" class="btn">Download Library</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="the-gametools-java-library" class="anchor" href="#the-gametools-java-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Gametools Java Library</h3>
+      <h2>
+<a id="the-gametools-java-library" class="anchor" href="#the-gametools-java-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Gametools Java Library</h2>
 
 <p>Gametools is a lightweight and simple to use library for creating 2D games in Java.</p>
 
@@ -38,8 +38,8 @@
 <li>Animation</li>
 </ul>
 
-<h3>
-<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h3>
+<h2>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
 
 <p>A full list of help and resources:</p>
 
@@ -50,6 +50,57 @@
 <li><a href="javadoc/index.html">Browse the library javadoc</a></li>
 <li><a href="GameTools.jar">Download the latest library jar</a></li>
 </ul>
+
+<h2>
+<a id="guide" class="anchor" href="#guide" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guide</h2>
+
+<h4>
+<a id="setting-up-the-library" class="anchor" href="#setting-up-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Up the Library</h4>
+
+<p>To begin, download the latest version of the library JAR. This file contains the compiled source code of the library, and must be added to your project. The way this is done depends on the IDE you are using for coding, however if an option exists to attach javadoc from a URL, then feel free to link it to the library javadoc at <code>http://daniel-oliynyk.github.io/GameTools/javadoc/</code>.</p>
+
+<h4>
+<a id="code-layout" class="anchor" href="#code-layout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Layout</h4>
+
+<p>Near the top of each file that you plan to use the library in, you should include these two lines:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">gametools.*</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">gametools.Tools.*</span>;</pre></div>
+
+<p>The first line imports the main components of the library into your project, and second statically imports all the methods from the <code>Tools</code> class, which shortens the amount of code you have to type when using them (<code>Tools.pt(2, 4)</code> vs the much simpler <code>pt(2, 4)</code>).</p>
+
+<p>The main class of your project should extend the <code>Game</code> class. Here's an example:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">sample</span>;
+
+<span class="pl-c">//These two imports are recommended for easier use of library</span>
+<span class="pl-k">import</span> <span class="pl-smi">gametools.*</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">gametools.Tools.*</span>;
+
+<span class="pl-c">//Your main class has to extend the abstract game class</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Sample</span> <span class="pl-k">extends</span> <span class="pl-e">Game</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">main</span>(<span class="pl-k">String</span>[] <span class="pl-v">args</span>) {
+        <span class="pl-c">//The main java method that java always runs first</span>
+        initialize(<span class="pl-smi">Sample</span><span class="pl-k">.</span>class); <span class="pl-c">//Sets up the tool class to find the base of the project</span>
+        <span class="pl-k">new</span> <span class="pl-smi">Sample</span>(); <span class="pl-c">//Need to include this for game to run</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">window</span>() {
+        <span class="pl-c">//Method runs before window is created, used for changing game settings</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">setup</span>() {
+        <span class="pl-c">//Method runs once after window is created, used for setup and initialization</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">run</span>() {
+        <span class="pl-c">//Method runs at a set FPS and contains main game code</span>
+    }
+}</pre></div>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/Daniel-Oliynyk/GameTools">Gametools</a> is maintained by <a href="https://github.com/Daniel-Oliynyk">Daniel-Oliynyk</a>.</span>
