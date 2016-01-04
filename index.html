@@ -36,6 +36,8 @@
 <li>Animation</li>
 </ul>
 
+<hr>
+
 <h2>
 <a id="guide" class="anchor" href="#guide" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guide</h2>
 
@@ -95,12 +97,35 @@
 <div class="highlight highlight-source-java"><pre><span class="pl-smi">BufferedImage</span> car <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>racecar.png<span class="pl-pds">"</span></span>); <span class="pl-c">//The race car image is stored in the project root</span>
 <span class="pl-smi">BufferedImage</span> dog <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>animals/dog.jpg<span class="pl-pds">"</span></span>); <span class="pl-c">//Slashes separate filenames and folders</span></pre></div>
 
-<p>The root folder of the project is the folder that the class passed into the <code>initialize</code> method of the <code>Tools</code> class. Ideally, images should be imported in the setup method of the project to prevent performance issues from constantly importing the same image.</p>
+<p>The root folder of the project is the folder that the class passed into the <code>initialize</code> method of the <code>Tools</code> class. Ideally, images should be imported in the <code>setup()</code> method of the project to prevent performance issues from constantly importing the same image.</p>
+
+<h4>
+<a id="importing-spritesheets" class="anchor" href="#importing-spritesheets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Importing Spritesheets</h4>
+
+<p>A spritesheet is an image that contains a bunch of smaller images packed together inside it. Storing related images in a spritesheet is a good habit as loading them is quicker than loading images individually. Spritesheets are imported very similarly to regular images in the library:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">//Extracts an array of 64 x 64 sprite images from the player spritesheet</span>
+<span class="pl-k">BufferedImage</span>[] all <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>player.png<span class="pl-pds">"</span></span>, dm(<span class="pl-c1">64</span>, <span class="pl-c1">64</span>));
+<span class="pl-c">//Returns a cropped version of the full set of player sprites going from 4 to 8</span>
+<span class="pl-k">BufferedImage</span>[] walk <span class="pl-k">=</span> trimSpriteSheet(all, <span class="pl-c1">4</span>, <span class="pl-c1">8</span>);
+<span class="pl-c">//Loads the full explosion spritesheet then returns a trimmed spritesheet going from 12 to 24</span>
+<span class="pl-k">BufferedImage</span>[] explosion <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>img/explosion.png<span class="pl-pds">"</span></span>, dm(<span class="pl-c1">16</span>, <span class="pl-c1">16</span>), <span class="pl-c1">12</span>, <span class="pl-c1">24</span>);</pre></div>
+
+<p>It is important to note that all spritesheet methods return <code>BufferedImage</code> arrays and only work if all the sprite images have the same dimensions. Also, the <code>dm(w, h)</code> is simply a short form for <code>new Dimension(w, h)</code>.</p>
 
 <h4>
 <a id="drawing-shapes-and-text" class="anchor" href="#drawing-shapes-and-text" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing Shapes and Text</h4>
 
-<p>In the Gametools library, it is possible to draw simple shapes and text on the screen using the <code>painter()</code> object. This painter is a pointer to a <a href="https://docs.oracle.com/javase/tutorial/2d/"><code>Graphics2D</code> object</a>, which has built in methods for drawing many things.</p>
+<p>In the Gametools library, it is possible to draw simple shapes and text on the screen using the <code>painter()</code> object. This painter is a pointer to a <code>Graphics2D</code> object (<a href="https://docs.oracle.com/javase/tutorial/2d/">see a guide on graphics in java</a>), which has built in methods for drawing many things. For example, a red square labelled 'Hello World!' can be drawn by typing:</p>
+
+<div class="highlight highlight-source-java"><pre>painter()<span class="pl-k">.</span>setColor(<span class="pl-smi">Color</span><span class="pl-c1"><span class="pl-k">.</span>RED</span>); <span class="pl-c">//The color of the painter must be set before drawing</span>
+painter()<span class="pl-k">.</span>fillRect(<span class="pl-c1">100</span>, <span class="pl-c1">100</span>, <span class="pl-c1">300</span>, <span class="pl-c1">300</span>); <span class="pl-c">//Draws a rectangle from (100, 100) to (300, 300)</span>
+painter()<span class="pl-k">.</span>setColor(<span class="pl-smi">Color</span><span class="pl-c1"><span class="pl-k">.</span>WHITE</span>); <span class="pl-c">//The color must be changed before drawing white text</span>
+painter()<span class="pl-k">.</span>drawString(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>, <span class="pl-c1">180</span>, <span class="pl-c1">140</span>); <span class="pl-c">//Writes 'Hello World!' at (180, 140)</span></pre></div>
+
+<p>For a full list of java graphics methods go to the <code>Graphics2D</code> <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Graphics2D.html">documentation page</a>.</p>
+
+<hr>
 
 <h2>
 <a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
