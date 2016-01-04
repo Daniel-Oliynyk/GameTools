@@ -322,6 +322,14 @@ public class Area {
     }
     
     /**
+     * Sets the object position to the center of the passed in object
+     * @param obj The object to center on.
+     */
+    public void centerOn(Area obj) {
+        centerOn(obj.getCenter());
+    }
+    
+    /**
      * Centers the object around the specified coordinates.
      * @param pos The position of the center.
      */

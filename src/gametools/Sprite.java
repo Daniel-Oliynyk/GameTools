@@ -78,7 +78,7 @@ public class Sprite extends Graphic {
     }
     private Script script = Script.UNDEFINED_SCRIPT;
     private double speed = 5, rotationSpeed = 0.05;
-    private boolean relational;
+    private boolean relational, remove;
     private Area movementArea = Area.UNDEFINED_AREA;
     
     /**
@@ -186,7 +186,16 @@ public class Sprite extends Graphic {
     }
     
     /**
+     * Returns true if the sprite is to be removed from any groups its in.
+     * @return True if the sprite is marked for removal.
+     */
+    public boolean markedForRemoval() {
+        return remove;
+    }
+    
+    /**
      * Sets the speed the sprite will move at when using its move methods.
+     * The default is five.
      * @param speed The amount of pixels the sprite will move each frame.
      */
     public void setSpeed(double speed) {
@@ -223,6 +232,15 @@ public class Sprite extends Graphic {
      */
     public void removeScript() {
         this.script = Script.UNDEFINED_SCRIPT;
+    }
+    
+    /**
+     * Sets the flag for any groups containing this sprite to safely remove it.
+     * If sprite is not a member of any groups this does nothing.
+     * @param remove Whether or not to mark the sprite for removal.
+     */
+    public void remove(boolean remove) {
+        this.remove = remove;
     }
     
     /**
@@ -348,6 +366,20 @@ public class Sprite extends Graphic {
         this.speed = speed;
         move(dir);
         this.speed = prev;
+    }
+    
+    /**
+     * Moves the sprite in the passed in direction at the set speed. Using this
+     * method will prevent your sprite from moving faster diagonally.
+     * @param hor Positive for north, zero for no change and negative for south.
+     * @param ver Positive for east, zero for no change and negative for west.
+     */
+    public void move(int hor, int ver) {
+        if (hor > 0) hor = 1;
+        else if (hor < 0) hor = -1;
+        if (ver > 0) ver = -1;
+        else if (ver < 0) ver = 1;
+        if (hor != 0 || ver != 0) moveAt(new Position().angleTo(new Position(hor, ver)));
     }
     
     /**

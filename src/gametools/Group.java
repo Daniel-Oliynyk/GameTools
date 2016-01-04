@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class for managing and updating groups of sprites.
@@ -297,9 +295,25 @@ public class Group {
     
     /**
      * Adds all the passed in elements to the group.
+     * @param sprites A group of sprites to add to the group.
+     */
+    public void add(Group sprites) {
+        add(sprites.getAll());
+    }
+    
+    /**
+     * Adds all the passed in elements to the group.
+     * @param sprites The sprites to add to the group.
+     */
+    public void add(Sprite... sprites) {
+        add(Arrays.asList(sprites));
+    }
+    
+    /**
+     * Adds all the passed in elements to the group.
      * @param sprites An array list of sprites to add to the group.
      */
-    public void addAll(List<Sprite> sprites) {
+    public void add(List<Sprite> sprites) {
         elements.addAll(sprites);
     }
     
@@ -354,7 +368,7 @@ public class Group {
      * Sets whether or not to remove sprites from the group if they go outside their boundaries.
      * @param remove Whether or not to remove sprites from the group.
      */
-    public void removeSprites(boolean remove) {
+    public void removeWhenOutsideBounds(boolean remove) {
         removeSprites = remove;
     }
     
@@ -422,9 +436,10 @@ public class Group {
     public void drawAll() {
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) {
             Sprite sprite = it.next();
+            if (sprite.markedForRemoval()) it.remove();
             sprite.draw(Graphic.UpdateType.UPDATE_ONLY);
-            if (removeSprites && moveableArea != Area.UNDEFINED_AREA)
-                if (!sprite.isWithin(moveableArea)) it.remove();
+            if (sprite.markedForRemoval()) it.remove();
+            else if (removeSprites && moveableArea != Area.UNDEFINED_AREA && !sprite.isWithin(moveableArea)) it.remove();
         }
         Collections.reverse(elements);
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) it.next().draw(Graphic.UpdateType.DRAW_ONLY);

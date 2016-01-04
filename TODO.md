@@ -25,10 +25,11 @@
 - [x] Split sprite class to graphic class.
   - [x] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
-  - [x] Create one with platforms and gravity for a platform game.
+  - [ ] Create one with platforms and gravity for a platform game.
+    - [ ] Add scan distance function.
   - [ ] Create one with full image set and basic methods for a card game.
-    - [ ] Fix joker image and add more card backs.
     - [x] Change to extend graphic class.
+    - [ ] Fix joker image and add more card backs.
     - [ ] Add error checking.
     - [ ] Move card tools to card game class.
   - [ ] Create a level chooser.
@@ -49,6 +50,7 @@
 - [ ] Add a collision method opposite to inside and fix it getting reversed.
 - [ ] Break down a few more commonly used methods that use positions or dimensions.
 - [ ] Add position collision methods and remove mouse within methods.
+- [ ] Allow dimension to be passed in instead of area in some cases.
 - [x] Add custom cursor options.
 - [x] Finish translate methods.
 - [x] Add sprite group to sprite group methods and group rotation methods.
@@ -64,3 +66,5 @@
 - [ ] Maybe remove some rarely used getters or easy replicated methods.
 - [ ] Maybe standardize code line length.
 - [ ] Re check clone and to string methods.
+- [ ] Add set icon method.
+- [ ] Re check usage of protected.
