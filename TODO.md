@@ -68,3 +68,4 @@
 - [ ] Re check clone and to string methods.
 - [ ] Add set icon method.
 - [ ] Re check usage of protected.
+- [ ] Fix clear method to use remove flag.
