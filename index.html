@@ -12,19 +12,17 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Gametools</h1>
-      <h2 class="project-tagline">A 2D game library for Java.</h2>
+      <h2 class="project-tagline">A 2D game library for Java</h2>
       <a href="https://github.com/Daniel-Oliynyk/GameTools" class="btn">View on GitHub</a>
       <a href="javadoc/index.html" class="btn">View Javadoc</a>
-      <a href="GameTools.jar" class="btn">Download Library</a>
+      <a href="#resources" class="btn">Download Library</a>
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="the-gametools-java-library" class="anchor" href="#the-gametools-java-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Gametools Java Library</h3>
+      <h2>
+<a id="the-gametools-java-library" class="anchor" href="#the-gametools-java-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>The Gametools Java Library</h2>
 
-<p>Gametools is a lightweight and simple to use library for creating 2D games in Java.</p>
-
-<p>Some features of this library include:</p>
+<p>Gametools is a lightweight and simple to use library for creating 2D games in java. Some features of this library include:</p>
 
 <ul>
 <li>Sprites</li>
@@ -38,17 +36,108 @@
 <li>Animation</li>
 </ul>
 
-<h3>
-<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h3>
+<hr>
+
+<h2>
+<a id="guide" class="anchor" href="#guide" aria-hidden="true"><span class="octicon octicon-link"></span></a>Guide</h2>
+
+<h4>
+<a id="setting-up-the-library" class="anchor" href="#setting-up-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setting Up the Library</h4>
+
+<p>To begin, download the latest version of the <a href="#resources">library jar</a>. This file contains the compiled source code of the library, and must be added to your project. The way this is done depends on the IDE you are using for coding, however if an option exists to attach javadoc from a URL, then feel free to link it to the library javadoc at <code>http://daniel-oliynyk.github.io/GameTools/javadoc/</code>.</p>
+
+<h4>
+<a id="code-layout" class="anchor" href="#code-layout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code Layout</h4>
+
+<p>Near the top of each file that you plan to use the library in, you should include these two lines:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">gametools.*</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">gametools.Tools.*</span>;</pre></div>
+
+<p>The first line imports the main components of the library into your project, and second statically imports all the methods from the <code>Tools</code> class, which shortens the amount of code you have to type when using them (typing <code>pt(2, 4)</code> is much simpler than typing out <code>Tools.pt(2, 4)</code> every time).</p>
+
+<p>The main class of your project should extend the <code>Game</code> class. Here's an example:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-k">package</span> <span class="pl-smi">sample</span>;
+
+<span class="pl-c">//These two imports are recommended for easier use of library</span>
+<span class="pl-k">import</span> <span class="pl-smi">gametools.*</span>;
+<span class="pl-k">import static</span> <span class="pl-smi">gametools.Tools.*</span>;
+
+<span class="pl-c">//Your main class has to extend the abstract game class</span>
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">Sample</span> <span class="pl-k">extends</span> <span class="pl-e">Game</span> {
+
+    <span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">void</span> <span class="pl-en">main</span>(<span class="pl-k">String</span>[] <span class="pl-v">args</span>) {
+        <span class="pl-c">//The main java method that java always runs first</span>
+        initialize(<span class="pl-smi">Sample</span><span class="pl-k">.</span>class); <span class="pl-c">//Sets up the tool class to find the base of the project</span>
+        <span class="pl-k">new</span> <span class="pl-smi">Sample</span>(); <span class="pl-c">//Need to include this for game to run</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">window</span>() {
+        <span class="pl-c">//Method runs before window is created, used for changing game settings</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">setup</span>() {
+        <span class="pl-c">//Method runs once after window is created, used for setup and initialization</span>
+    }
+
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">protected</span> <span class="pl-k">void</span> <span class="pl-en">run</span>() {
+        <span class="pl-c">//Method runs at a set FPS and contains main game code</span>
+    }
+}</pre></div>
+
+<h4>
+<a id="importing-images" class="anchor" href="#importing-images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Importing Images</h4>
+
+<p>It is very simple to import images with the Gametools library. After the library's <code>Tools</code> class is <a href="#code-layout">imported and initialized</a>, images can be loaded by typing:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">BufferedImage</span> car <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>racecar.png<span class="pl-pds">"</span></span>); <span class="pl-c">//The race car image is stored in the project root</span>
+<span class="pl-smi">BufferedImage</span> dog <span class="pl-k">=</span> loadImage(<span class="pl-s"><span class="pl-pds">"</span>animals/dog.jpg<span class="pl-pds">"</span></span>); <span class="pl-c">//Slashes separate filenames and folders</span></pre></div>
+
+<p>The root folder of the project is the folder that the class passed into the <code>initialize</code> method of the <code>Tools</code> class. Ideally, images should be imported in the <code>setup()</code> method of the project to prevent performance issues from constantly importing the same image.</p>
+
+<h4>
+<a id="importing-spritesheets" class="anchor" href="#importing-spritesheets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Importing Spritesheets</h4>
+
+<p>A spritesheet is an image that contains a bunch of smaller images packed together inside it. Storing related images in a spritesheet is a good habit as loading them is quicker than loading images individually. Spritesheets are imported very similarly to regular images in the library:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">//Extracts an array of 64 x 64 sprite images from the player spritesheet</span>
+<span class="pl-k">BufferedImage</span>[] all <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>player.png<span class="pl-pds">"</span></span>, dm(<span class="pl-c1">64</span>, <span class="pl-c1">64</span>));
+<span class="pl-c">//Returns a cropped version of the full set of player sprites going from 4 to 8</span>
+<span class="pl-k">BufferedImage</span>[] walk <span class="pl-k">=</span> trimSpriteSheet(all, <span class="pl-c1">4</span>, <span class="pl-c1">8</span>);
+<span class="pl-c">//Loads the full explosion spritesheet then returns a trimmed spritesheet going from 12 to 24</span>
+<span class="pl-k">BufferedImage</span>[] explosion <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>img/explosion.png<span class="pl-pds">"</span></span>, dm(<span class="pl-c1">16</span>, <span class="pl-c1">16</span>), <span class="pl-c1">12</span>, <span class="pl-c1">24</span>);</pre></div>
+
+<p>It is important to note that all spritesheet methods return <code>BufferedImage</code> arrays and only work if all the sprite images have the same dimensions. Also, the <code>dm(w, h)</code> is a method from the <code>Tools</code> class that is simply a short form for typing <code>new Dimension(w, h)</code>.</p>
+
+<h4>
+<a id="drawing-shapes-and-text" class="anchor" href="#drawing-shapes-and-text" aria-hidden="true"><span class="octicon octicon-link"></span></a>Drawing Shapes and Text</h4>
+
+<p>In the Gametools library, it is possible to draw simple shapes and text on the screen using the <code>painter()</code> object. This painter is a pointer to a <code>Graphics2D</code> object (<a href="https://docs.oracle.com/javase/tutorial/2d/">see a guide on graphics in java</a>), which has built in methods for drawing many things. For example, a red square labelled 'Hello World!' can be drawn by typing:</p>
+
+<div class="highlight highlight-source-java"><pre>painter()<span class="pl-k">.</span>setColor(<span class="pl-smi">Color</span><span class="pl-c1"><span class="pl-k">.</span>RED</span>); <span class="pl-c">//The color of the painter must be set before drawing</span>
+painter()<span class="pl-k">.</span>fillRect(<span class="pl-c1">100</span>, <span class="pl-c1">100</span>, <span class="pl-c1">300</span>, <span class="pl-c1">300</span>); <span class="pl-c">//Draws a rectangle from (100, 100) to (300, 300)</span>
+painter()<span class="pl-k">.</span>setColor(<span class="pl-smi">Color</span><span class="pl-c1"><span class="pl-k">.</span>WHITE</span>); <span class="pl-c">//The color must be changed before drawing white text</span>
+painter()<span class="pl-k">.</span>drawString(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>, <span class="pl-c1">180</span>, <span class="pl-c1">140</span>); <span class="pl-c">//Writes 'Hello World!' at (180, 140)</span></pre></div>
+
+<p>For a full list of java graphics methods go to the <code>Graphics2D</code> <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Graphics2D.html">documentation page</a>.</p>
+
+<hr>
+
+<h2>
+<a id="resources" class="anchor" href="#resources" aria-hidden="true"><span class="octicon octicon-link"></span></a>Resources</h2>
 
 <p>A full list of help and resources:</p>
 
 <ul>
+<li><a href="GameTools.jar">Download the latest library jar</a></li>
 <li><a href="https://github.com/Daniel-Oliynyk/GameTools">View GitHub page</a></li>
 <li><a href="https://github.com/Daniel-Oliynyk/GameTools/zipball/master">Download full source code as zip</a></li>
 <li><a href="https://github.com/Daniel-Oliynyk/GameTools/tarball/master">Download full source code as tar</a></li>
 <li><a href="javadoc/index.html">Browse the library javadoc</a></li>
-<li><a href="GameTools.jar">Download the latest library jar</a></li>
 </ul>
 
       <footer class="site-footer">
