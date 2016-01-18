@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.List;
@@ -122,6 +123,14 @@ public abstract class Game {
     }
     
     /**
+     * Returns the current focal point of the camera.
+     * @return A position representing the current focal point of the camera.
+     */
+    public static Position getCamera() {
+        return new Position(graphics.getTransform().getTranslateX(), graphics.getTransform().getTranslateY());
+    }
+    
+    /**
      * Returns true if any object in the game is currently being dragged.
      * @return True if any object in the game is currently being dragged.
      */
@@ -218,6 +227,65 @@ public abstract class Game {
     
     static void setDragging(boolean drag) {
         dragging = drag;
+    }
+    
+    /**
+     * Translates the camera position by moving the painter location.<br>
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should
+     * only be moved at the start or end of the run method to prevent
+     * inconsistent results.
+     * @param ix The amount to increment the x by.
+     * @param iy The amount to increment the y by.
+     */
+    public static void translateCamera(double ix, double iy) {
+        translateCamera(new Position(ix, iy));
+    }
+    
+    /**
+     * Translates the camera position by moving the painter location.<br>
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should
+     * only be moved at the start or end of the run method to prevent
+     * inconsistent results.
+     * @param trans The amount to translate by.
+     */
+    public static void translateCamera(Position trans) {
+        setCamera(trans.x - getCamera().x, trans.y - getCamera().y);
+    }
+    
+    /**
+     * Centers the camera on a position by moving the painter location.<br>
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should
+     * only be moved at the start or end of the run method to prevent
+     * inconsistent results.
+     * @param x The new x location of the camera focus point.
+     * @param y The new y location of the camera focus point.
+     */
+    public static void setCamera(double x, double y) {
+        setCamera(new Position(x, y));
+    }
+    
+    /**
+     * Centers the camera on a object by moving the painter location.<br>
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should
+     * only be moved at the start or end of the run method to prevent
+     * inconsistent results.
+     * @param area The object to focus the camera on.
+     */
+    public static void setCamera(Area area) {
+        setCamera(area.getCenter());
+    }
+    
+    /**
+     * Centers the camera on a position by moving the painter location.<br>
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should
+     * only be moved at the start or end of the run method to prevent
+     * inconsistent results.
+     * @param center The new camera focal point.
+     */
+    public static void setCamera(Position center) {
+        AffineTransform at = new AffineTransform();
+        at.translate(-center.x - width / 2, -center.y - height / 2);
+        graphics.setTransform(at);
     }
     
     /**
@@ -387,9 +455,12 @@ public abstract class Game {
         double timeStart = System.nanoTime();
         while (true) {
             if (System.nanoTime() - timeStart > 1000000000 / fps) {
+                timeStart = System.nanoTime();
+                Position prev = getCamera();
+                setCamera(0, 0);
                 fixBackground();
                 graphics.drawImage(background, 0, 0, null);
-                timeStart = System.nanoTime();
+                setCamera(prev);
                 run();
                 prevKeys = new HashSet<>(keys);
                 prevMouse = new HashSet<>(mouse);

@@ -130,11 +130,15 @@ public class Mass extends Sprite {
         if (type.update()) {
             onGround = false;
             if (gravity >= boost) {
-                int height = (int) Math.ceil(multiplier);
+                double scan = GravityGame.getScanDistance();
+                int height = (int) Math.ceil(scan);
                 move(Direction.NORTH, boost);
+                double total = 0;
                 loop:
-                for (int i = 0; i < gravity / multiplier; i++) {
-                    move(Direction.SOUTH, multiplier);
+                while (total < gravity) {
+                    double add = (total + scan > gravity)? gravity - total : scan;
+                    total += add;
+                    move(Direction.SOUTH, add);
                     Area mobBottom = new Area(new Position(x, y + getHeight() - height), new Dimension(getWidth(), height));
                     for (Sprite platform : GravityGame.platforms().getAll()) {
                         Area platBottom = new Area(platform.getPosition(), new Dimension(platform.getWidth(), height));

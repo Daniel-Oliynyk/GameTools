@@ -6,7 +6,7 @@
 - [x] Review animation class.
   - [x] Add methods for start and pause and reset.
   - [x] Check if clone method is needed.
-- [x] Add sound loading and playing
+- [x] Add sound loading and playing.
   - [x] Add sound class.
   - [x] Fix pause in loops.
   - [x] Add volume adjustment.
@@ -25,8 +25,8 @@
 - [x] Split sprite class to graphic class.
   - [x] Add constructor to create a button.
 - [ ] Create small libraries on top of current code for more difficult operations.
-  - [ ] Create one with platforms and gravity for a platform game.
-    - [ ] Add scan distance function.
+  - [x] Create one with platforms and gravity for a platform game.
+    - [x] Add scan distance function.
   - [ ] Create one with full image set and basic methods for a card game.
     - [x] Change to extend graphic class.
     - [ ] Fix joker image and add more card backs.
@@ -37,11 +37,13 @@
 - [x] Add game is dragging check and retest drag code.
 - [x] Change constants to enums if possible.
 - [ ] Add on press and release methods to sprite.
+    - [ ] Fix dragging to use mouse methods.
 - [x] Add image to animation conversion and graphic to sprite conversion.
 - [x] Remove width and height changing on sprites or make it consistent.
   - [x] Add a scale method and use it override the height and width methods.
 - [x] Remove get image area method.
-- [x] Look over comparisons between classes and see if equals methods are needed.
+- [ ] Look over comparisons between classes and see if equals methods are needed.
+  - [ ] Create add and subtract methods for position.
 - [x] Animation error image checking.
 - [x] Add dragging of an area.
 - [x] Add ... methods.
@@ -68,3 +70,6 @@
 - [ ] Re check clone and to string methods.
 - [ ] Add set icon method.
 - [ ] Re check usage of protected.
+- [ ] Fix animation looping too far.
+- [ ] See if create method can be removed entirely.
+- [ ] Implement custom hit boxes or add method to turn off hit box rotation.

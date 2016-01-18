@@ -174,10 +174,28 @@ public class Position {
     
     /**
      * Translates the position and adds the passed in values to the x and y.
+     * @param ix The amount to increment the x by.
+     * @param iy The amount to increment the y by.
+     */
+    public void trans(double ix, double iy) {
+        trans(new Position(ix, iy));
+    }
+    
+    /**
+     * Translates the position and adds the passed in values to the x and y.
      * @param trans The amount to add to the current x and y value.
      */
     public void trans(Position trans) {
         translate(trans);
+    }
+    
+    /**
+     * Translates the position and adds the passed in values to the x and y.
+     * @param ix The amount to increment the x by.
+     * @param iy The amount to increment the y by.
+     */
+    public void translate(double ix, double iy) {
+        translate(new Position(ix, iy));
     }
     
     /**
