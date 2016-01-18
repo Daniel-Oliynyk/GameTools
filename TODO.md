@@ -70,6 +70,7 @@
 - [ ] Re check clone and to string methods.
 - [ ] Add set icon method.
 - [ ] Re check usage of protected.
+- [ ] Fix clear method to use remove flag.
 - [ ] Fix animation looping too far.
 - [ ] See if create method can be removed entirely.
 - [ ] Implement custom hit boxes or add method to turn off hit box rotation.
