@@ -112,6 +112,10 @@ public class Sprite extends Graphic {
         super(graphic);
     }
     
+    public Sprite(double x, double y, BufferedImage image) {
+        this(new Position(x, y), image);
+    }
+    
     /**
      * Creates a sprite at the specified coordinates with a custom image.
      * @param pos The position of the sprite.
@@ -119,6 +123,10 @@ public class Sprite extends Graphic {
      */
     public Sprite(Position pos, BufferedImage image) {
         super(pos, image);
+    }
+    
+    public Sprite(double x, double y, Animation animation) {
+        this(new Position(x, y), animation);
     }
     
     /**
@@ -253,6 +261,10 @@ public class Sprite extends Graphic {
         movementArea = area;
     }
     
+    public void rotate(double x, double y, Rotation rot) {
+        rotate(new Position(x, y), rot);
+    }
+    
     /**
      * Rotates the sprite around the specified position at the sprite's speed.
      * @param mid The position around which to rotate.
@@ -260,6 +272,10 @@ public class Sprite extends Graphic {
      */
     public void rotate(Position mid, Rotation rot) {
         rotate(mid, rot.mult(rotationSpeed));
+    }
+    
+    public void rotate(double x, double y, double ang) {
+        rotate(new Position(x, y), ang);
     }
     
     /**
@@ -281,6 +297,10 @@ public class Sprite extends Graphic {
      */
     public void face(Area obj) {
         face(obj.getCenter());
+    }
+    
+    public void face(double x, double y) {
+        face(new Position(x, y));
     }
     
     /**
@@ -305,6 +325,10 @@ public class Sprite extends Graphic {
      */
     public void turnTo(Area obj) {
         turnTo(obj.getCenter());
+    }
+    
+    public void turnTo(double x, double y) {
+        turnTo(new Position(x, y));
     }
     
     /**
@@ -342,6 +366,10 @@ public class Sprite extends Graphic {
     public void moveAt(double ang) {
         x += Math.cos(ang) * speed;
         y += Math.sin(ang) * speed;
+    }
+    
+    public void moveTo(double x, double y) {
+        moveTo(new Position(x, y));
     }
     
     /**

@@ -174,11 +174,11 @@ public class Position {
     
     /**
      * Translates the position and adds the passed in values to the x and y.
-     * @param ix The amount to increment the x by.
-     * @param iy The amount to increment the y by.
+     * @param hor The amount to increment the x by.
+     * @param ver The amount to increment the y by.
      */
-    public void trans(double ix, double iy) {
-        trans(new Position(ix, iy));
+    public void trans(double hor, double ver) {
+        trans(new Position(hor, ver));
     }
     
     /**
@@ -191,11 +191,11 @@ public class Position {
     
     /**
      * Translates the position and adds the passed in values to the x and y.
-     * @param ix The amount to increment the x by.
-     * @param iy The amount to increment the y by.
+     * @param hor The amount to increment the x by.
+     * @param ver The amount to increment the y by.
      */
-    public void translate(double ix, double iy) {
-        translate(new Position(ix, iy));
+    public void translate(double hor, double ver) {
+        translate(new Position(hor, ver));
     }
     
     /**
@@ -225,6 +225,10 @@ public class Position {
         return dist(obj.getCenter());
     }
     
+    public double dist(double x, double y) {
+        return dist(new Position(x, y));
+    }
+    
     /**
      * Calculates the distance between two positions using pythagorean theorem.
      * @param pos The second position to calculate distance to.
@@ -241,6 +245,10 @@ public class Position {
      */
     public double angleTo(Area obj) {
         return angleTo(obj.getCenter());
+    }
+    
+    public double angleTo(double x, double y) {
+        return angleTo(new Position(x, y));
     }
     
     /**

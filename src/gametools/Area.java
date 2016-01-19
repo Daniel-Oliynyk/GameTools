@@ -80,27 +80,6 @@ public class Area {
         }
     }
     /**
-     * The corners of the object.
-     */
-    public static enum Corner {
-        /**
-         * Top left corner of the object.
-         */
-        TOP_LEFT,
-        /**
-         * Top right corner of the object.
-         */
-        TOP_RIGHT,
-        /**
-         * Bottom left corner of the object.
-         */
-        BOTTOM_LEFT,
-        /**
-         * Bottom right corner of the object.
-         */
-        BOTTOM_RIGHT;
-    }
-    /**
      * The precise x position of the object.
      */
     protected double x;
@@ -116,7 +95,7 @@ public class Area {
      * Creates an area with the coordinates and dimensions of zero.
      */
     public Area() {
-        this(new Position(), new Dimension());
+        this(0, 0, 0, 0);
     }
     
     /**
@@ -125,6 +104,10 @@ public class Area {
      */
     public Area(Position pos) {
         this(pos, new Dimension());
+    }
+    
+    public Area(int width, int height) {
+        this(new Dimension(width, height));
     }
     
     /**
@@ -149,10 +132,14 @@ public class Area {
      * @param size The dimensions of the area.
      */
     public Area(Position pos, Dimension size) {
-        x = pos.x;
-        y = pos.y;
-        width = size.width;
-        height = size.height;
+        this(pos.x, pos.y, size.width, size.height);
+    }
+    
+    public Area(double x, double y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
     
     /**
@@ -210,30 +197,7 @@ public class Area {
      * @return A point representing the center of the object.
      */
     public Position getCenter() {
-        return new Position(x + (width / 2), y + (height / 2));
-    }
-    
-    /**
-     * Returns a position representing one of the corners of the object.
-     * @param cor The corner to find the position of.
-     * @return A position with the x and y of the specified corner or an undefined position.
-     */
-    public Position getCorner(Corner cor) {
-        if (cor == Corner.TOP_LEFT) return new Position(x, y);
-        else if (cor == Corner.TOP_RIGHT) return new Position(x + width, y);
-        else if (cor == Corner.BOTTOM_LEFT) return new Position(x, y + height);
-        else if (cor == Corner.BOTTOM_RIGHT) return new Position(x + width, y + height);
-        else return Position.UNDEFINED_POSITION;
-    }
-    
-    /**
-     * Returns all four corners of the area.
-     * @return An array containing the four corners.
-     */
-    public Position[] getAllCorners() {
-        Position[] all = new Position[4];
-        for (int i = 0; i < Corner.values().length; i++) all[i] = getCorner(Corner.values()[i]);
-        return all;
+        return new Position(x + width / 2, y + height / 2);
     }
     
     /**
@@ -257,6 +221,10 @@ public class Area {
      * @param y The new y position.
      */
     public void setY(double y) {
+        setPosition(new Position(x, y));
+    }
+    
+    public void setPosition(double x, double y) {
         setPosition(new Position(x, y));
     }
     
@@ -285,6 +253,10 @@ public class Area {
         setDimensions(new Dimension(width, height));
     }
     
+    public void setDimensions(int width, int height) {
+        setDimensions(new Dimension(width, height));
+    }
+    
     /**
      * Sets the width and height of the object.
      * @param size The new dimensions of the object.
@@ -300,6 +272,10 @@ public class Area {
      */
     public void setArea(Area area) {
         setArea(area.getPosition(), area.getDimensions());
+    }
+    
+    public void setArea(double x, double y, int width, int height) {
+        setArea(new Position(x, y), new Dimension(width, height));
     }
     
     /**
@@ -329,6 +305,10 @@ public class Area {
         centerOn(obj.getCenter());
     }
     
+    public void centerOn(double x, double y) {
+        centerOn(new Position(x, y));
+    }
+    
     /**
      * Centers the object around the specified coordinates.
      * @param pos The position of the center.
@@ -336,6 +316,10 @@ public class Area {
     public void centerOn(Position pos) {
         x = pos.x - width / 2;
         y = pos.y - height / 2;
+    }
+    
+    public void translate(double hor, double ver) {
+        translate(new Position(hor, ver));
     }
     
     /**
@@ -354,6 +338,10 @@ public class Area {
     @Override
     public String toString() {
         return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]";
+    }
+    
+    public boolean isWithin(double x, double y) {
+        return isWithin(new Position(x, y));
     }
     
     /**
@@ -460,18 +448,6 @@ public class Area {
             if (dragging) Game.setDragging(false);
             dragging = false;
         }
-    }
-    
-    /**
-     * Sets the position of the object, and then runs the draw method.
-     * @param pos The new position of the object.
-     */
-    public void draw(Position pos) {
-        setPosition(pos);
-        boolean prev = draggable;
-        draggable = false;
-        draw();
-        draggable = prev;
     }
     
     /**

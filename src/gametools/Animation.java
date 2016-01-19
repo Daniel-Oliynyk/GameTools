@@ -228,6 +228,10 @@ public class Animation {
         setDimensions(new Dimension(getWidth(), height));
     }
     
+    protected void setDimensions(int width, int height) {
+        setDimensions(new Dimension(width, height));
+    }
+    
     /**
      * Scales the animation to match the new width and height.
      * @param size The new size of the animation frames.

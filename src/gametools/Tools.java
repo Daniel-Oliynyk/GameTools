@@ -73,6 +73,10 @@ public class Tools {
         return image;
     }
     
+    public static BufferedImage[] loadSpriteSheet(String path, int width, int height, int start, int end) {
+        return loadSpriteSheet(path, new Dimension(width, height), start, end);
+    }
+    
     /**
      * Imports a range of images from a sprite sheet into an array. Images are loaded
      * in order from left to right and top to bottom.
@@ -86,6 +90,10 @@ public class Tools {
         BufferedImage[] full = loadSpriteSheet(path, size);
         if (full != UNDEFINED_SPRITE_SHEET) return trimSpriteSheet(full, start, end);
         else return UNDEFINED_SPRITE_SHEET;
+    }
+    
+    public static BufferedImage[] loadSpriteSheet(String path, int width, int height) {
+        return loadSpriteSheet(path, new Dimension(width, height));
     }
     
     /**
@@ -140,73 +148,6 @@ public class Tools {
     }
     
     /**
-     * The short form notation for creating an area.
-     * @param size The width and height of the area.
-     * @return An area with the specified coordinates and size.
-     */
-    public static Area ar(Dimension size) {
-        return new Area(size);
-    }
-    
-    /**
-     * Converts two points to an area object going through those positions.
-     * @param tl The position of the top left corner.
-     * @param br The position of the bottom right corner.
-     * @return An area with the specified coordinates.
-     */
-    public static Area ar(Position tl, Position br) {
-        return new Area(tl, new Dimension((int) (tl.x - br.x), (int) (tl.y - br.y)));
-    }
-    
-    /**
-     * The short form notation for creating an area.
-     * @param pos The position of the top left corner.
-     * @param size The width and height of the area.
-     * @return An area with the specified coordinates and size.
-     */
-    public static Area ar(Position pos, Dimension size) {
-        return new Area(pos, size);
-    }
-    
-    /**
-     * The short form notation for creating a position.
-     * @param x The x location of the point.
-     * @param y The y location of the point.
-     * @return A position that contains the x and y.
-     */
-    public static Position pt(double x, double y) {
-        return new Position(x, y);
-    }
-    
-    /**
-     * The short form notation for creating a dimension.
-     * @param width The width of the dimension.
-     * @param height The height of the dimension.
-     * @return A dimension with the passed in width and height.
-     */
-    public static Dimension dm(int width, int height) {
-        return new Dimension(width, height);
-    }
-    
-    /**
-     * Creates a group from the passed in sprites.
-     * @param sprites The sprites to be contained in the group.
-     * @return A group containing all the passed in sprites.
-     */
-    public static Group grp(Sprite... sprites) {
-        return grp(Arrays.asList(sprites));
-    }
-    
-    /**
-     * Converts an array list of sprites to a group.
-     * @param sprites An array list of sprites.
-     * @return A group containing all the sprites from the array list.
-     */
-    public static Group grp(List<Sprite> sprites) {
-        return new Group(sprites);
-    }
-    
-    /**
      * Creates a text pop up for the user with the passed in text.
      * @param prompt The text to display inside the pop up.
      */
@@ -231,6 +172,10 @@ public class Tools {
         return new Position(rand.nextInt(), rand.nextInt());
     }
     
+    public static Position randomPosition(int width, int height) {
+        return randomPosition(new Dimension(width, height));
+    }
+    
     /**
      * Generates a random position within the passed in dimension.
      * @param size The dimension within which the random position will be.
@@ -251,6 +196,10 @@ public class Tools {
         return new Position(x, y);
     }
     
+    public static BufferedImage generateBox(Color back, int width, int height) {
+        return generateBox(back, new Dimension(width, height));
+    }
+    
     /**
      * Generates a box image with rounded corners and a gradient background.
      * @param back The background color of the box.
@@ -260,6 +209,10 @@ public class Tools {
     public static BufferedImage generateBox(Color back, Dimension size) {
         Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
         return generateBox(Color.WHITE, end, Color.BLACK, size);
+    }
+    
+    public static BufferedImage generateBox(Color start, Color end, Color border, int width, int height) {
+        return generateBox(start, end, border, new Dimension(width, height));
     }
     
     /**
@@ -282,19 +235,7 @@ public class Tools {
         return box;
     }
     
-    /**
-     * Generates a button graphic with a custom color, centered text and a position of zero.
-     * @param back The background color of the button.
-     * @param fore The text color of the button.
-     * @param text The string to draw in one line on the button.
-     * @param size The dimensions of the button.
-     * @return A button graphics with the passed in properties.
-     */
-    public static Graphic generateButton(Color back, Color fore, String text, Dimension size) {
-        return generateButton(back, fore, text, new Area(size));
-    }
-    
-    /**
+    /* *
      * Generates a button graphic with a custom color and centered text.
      * @param back The background color of the button.
      * @param fore The text color of the button.
@@ -302,16 +243,14 @@ public class Tools {
      * @param bounds The position and size of the button.
      * @return A button graphics with the passed in properties.
      */
-    public static Graphic generateButton(Color back, Color fore, String text, Area bounds) {
-        Color end = (back == Color.WHITE)? Color.LIGHT_GRAY : back;
-        BufferedImage button = generateBox(Color.WHITE, end, Color.BLACK, bounds.getDimensions());
-        Graphics2D graphics = button.createGraphics();
+    public static Graphic generateButton(String text, Color fore, BufferedImage back) {
+        Graphics2D graphics = back.createGraphics();
         FontMetrics font = graphics.getFontMetrics();
         Rectangle2D rect = font.getStringBounds(text, graphics);
-        int x = (int) ((bounds.width - rect.getWidth()) / 2);
-        int y = (int) ((bounds.height - rect.getHeight()) / 2) + font.getAscent();
+        int x = (int) ((back.getWidth() - rect.getWidth()) / 2);
+        int y = (int) ((back.getHeight() - rect.getHeight()) / 2) + font.getAscent();
         graphics.setColor(fore);
         graphics.drawString(text, x, y);
-        return new Graphic(bounds.getPosition(), button);
+        return new Graphic(back);
     }
 }

@@ -127,7 +127,8 @@ public abstract class Game {
      * @return A position representing the current focal point of the camera.
      */
     public static Position getCamera() {
-        return new Position(graphics.getTransform().getTranslateX(), graphics.getTransform().getTranslateY());
+        AffineTransform at = graphics.getTransform();
+        return new Position(-at.getTranslateX() + width / 2, -at.getTranslateY() + height / 2);
     }
     
     /**
@@ -206,6 +207,10 @@ public abstract class Game {
         setDimensions(new Dimension(width, height));
     }
     
+    protected void setDimensions(int width, int height) {
+        setDimensions(new Dimension(width, height));
+    }
+    
     /**
      * Sets both the width and height of the game.<br>
      * <b>Note</b>: This function will not work after the create function is executed.
@@ -229,30 +234,30 @@ public abstract class Game {
         dragging = drag;
     }
     
-    /**
+    /* *
      * Translates the camera position by moving the painter location.<br>
      * <b>Note</b>: Only subsequent methods are affected, so the camera should
      * only be moved at the start or end of the run method to prevent
      * inconsistent results.
-     * @param ix The amount to increment the x by.
-     * @param iy The amount to increment the y by.
+     * @param hor The amount to increment the x by.
+     * @param ver The amount to increment the y by.
      */
-    public static void translateCamera(double ix, double iy) {
-        translateCamera(new Position(ix, iy));
+    public static void translatePainter(double hor, double ver) {
+        translatePainter(new Position(hor, ver));
     }
     
-    /**
+    /* *
      * Translates the camera position by moving the painter location.<br>
      * <b>Note</b>: Only subsequent methods are affected, so the camera should
      * only be moved at the start or end of the run method to prevent
      * inconsistent results.
      * @param trans The amount to translate by.
      */
-    public static void translateCamera(Position trans) {
-        setCamera(trans.x - getCamera().x, trans.y - getCamera().y);
+    public static void translatePainter(Position trans) {
+        Game.setPainterPosition(getCamera().x - trans.x, getCamera().y - trans.y);
     }
     
-    /**
+    /* *
      * Centers the camera on a position by moving the painter location.<br>
      * <b>Note</b>: Only subsequent methods are affected, so the camera should
      * only be moved at the start or end of the run method to prevent
@@ -260,31 +265,31 @@ public abstract class Game {
      * @param x The new x location of the camera focus point.
      * @param y The new y location of the camera focus point.
      */
-    public static void setCamera(double x, double y) {
-        setCamera(new Position(x, y));
+    public static void setPainterPosition(double x, double y) {
+        setPainterPosition(new Position(x, y));
     }
     
-    /**
+    /* *
      * Centers the camera on a object by moving the painter location.<br>
      * <b>Note</b>: Only subsequent methods are affected, so the camera should
      * only be moved at the start or end of the run method to prevent
      * inconsistent results.
      * @param area The object to focus the camera on.
      */
-    public static void setCamera(Area area) {
-        setCamera(area.getCenter());
+    public static void setPainterPosition(Area area) {
+        setPainterPosition(area.getCenter());
     }
     
-    /**
+    /* *
      * Centers the camera on a position by moving the painter location.<br>
      * <b>Note</b>: Only subsequent methods are affected, so the camera should
      * only be moved at the start or end of the run method to prevent
      * inconsistent results.
      * @param center The new camera focal point.
      */
-    public static void setCamera(Position center) {
+    public static void setPainterPosition(Position center) {
         AffineTransform at = new AffineTransform();
-        at.translate(-center.x - width / 2, -center.y - height / 2);
+        at.translate(-center.x + width / 2, -center.y + height / 2);
         graphics.setTransform(at);
     }
     
@@ -457,10 +462,11 @@ public abstract class Game {
             if (System.nanoTime() - timeStart > 1000000000 / fps) {
                 timeStart = System.nanoTime();
                 Position prev = getCamera();
-                setCamera(0, 0);
+                setPainterPosition(getCenter());
                 fixBackground();
+                graphics.clearRect(-width, -height, width * 3, height * 3);
                 graphics.drawImage(background, 0, 0, null);
-                setCamera(prev);
+                setPainterPosition(prev);
                 run();
                 prevKeys = new HashSet<>(keys);
                 prevMouse = new HashSet<>(mouse);

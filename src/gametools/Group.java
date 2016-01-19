@@ -65,6 +65,10 @@ public class Group {
         return elements;
     }
     
+    public boolean isWithin(double x, double y) {
+        return isWithin(new Position(x, y));
+    }
+    
     /**
      * Checks if the passed in position is within at least one element in the group.
      * @param pos The position to test collision against.
@@ -227,6 +231,10 @@ public class Group {
         return results;
     }
     
+    public List<Sprite> getAllWithin(double x, double y) {
+        return getAllWithin(new Position(x, y));
+    }
+    
     /**
      * Returns all sprites from the group that are colliding with the specified
      * position as a new array list.
@@ -317,11 +325,12 @@ public class Group {
         elements.addAll(sprites);
     }
     
-    /**
+    /* *
      * Empties the group of all elements.
      */
-    public void clear() {
-        elements.clear();
+    public void clear(boolean safe) {
+        if (!safe) elements.clear();
+        else for (Sprite sprite : elements) sprite.remove(true);
     }
     
     /**
@@ -413,6 +422,10 @@ public class Group {
         for (Sprite sprite : elements) sprite.turn(rot);
     }
     
+    public void rotate(double x, double y, Sprite.Rotation rot) {
+        rotate(new Position(x, y), rot);
+    }
+    
     /**
      * Rotates all the sprites in the group around the specified position.
      * @param mid The position around which to rotate.
@@ -420,6 +433,10 @@ public class Group {
      */
     public void rotate(Position mid, Sprite.Rotation rot) {
         for (Sprite sprite : elements) sprite.rotate(mid, rot);
+    }
+    
+    public void translate(double ix, double iy) {
+        translate(new Position(ix, iy));
     }
     
     /**

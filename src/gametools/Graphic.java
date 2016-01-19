@@ -84,7 +84,11 @@ public class Graphic extends Area {
      */
     public Graphic(Graphic graphic) {
         this(graphic.getPosition(), graphic.animation);
-        angle = graphic.angle;
+        setAngle(graphic.angle);
+    }
+    
+    public Graphic(double x, double y, BufferedImage image) {
+        this(new Position(x, y), image);
     }
     
     /**
@@ -93,8 +97,11 @@ public class Graphic extends Area {
      * @param image The image for the graphic.
      */
     public Graphic(Position pos, BufferedImage image) {
-        super(pos, new Dimension(image.getWidth(), image.getHeight()));
-        this.animation = new Animation(image);
+        this(pos, new Animation(image));
+    }
+    
+    public Graphic(double x, double y, Animation animation) {
+        this(new Position(x, y), animation);
     }
     
     /**
@@ -148,6 +155,11 @@ public class Graphic extends Area {
     }
     
     @Override
+    public void setDimensions(int width, int height) {
+        setDimensions(new Dimension(width, height));
+    }
+    
+    @Override
     public void setDimensions(Dimension size) {
         if (size.width != animation.getWidth() && size.height != animation.getHeight()) {
             Animation prev = previous;
@@ -180,7 +192,7 @@ public class Graphic extends Area {
     }
     
     /**
-     * Rotates the object around its center. Fix here
+     * Rotates the object around its center.
      * @param ang The new angle of the object.
      */
     public void setAngle(double ang) {
@@ -196,7 +208,13 @@ public class Graphic extends Area {
             Position rotated = new Position();
             truePos.x = trueCen.x - (animation.getWidth() / 2);
             truePos.y = trueCen.y - (animation.getHeight() / 2);
-            Position[] corners = new Area(truePos, animation.getDimensions()).getAllCorners();
+            Dimension an = animation.getDimensions();
+            Position[] corners = {
+                new Position(truePos.x, truePos.y),
+                new Position(truePos.x + an.width, truePos.y),
+                new Position(truePos.x, truePos.y + an.height),
+                new Position(truePos.x + an.width, truePos.y + an.height)
+            };
             boolean flag = true;
             for (Position corner : corners) {
                 corner.rotate(trueCen, ang);

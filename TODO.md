@@ -65,6 +65,7 @@
   - [ ] Try automating creating light and full libraries.
   - [ ] Add code samples to website.
   - [ ] Create a few sample projects and link to them.
+    - [ ] Update examples to use new formats.
 - [ ] Maybe remove some rarely used getters or easy replicated methods.
 - [ ] Maybe standardize code line length.
 - [ ] Re check clone and to string methods.
@@ -74,3 +75,9 @@
 - [ ] Fix animation looping too far.
 - [ ] See if create method can be removed entirely.
 - [ ] Implement custom hit boxes or add method to turn off hit box rotation.
+- [ ] Replace undefined with real error handling.
+- [ ] Remove shortcut methods completely.
+- [ ] Assign final to all methods in use.
+- [ ] Change button generation to use box generator.
+- [ ] Reorder code to be shorter.
+- [ ] Check over examples.
