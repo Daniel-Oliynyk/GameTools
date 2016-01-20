@@ -87,7 +87,8 @@ public abstract class Game {
      * @return The full mouse coordinates stored within a position.
      */
     public static Position mousePosition() {
-        return new Position(mouseX, mouseY);
+        return new Position(mouseX - (getCenter().x - getPainterPosition().x),
+                mouseY - (getCenter().y - getPainterPosition().y));
     }
     
     /**
@@ -126,7 +127,7 @@ public abstract class Game {
      * Returns the current focal point of the camera.
      * @return A position representing the current focal point of the camera.
      */
-    public static Position getCamera() {
+    public static Position getPainterPosition() {
         AffineTransform at = graphics.getTransform();
         return new Position(-at.getTranslateX() + width / 2, -at.getTranslateY() + height / 2);
     }
@@ -254,7 +255,7 @@ public abstract class Game {
      * @param trans The amount to translate by.
      */
     public static void translatePainter(Position trans) {
-        Game.setPainterPosition(getCamera().x - trans.x, getCamera().y - trans.y);
+        Game.setPainterPosition(getPainterPosition().x - trans.x, getPainterPosition().y - trans.y);
     }
     
     /* *
@@ -461,7 +462,7 @@ public abstract class Game {
         while (true) {
             if (System.nanoTime() - timeStart > 1000000000 / fps) {
                 timeStart = System.nanoTime();
-                Position prev = getCamera();
+                Position prev = getPainterPosition();
                 setPainterPosition(getCenter());
                 fixBackground();
                 graphics.clearRect(-width, -height, width * 3, height * 3);
