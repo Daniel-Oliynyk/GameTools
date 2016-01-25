@@ -15,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -90,8 +89,8 @@ public abstract class Game {
      * @return The full mouse coordinates stored within a position.
      */
     public static Position mousePosition() {
-        return new Position(mouseX - (getCenter().x - getPainterPosition().x),
-                mouseY - (getCenter().y - getPainterPosition().y));
+        return new Position(mouseX - (getCenter().x - getPainterCenter().x),
+                mouseY - (getCenter().y - getPainterCenter().y));
     }
     
     /**
@@ -130,7 +129,7 @@ public abstract class Game {
      * Returns the current focal point of the camera.
      * @return A position representing the current focal point of the camera.
      */
-    public static Position getPainterPosition() {
+    public static Position getPainterCenter() {
         AffineTransform at = graphics.getTransform();
         return new Position(-at.getTranslateX() + width / 2, -at.getTranslateY() + height / 2);
     }
@@ -258,7 +257,7 @@ public abstract class Game {
      * @param trans The amount to translate by.
      */
     public static void translatePainter(Position trans) {
-        Game.setPainterPosition(getPainterPosition().x - trans.x, getPainterPosition().y - trans.y);
+        Game.centerPainterOn(getPainterCenter().x - trans.x, getPainterCenter().y - trans.y);
     }
     
     /* *
@@ -269,8 +268,8 @@ public abstract class Game {
      * @param x The new x location of the camera focus point.
      * @param y The new y location of the camera focus point.
      */
-    public static void setPainterPosition(double x, double y) {
-        setPainterPosition(new Position(x, y));
+    public static void centerPainterOn(double x, double y) {
+        centerPainterOn(new Position(x, y));
     }
     
     /* *
@@ -280,8 +279,8 @@ public abstract class Game {
      * inconsistent results.
      * @param area The object to focus the camera on.
      */
-    public static void setPainterPosition(Area area) {
-        setPainterPosition(area.getCenter());
+    public static void centerPainterOn(Area area) {
+        centerPainterOn(area.getCenter());
     }
     
     /* *
@@ -291,7 +290,7 @@ public abstract class Game {
      * inconsistent results.
      * @param center The new camera focal point.
      */
-    public static void setPainterPosition(Position center) {
+    public static void centerPainterOn(Position center) {
         AffineTransform at = new AffineTransform();
         at.translate(-center.x + width / 2, -center.y + height / 2);
         graphics.setTransform(at);
@@ -471,12 +470,12 @@ public abstract class Game {
         while (true) {
             if (System.nanoTime() - timeStart > 1000000000 / fps) {
                 timeStart = System.nanoTime();
-                Position prev = getPainterPosition();
-                setPainterPosition(getCenter());
+                Position prev = getPainterCenter();
+                centerPainterOn(getCenter());
                 fixBackground();
                 graphics.clearRect(-width, -height, width * 3, height * 3);
                 graphics.drawImage(background, 0, 0, null);
-                setPainterPosition(prev);
+                centerPainterOn(prev);
                 run();
                 prevKeys = new HashSet<>(keys);
                 prevMouse = new HashSet<>(mouse);

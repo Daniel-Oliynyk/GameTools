@@ -265,19 +265,17 @@ public class Animation {
         if (!complete) {
             if (!paused) counter++;
             if (counter + 1 >= frames.length * speed) {
-                counter = 0;
-                repeatNumber++;
-                if (repeatAmount != LOOP_CONTINUOUSLY && repeatNumber >= repeatAmount) {
-                    complete = true;
-                    repeatNumber = 0;
-                    repeatAmount = LOOP_CONTINUOUSLY;
+                if (repeatAmount != LOOP_CONTINUOUSLY && repeatNumber + 1 >= repeatAmount) complete = true;
+                else {
+                    counter = 0;
+                    repeatNumber++;
                 }
             }
             frame = (int) Math.floor(counter / speed);
         }
         else {
             counter = 0;
-            frame = 0;
+            frame = frames.length - 1;
         }
     }
 }
