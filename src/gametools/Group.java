@@ -453,7 +453,6 @@ public class Group {
     public void drawAll() {
         for (Iterator<Sprite> it = elements.iterator(); it.hasNext();) {
             Sprite sprite = it.next();
-            if (sprite.markedForRemoval()) it.remove();
             sprite.draw(Graphic.UpdateType.UPDATE_ONLY);
             if (sprite.markedForRemoval()) it.remove();
             else if (removeSprites && moveableArea != Area.UNDEFINED_AREA && !sprite.isWithin(moveableArea)) it.remove();
