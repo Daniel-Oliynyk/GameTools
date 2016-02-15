@@ -277,7 +277,7 @@ public class Tools {
     
     /**
      * Creates a graphic with text centered on a background image.
-     * @param text The string to center in the image.0
+     * @param text The string to center in the image.
      * @param fore The color of the text.
      * @param back The background image.
      * @return A button-like graphic with text centered on a background image.
