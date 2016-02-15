@@ -73,6 +73,16 @@ public class Tools {
         return image;
     }
     
+    /**
+     * Imports a range of images from a sprite sheet into an array. Images are loaded
+     * in order from left to right and top to bottom.
+     * @param path The location of the sprite sheet relative to the package of the project.
+     * @param width The width of an individual sprite.
+     * @param height The height of an individual sprite.
+     * @param start The start of the range of sprite sheet images.
+     * @param end The end of the range of sprite sheet images.
+     * @return An array of buffered images that show each sprite.
+     */
     public static BufferedImage[] loadSpriteSheet(String path, int width, int height, int start, int end) {
         return loadSpriteSheet(path, new Dimension(width, height), start, end);
     }
@@ -92,6 +102,14 @@ public class Tools {
         else return UNDEFINED_SPRITE_SHEET;
     }
     
+    /**
+     * Imports all images from a sprite sheet into an array. Images are loaded in order
+     * from left to right and top to bottom.
+     * @param path The location of the sprite sheet relative to the package of the project.
+     * @param width The width of an individual sprite.
+     * @param height The height of an individual sprite.
+     * @return An array of buffered images that show each sprite.
+     */
     public static BufferedImage[] loadSpriteSheet(String path, int width, int height) {
         return loadSpriteSheet(path, new Dimension(width, height));
     }
@@ -172,8 +190,14 @@ public class Tools {
         return new Position(rand.nextInt(), rand.nextInt());
     }
     
-    public static Position randomPosition(int width, int height) {
-        return randomPosition(new Dimension(width, height));
+    /**
+     * Generates a random position within the passed in constraints.
+     * @param maxX The largest possible value for the x of the new position (exclusive).
+     * @param maxY The largest possible value for the y of the new position (exclusive).
+     * @return A random position within the passed in constraints.
+     */
+    public static Position randomPosition(int maxX, int maxY) {
+        return randomPosition(new Dimension(maxX, maxY));
     }
     
     /**
@@ -196,6 +220,13 @@ public class Tools {
         return new Position(x, y);
     }
     
+    /**
+     * Generates a box image with rounded corners and a gradient background.
+     * @param back The background color of the box.
+     * @param width The width of the box image.
+     * @param height The height of the box image.
+     * @return A box image with the passed in size and color.
+     */
     public static BufferedImage generateBox(Color back, int width, int height) {
         return generateBox(back, new Dimension(width, height));
     }
@@ -211,6 +242,15 @@ public class Tools {
         return generateBox(Color.WHITE, end, Color.BLACK, size);
     }
     
+    /**
+     * Generates a box image with rounded corners and a gradient background.
+     * @param start The top color of the gradient.
+     * @param end The bottom color of the gradient.
+     * @param border The color of the border.
+     * @param width The width of the box image.
+     * @param height The height of the box image.
+     * @return A box image with the passed in parameters.
+     */
     public static BufferedImage generateBox(Color start, Color end, Color border, int width, int height) {
         return generateBox(start, end, border, new Dimension(width, height));
     }
@@ -235,13 +275,12 @@ public class Tools {
         return box;
     }
     
-    /* *
-     * Generates a button graphic with a custom color and centered text.
-     * @param back The background color of the button.
-     * @param fore The text color of the button.
-     * @param text The string to draw in one line on the button.
-     * @param bounds The position and size of the button.
-     * @return A button graphics with the passed in properties.
+    /**
+     * Creates a graphic with text centered on a background image.
+     * @param text The string to center in the image.0
+     * @param fore The color of the text.
+     * @param back The background image.
+     * @return A button-like graphic with text centered on a background image.
      */
     public static Graphic generateButton(String text, Color fore, BufferedImage back) {
         Graphics2D graphics = back.createGraphics();

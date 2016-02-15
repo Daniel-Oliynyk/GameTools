@@ -225,6 +225,12 @@ public class Position {
         return dist(obj.getCenter());
     }
     
+    /**
+     * Calculates the distance between two positions using pythagorean theorem.
+     * @param x The x of the position to calculate distance to.
+     * @param y The y of the position to calculate distance to.
+     * @return The distance between the current position and the one passed in.
+     */
     public double dist(double x, double y) {
         return dist(new Position(x, y));
     }
@@ -247,6 +253,12 @@ public class Position {
         return angleTo(obj.getCenter());
     }
     
+    /**
+     * Uses trigonometry to calculate the angle to the specified position.
+     * @param x The x of the point to calculate the angle to.
+     * @param y The y of the point to calculate the angle to.
+     * @return The angle to the specified position in radians.
+     */
     public double angleTo(double x, double y) {
         return angleTo(new Position(x, y));
     }

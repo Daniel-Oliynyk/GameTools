@@ -112,6 +112,12 @@ public class Sprite extends Graphic {
         super(graphic);
     }
     
+    /**
+     * Creates a sprite at the specified coordinates with a custom image.
+     * @param x The x position of the new sprite.
+     * @param y The y position of the new sprite.
+     * @param image The image for the sprite.
+     */
     public Sprite(double x, double y, BufferedImage image) {
         this(new Position(x, y), image);
     }
@@ -125,6 +131,12 @@ public class Sprite extends Graphic {
         super(pos, image);
     }
     
+    /**
+     * Creates a sprite at the specified coordinates with a custom animation.
+     * @param x The x position of the new sprite.
+     * @param y The y position of the new sprite.
+     * @param animation The animation for the sprite.
+     */
     public Sprite(double x, double y, Animation animation) {
         this(new Position(x, y), animation);
     }
@@ -261,6 +273,12 @@ public class Sprite extends Graphic {
         movementArea = area;
     }
     
+    /**
+     * Rotates the sprite around the specified position at the sprite's speed.
+     * @param x The x position of the rotation center.
+     * @param y The y position of the rotation center.
+     * @param rot The direction to rotate in.
+     */
     public void rotate(double x, double y, Rotation rot) {
         rotate(new Position(x, y), rot);
     }
@@ -274,6 +292,12 @@ public class Sprite extends Graphic {
         rotate(mid, rot.mult(rotationSpeed));
     }
     
+    /**
+     * Rotates the sprite around the specified position at the passed in amount.
+     * @param x The x position of the rotation center.
+     * @param y The y position of the rotation center.
+     * @param ang How far to rotate in radians.
+     */
     public void rotate(double x, double y, double ang) {
         rotate(new Position(x, y), ang);
     }
@@ -299,6 +323,11 @@ public class Sprite extends Graphic {
         face(obj.getCenter());
     }
     
+    /**
+     * Sets the angle of the sprite to face the specified position.
+     * @param x The x of the position the sprite should face.
+     * @param y The y of the position the sprite should face.
+     */
     public void face(double x, double y) {
         face(new Position(x, y));
     }
@@ -327,6 +356,11 @@ public class Sprite extends Graphic {
         turnTo(obj.getCenter());
     }
     
+    /**
+     * Turns the sprite until it faces the specified position.
+     * @param x The x of the position the sprite should face.
+     * @param y The y of the position the sprite should face.
+     */
     public void turnTo(double x, double y) {
         turnTo(new Position(x, y));
     }
@@ -368,6 +402,11 @@ public class Sprite extends Graphic {
         y += Math.sin(ang) * speed;
     }
     
+    /**
+     * Moves the sprite to the coordinates at the set speed.
+     * @param x The x of the position to where the sprite should move to.
+     * @param y The y of the position to where the sprite should move to.
+     */
     public void moveTo(double x, double y) {
         moveTo(new Position(x, y));
     }

@@ -87,6 +87,12 @@ public class Graphic extends Area {
         setAngle(graphic.angle);
     }
     
+    /**
+     * Creates a graphic at the specified coordinates with a custom image.
+     * @param x The x position of the graphic.
+     * @param y The y position of the graphic.
+     * @param image The image for the graphic.
+     */
     public Graphic(double x, double y, BufferedImage image) {
         this(new Position(x, y), image);
     }
@@ -100,6 +106,12 @@ public class Graphic extends Area {
         this(pos, new Animation(image));
     }
     
+    /**
+     * Creates a graphic at the specified coordinates with a custom animation.
+     * @param x The x position of the graphic.
+     * @param y The y position of the graphic.
+     * @param animation The animation for the graphic.
+     */
     public Graphic(double x, double y, Animation animation) {
         this(new Position(x, y), animation);
     }

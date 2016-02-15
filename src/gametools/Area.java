@@ -106,6 +106,11 @@ public class Area {
         this(pos, new Dimension());
     }
     
+    /**
+     * Creates an area with custom dimensions and coordinates of zero.
+     * @param width The width of the new area.
+     * @param height The width of the new area.
+     */
     public Area(int width, int height) {
         this(new Dimension(width, height));
     }
@@ -135,6 +140,13 @@ public class Area {
         this(pos.x, pos.y, size.width, size.height);
     }
     
+    /**
+     * Creates an area at the x and y with the specified dimensions.
+     * @param x The x position of the area.
+     * @param y The y position of the area.
+     * @param width The width of the area.
+     * @param height The height of the area.
+     */
     public Area(double x, double y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -224,6 +236,11 @@ public class Area {
         setPosition(new Position(x, y));
     }
     
+    /**
+     * Sets the x and y position of the object at once.
+     * @param x The new x position.
+     * @param y The new y position.
+     */
     public void setPosition(double x, double y) {
         setPosition(new Position(x, y));
     }
@@ -253,6 +270,11 @@ public class Area {
         setDimensions(new Dimension(width, height));
     }
     
+    /**
+     * Sets the width and height of the object.
+     * @param width The new width.
+     * @param height The new height.
+     */
     public void setDimensions(int width, int height) {
         setDimensions(new Dimension(width, height));
     }
@@ -274,6 +296,13 @@ public class Area {
         setArea(area.getPosition(), area.getDimensions());
     }
     
+    /**
+     * Sets the position and size of the area.
+     * @param x The new x position.
+     * @param y The new y position.
+     * @param width The new width.
+     * @param height The new height.
+     */
     public void setArea(double x, double y, int width, int height) {
         setArea(new Position(x, y), new Dimension(width, height));
     }
@@ -305,6 +334,11 @@ public class Area {
         centerOn(obj.getCenter());
     }
     
+    /**
+     * Centers the object around the specified coordinates.
+     * @param x The x position of the center.
+     * @param y The y position of the center.
+     */
     public void centerOn(double x, double y) {
         centerOn(new Position(x, y));
     }
@@ -318,6 +352,11 @@ public class Area {
         y = pos.y - height / 2;
     }
     
+    /**
+     * Translates the object and adds the passed in values to the x and y.
+     * @param hor The amount to shift the object horizontally (positive means to the right).
+     * @param ver The amount to shift the object vertically (positive means to the down).
+     */
     public void translate(double hor, double ver) {
         translate(new Position(hor, ver));
     }
@@ -340,6 +379,12 @@ public class Area {
         return getClass().getName() + "[x=" + x + ", y=" + y + ", width=" + width + ", height=" + height + "]";
     }
     
+    /**
+     * Checks if a point is within the object.
+     * @param x The x position of the point.
+     * @param y The y position of the point.
+     * @return True if the specified position is within the object.
+     */
     public boolean isWithin(double x, double y) {
         return isWithin(new Position(x, y));
     }

@@ -65,6 +65,12 @@ public class Group {
         return elements;
     }
     
+    /**
+     * Checks if the passed in position is within at least one element in the group.
+     * @param x The x of the point to test collision against.
+     * @param y The y of the point to test collision against.
+     * @return True if at least one element is within the point.
+     */
     public boolean isWithin(double x, double y) {
         return isWithin(new Position(x, y));
     }
@@ -231,6 +237,13 @@ public class Group {
         return results;
     }
     
+    /**
+     * Returns all sprites from the group that are colliding with the specified
+     * position as a new array list.
+     * @param x The x of the point to test collision against.
+     * @param y The y of the point to test collision against.
+     * @return An array list containing all sprites that are within the position.
+     */
     public List<Sprite> getAllWithin(double x, double y) {
         return getAllWithin(new Position(x, y));
     }
@@ -325,8 +338,11 @@ public class Group {
         elements.addAll(sprites);
     }
     
-    /* *
+    /**
      * Empties the group of all elements.
+     * @param safe If true, immediately removes all elements, which can cause
+     * errors if list if currently being iterated upon. If false, sets the remove
+     * tag to true on all elements causing them to be removed safely in the next iteration.
      */
     public void clear(boolean safe) {
         if (!safe) elements.clear();
@@ -422,6 +438,12 @@ public class Group {
         for (Sprite sprite : elements) sprite.turn(rot);
     }
     
+    /**
+     * Rotates all the sprites in the group around the specified position.
+     * @param x The x of the point around which to rotate.
+     * @param y The y of the point around which to rotate.
+     * @param rot The direction to rotate in.
+     */
     public void rotate(double x, double y, Sprite.Rotation rot) {
         rotate(new Position(x, y), rot);
     }
@@ -435,8 +457,13 @@ public class Group {
         for (Sprite sprite : elements) sprite.rotate(mid, rot);
     }
     
-    public void translate(double ix, double iy) {
-        translate(new Position(ix, iy));
+    /**
+     * Translates all the sprites in the group.
+     * @param hor The amount to shift the group horizontally (positive means to the right).
+     * @param ver The amount to shift the group vertically (positive means to the down).
+     */
+    public void translate(double hor, double ver) {
+        translate(new Position(hor, ver));
     }
     
     /**

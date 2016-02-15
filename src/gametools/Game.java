@@ -210,6 +210,12 @@ public abstract class Game {
         setDimensions(new Dimension(width, height));
     }
     
+    /**
+     * Sets both the width and height of the game.<br>
+     * <b>Note</b>: This function will not work after the create function is executed.
+     * @param width The width of the game.
+     * @param height The height of the game.
+     */
     protected void setDimensions(int width, int height) {
         setDimensions(new Dimension(width, height));
     }
@@ -237,57 +243,52 @@ public abstract class Game {
         dragging = drag;
     }
     
-    /* *
+    /**
      * Translates the camera position by moving the painter location.<br>
-     * <b>Note</b>: Only subsequent methods are affected, so the camera should
-     * only be moved at the start or end of the run method to prevent
-     * inconsistent results.
-     * @param hor The amount to increment the x by.
-     * @param ver The amount to increment the y by.
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should only
+     * be moved at the start or end of the run method to prevent inconsistent results.
+     * @param hor The amount to move the x by.
+     * @param ver The amount to move the y by.
      */
     public static void translatePainter(double hor, double ver) {
         translatePainter(new Position(hor, ver));
     }
     
-    /* *
+    /**
      * Translates the camera position by moving the painter location.<br>
-     * <b>Note</b>: Only subsequent methods are affected, so the camera should
-     * only be moved at the start or end of the run method to prevent
-     * inconsistent results.
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should only
+     * be moved at the start or end of the run method to prevent inconsistent results.
      * @param trans The amount to translate by.
      */
     public static void translatePainter(Position trans) {
         Game.centerPainterOn(getPainterCenter().x - trans.x, getPainterCenter().y - trans.y);
     }
     
-    /* *
+    /**
      * Centers the camera on a position by moving the painter location.<br>
-     * <b>Note</b>: Only subsequent methods are affected, so the camera should
-     * only be moved at the start or end of the run method to prevent
-     * inconsistent results.
-     * @param x The new x location of the camera focus point.
-     * @param y The new y location of the camera focus point.
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should only
+     * be moved at the start or end of the run method to prevent inconsistent results.
+     * @param x The x location of the camera focus point.
+     * @param y The y location of the camera focus point.
      */
     public static void centerPainterOn(double x, double y) {
         centerPainterOn(new Position(x, y));
     }
     
-    /* *
+    /**
      * Centers the camera on a object by moving the painter location.<br>
-     * <b>Note</b>: Only subsequent methods are affected, so the camera should
-     * only be moved at the start or end of the run method to prevent
-     * inconsistent results.
-     * @param area The object to focus the camera on.
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should only
+     * be moved at the start or end of the run method to prevent inconsistent results.
+     * @param obj The object to focus the camera on.
      */
-    public static void centerPainterOn(Area area) {
-        centerPainterOn(area.getCenter());
+    public static void centerPainterOn(Area obj) {
+        centerPainterOn(obj.getCenter());
     }
     
-    /* *
+    /**
      * Centers the camera on a position by moving the painter location.<br>
-     * <b>Note</b>: Only subsequent methods are affected, so the camera should
-     * only be moved at the start or end of the run method to prevent
-     * inconsistent results.
+     * <b>Note</b>: Only subsequent methods are affected, so the camera should only
+     * be moved at the start or end of the run method to prevent inconsistent results.
      * @param center The new camera focal point.
      */
     public static void centerPainterOn(Position center) {
