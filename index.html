@@ -14,8 +14,8 @@
       <h1 class="project-name">Gametools</h1>
       <h2 class="project-tagline">A 2D game library for Java</h2>
       <a href="https://github.com/Daniel-Oliynyk/GameTools" class="btn">View on GitHub</a>
-      <a href="javadoc/index.html" class="btn">View Javadoc</a>
-      <a href="#resources" class="btn">Download Library</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Daniel-Oliynyk/GameTools/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
@@ -124,6 +124,47 @@ painter()<span class="pl-k">.</span>setColor(<span class="pl-smi">Color</span><s
 painter()<span class="pl-k">.</span>drawString(<span class="pl-s"><span class="pl-pds">"</span>Hello World!<span class="pl-pds">"</span></span>, <span class="pl-c1">180</span>, <span class="pl-c1">140</span>); <span class="pl-c">//Writes 'Hello World!' at (180, 140)</span></pre></div>
 
 <p>For a full list of java graphics methods go to the <code>Graphics2D</code> <a href="https://docs.oracle.com/javase/7/docs/api/java/awt/Graphics2D.html">documentation page</a>.</p>
+
+<h4>
+<a id="creating-and-displaying-animations" class="anchor" href="#creating-and-displaying-animations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating and Displaying Animations</h4>
+
+<p>Animations are an essential part of 2D game development. To create an animation, you first need a <code>BufferedImage</code> array that contains all the frames of the animation in order:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">//See above for explanation of how to load spritesheets</span>
+<span class="pl-k">BufferedImage</span>[] frames <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>walk.png<span class="pl-pds">"</span></span>, <span class="pl-c1">64</span>, <span class="pl-c1">64</span>);
+<span class="pl-smi">Animation</span> walk <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Animation</span>(frames); <span class="pl-c">//Standard animation</span>
+<span class="pl-c">//Animation is 2x as fast (now it only 4 frames before the next image instead of the default of 8)</span>
+<span class="pl-smi">Animation</span> walkFaster <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Animation</span>(frames, <span class="pl-c1">4</span>);
+<span class="pl-c">//Animation is the same as above except it stops looping after 2 repeats</span>
+<span class="pl-smi">Animation</span> walkTwice <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Animation</span>(frames, <span class="pl-c1">4</span>, <span class="pl-c1">2</span>);</pre></div>
+
+<p>Without using sprites or any objects, one way to display these animations would be by using the <code>painter()</code> object (see above for more examples):</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">//Setup method</span>
+<span class="pl-k">BufferedImage</span>[] frames <span class="pl-k">=</span> loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>walk.png<span class="pl-pds">"</span></span>, <span class="pl-c1">64</span>, <span class="pl-c1">64</span>);
+walk <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Animation</span>(frames); <span class="pl-c">//Animation needs to be declared outside of method before this</span></pre></div>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-c">//Run method</span>
+walk<span class="pl-k">.</span>update(); <span class="pl-c">//Automatically updates animation and moves it to the next frame if necessary</span>
+painter()<span class="pl-k">.</span>drawImage(walk<span class="pl-k">.</span>getFrame()); <span class="pl-c">//Draws the frame the animation is currently on</span></pre></div>
+
+<p>Additionally, the <code>Animation</code> class has a variety of assessors and mutators:</p>
+
+<div class="highlight highlight-source-java"><pre><span class="pl-smi">Animation</span> flip <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-smi">Animation</span>(loadSpriteSheet(<span class="pl-s"><span class="pl-pds">"</span>flip.png<span class="pl-pds">"</span></span>, <span class="pl-c1">64</span>, <span class="pl-c1">64</span>));
+<span class="pl-c">//Returns whether or not animation has reached last frame and has no repeats left</span>
+<span class="pl-k">boolean</span> complete <span class="pl-k">=</span> flip<span class="pl-k">.</span>isComplete();
+<span class="pl-c">//Returns array of all the animation frames</span>
+<span class="pl-k">BufferedImage</span>[] frames <span class="pl-k">=</span> flip<span class="pl-k">.</span>getAllFrames();
+<span class="pl-c">//Adjusts speed of animation (default is 8)</span>
+flip<span class="pl-k">.</span>setSpeed(<span class="pl-c1">12</span>);
+<span class="pl-c">//Sets how many repeats before the animation completes (-1 means repeat indefinitely)</span>
+flip<span class="pl-k">.</span>setRepeatAmount(<span class="pl-c1">2</span>);
+<span class="pl-c">//Scales the animation to the specified size</span>
+flip<span class="pl-k">.</span>setWidth(<span class="pl-c1">32</span>);
+<span class="pl-c">//Pauses animation (this can also been done by not updating animation)</span>
+flip<span class="pl-k">.</span>pause();
+<span class="pl-c">//Resets frame number and repeat counter</span>
+flip<span class="pl-k">.</span>reset();</pre></div>
 
 <hr>
 
